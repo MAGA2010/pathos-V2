@@ -25,8 +25,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$12,051–$32,193",
-      "maximumUsd": 32193.0,
-      "minimumUsd": 12051.0,
+      "maximumUsd": 32193,
+      "minimumUsd": 12051,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -77,7 +77,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "AZ",
-    "studentFacultyRatio": 18.0,
+    "studentFacultyRatio": 18,
     "topPrograms": [
       "Supply Chain Management/Logistics",
       "Analytics",
@@ -140,8 +140,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$67,680",
-      "maximumUsd": 67680.0,
-      "minimumUsd": 67680.0,
+      "maximumUsd": 67680,
+      "minimumUsd": 67680,
       "scopes": [
         "private_single_rate"
       ],
@@ -188,7 +188,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MA",
-    "studentFacultyRatio": 13.0,
+    "studentFacultyRatio": 13,
     "topPrograms": [
       "Finance",
       "Accounting",
@@ -246,8 +246,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$65,168",
-      "maximumUsd": 65168.0,
-      "minimumUsd": 65168.0,
+      "maximumUsd": 65168,
+      "minimumUsd": 65168,
       "scopes": [
         "private_single_rate"
       ],
@@ -294,7 +294,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MA",
-    "studentFacultyRatio": 10.0,
+    "studentFacultyRatio": 10,
     "topPrograms": [
       "Business Administration and Management, General",
       "Economics, General",
@@ -352,8 +352,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$68,230",
-      "maximumUsd": 68230.0,
-      "minimumUsd": 68230.0,
+      "maximumUsd": 68230,
+      "minimumUsd": 68230,
       "scopes": [
         "private_single_rate"
       ],
@@ -399,7 +399,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "RI",
-    "studentFacultyRatio": 6.0,
+    "studentFacultyRatio": 6,
     "topPrograms": [
       "Computer Science",
       "Econometrics and Quantitative Economics",
@@ -456,8 +456,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$64,772",
-      "maximumUsd": 64772.0,
-      "minimumUsd": 64772.0,
+      "maximumUsd": 64772,
+      "minimumUsd": 64772,
       "scopes": [
         "private_single_rate"
       ],
@@ -503,7 +503,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "PA",
-    "studentFacultyRatio": 9.0,
+    "studentFacultyRatio": 9,
     "topPrograms": [
       "Civil Engineering",
       "Electrical Engineering",
@@ -562,8 +562,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$63,255",
-      "maximumUsd": 63255.0,
-      "minimumUsd": 63255.0,
+      "maximumUsd": 63255,
+      "minimumUsd": 63255,
       "scopes": [
         "private_single_rate"
       ],
@@ -611,7 +611,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CA",
-    "studentFacultyRatio": 3.0,
+    "studentFacultyRatio": 3,
     "topPrograms": [
       "Computer Science",
       "Mechanical Engineering",
@@ -670,8 +670,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$63,274",
-      "maximumUsd": 63274.0,
-      "minimumUsd": 63274.0,
+      "maximumUsd": 63274,
+      "minimumUsd": 63274,
       "scopes": [
         "private_single_rate"
       ],
@@ -717,7 +717,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "PA",
-    "studentFacultyRatio": 5.0,
+    "studentFacultyRatio": 5,
     "topPrograms": [
       "Computer Science",
       "Statistics, General",
@@ -774,8 +774,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$68,171",
-      "maximumUsd": 68171.0,
-      "minimumUsd": 68171.0,
+      "maximumUsd": 68171,
+      "minimumUsd": 68171,
       "scopes": [
         "private_single_rate"
       ],
@@ -822,7 +822,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "NY",
-    "studentFacultyRatio": 6.0,
+    "studentFacultyRatio": 6,
     "topPrograms": [
       "Computer Science",
       "Computer Engineering",
@@ -880,8 +880,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$66,014",
-      "maximumUsd": 66014.0,
-      "minimumUsd": 66014.0,
+      "maximumUsd": 66014,
+      "minimumUsd": 66014,
       "scopes": [
         "private_single_rate"
       ],
@@ -927,7 +927,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "NY",
-    "studentFacultyRatio": 9.0,
+    "studentFacultyRatio": 9,
     "topPrograms": [
       "Computer Science",
       "Hotel/Motel Administration/Management",
@@ -984,8 +984,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$65,511",
-      "maximumUsd": 65511.0,
-      "minimumUsd": 65511.0,
+      "maximumUsd": 65511,
+      "minimumUsd": 65511,
       "scopes": [
         "private_single_rate"
       ],
@@ -1031,7 +1031,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "NH",
-    "studentFacultyRatio": 7.0,
+    "studentFacultyRatio": 7,
     "topPrograms": [
       "Econometrics and Quantitative Economics",
       "Political Science and Government, General",
@@ -1088,8 +1088,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$65,805",
-      "maximumUsd": 65805.0,
-      "minimumUsd": 65805.0,
+      "maximumUsd": 65805,
+      "minimumUsd": 65805,
       "scopes": [
         "private_single_rate"
       ],
@@ -1135,7 +1135,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "NC",
-    "studentFacultyRatio": 6.0,
+    "studentFacultyRatio": 6,
     "topPrograms": [
       "Computer Science",
       "Multi-/Interdisciplinary Studies, Other",
@@ -1192,8 +1192,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$60,774",
-      "maximumUsd": 60774.0,
-      "minimumUsd": 60774.0,
+      "maximumUsd": 60774,
+      "minimumUsd": 60774,
       "scopes": [
         "private_single_rate"
       ],
@@ -1240,7 +1240,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "GA",
-    "studentFacultyRatio": 9.0,
+    "studentFacultyRatio": 9,
     "topPrograms": [
       "Business Administration and Management, General",
       "Biology/Biological Sciences, General",
@@ -1298,8 +1298,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$65,081",
-      "maximumUsd": 65081.0,
-      "minimumUsd": 65081.0,
+      "maximumUsd": 65081,
+      "minimumUsd": 65081,
       "scopes": [
         "private_single_rate"
       ],
@@ -1345,7 +1345,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "DC",
-    "studentFacultyRatio": 11.0,
+    "studentFacultyRatio": 11,
     "topPrograms": [
       "International Relations and Affairs",
       "Finance, General",
@@ -1406,8 +1406,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$11,764–$32,876",
-      "maximumUsd": 32876.0,
-      "minimumUsd": 11764.0,
+      "maximumUsd": 32876,
+      "minimumUsd": 11764,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -1456,7 +1456,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "GA",
-    "studentFacultyRatio": 18.0,
+    "studentFacultyRatio": 18,
     "topPrograms": [
       "Biomedical Engineering",
       "Environmental Engineering",
@@ -1513,8 +1513,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$59,076",
-      "maximumUsd": 59076.0,
-      "minimumUsd": 59076.0,
+      "maximumUsd": 59076,
+      "minimumUsd": 59076,
       "scopes": [
         "private_single_rate"
       ],
@@ -1560,7 +1560,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MA",
-    "studentFacultyRatio": 7.0,
+    "studentFacultyRatio": 7,
     "topPrograms": [
       "Econometrics and Quantitative Economics",
       "Social Sciences, General",
@@ -1617,8 +1617,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$66,255",
-      "maximumUsd": 66255.0,
-      "minimumUsd": 66255.0,
+      "maximumUsd": 66255,
+      "minimumUsd": 66255,
       "scopes": [
         "private_single_rate"
       ],
@@ -1666,7 +1666,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CA",
-    "studentFacultyRatio": 8.0,
+    "studentFacultyRatio": 8,
     "topPrograms": [
       "Undergraduate Engineering Programs (No Doctorate)",
       "Mechanical Engineering",
@@ -1728,8 +1728,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$11,790–$40,482",
-      "maximumUsd": 40482.0,
-      "minimumUsd": 11790.0,
+      "maximumUsd": 40482,
+      "minimumUsd": 11790,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -1778,7 +1778,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "IN",
-    "studentFacultyRatio": 18.0,
+    "studentFacultyRatio": 18,
     "topPrograms": [
       "Accounting",
       "Management",
@@ -1837,8 +1837,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$62,840",
-      "maximumUsd": 62840.0,
-      "minimumUsd": 62840.0,
+      "maximumUsd": 62840,
+      "minimumUsd": 62840,
       "scopes": [
         "private_single_rate"
       ],
@@ -1884,7 +1884,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MD",
-    "studentFacultyRatio": 6.0,
+    "studentFacultyRatio": 6,
     "topPrograms": [
       "Cell/Cellular and Molecular Biology",
       "Public Health, General",
@@ -1941,8 +1941,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$62,180",
-      "maximumUsd": 62180.0,
-      "minimumUsd": 62180.0,
+      "maximumUsd": 62180,
+      "minimumUsd": 62180,
       "scopes": [
         "private_single_rate"
       ],
@@ -1988,7 +1988,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "PA",
-    "studentFacultyRatio": 10.0,
+    "studentFacultyRatio": 10,
     "topPrograms": [
       "Finance, General",
       "Computer Science",
@@ -2045,8 +2045,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$51,716",
-      "maximumUsd": 51716.0,
-      "minimumUsd": 51716.0,
+      "maximumUsd": 51716,
+      "minimumUsd": 51716,
       "scopes": [
         "private_single_rate"
       ],
@@ -2093,7 +2093,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "IL",
-    "studentFacultyRatio": 13.0,
+    "studentFacultyRatio": 13,
     "topPrograms": [
       "International Business",
       "Registered Nursing/Registered Nurse",
@@ -2153,8 +2153,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$60,156",
-      "maximumUsd": 60156.0,
-      "minimumUsd": 60156.0,
+      "maximumUsd": 60156,
+      "minimumUsd": 60156,
       "scopes": [
         "private_single_rate"
       ],
@@ -2200,7 +2200,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MA",
-    "studentFacultyRatio": 3.0,
+    "studentFacultyRatio": 3,
     "topPrograms": [
       "Computer Science",
       "Mechanical Engineering",
@@ -2257,8 +2257,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$60,438",
-      "maximumUsd": 60438.0,
-      "minimumUsd": 60438.0,
+      "maximumUsd": 60438,
+      "minimumUsd": 60438,
       "scopes": [
         "private_single_rate"
       ],
@@ -2305,7 +2305,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "NY",
-    "studentFacultyRatio": 8.0,
+    "studentFacultyRatio": 8,
     "topPrograms": [
       "Liberal Arts and Sciences/Liberal Studies",
       "Econometrics and Quantitative Economics",
@@ -2363,8 +2363,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$63,141",
-      "maximumUsd": 63141.0,
-      "minimumUsd": 63141.0,
+      "maximumUsd": 63141,
+      "minimumUsd": 63141,
       "scopes": [
         "private_single_rate"
       ],
@@ -2411,7 +2411,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MA",
-    "studentFacultyRatio": 16.0,
+    "studentFacultyRatio": 16,
     "topPrograms": [
       "Business/Commerce, General",
       "Computer and Information Sciences, General",
@@ -2469,8 +2469,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$65,997",
-      "maximumUsd": 65997.0,
-      "minimumUsd": 65997.0,
+      "maximumUsd": 65997,
+      "minimumUsd": 65997,
       "scopes": [
         "private_single_rate"
       ],
@@ -2516,7 +2516,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "IL",
-    "studentFacultyRatio": 6.0,
+    "studentFacultyRatio": 6,
     "topPrograms": [
       "Econometrics and Quantitative Economics",
       "Psychology, General",
@@ -2574,8 +2574,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$12,859–$38,365",
-      "maximumUsd": 38365.0,
-      "minimumUsd": 12859.0,
+      "maximumUsd": 38365,
+      "minimumUsd": 12859,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -2624,7 +2624,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "OH",
-    "studentFacultyRatio": 18.0,
+    "studentFacultyRatio": 18,
     "topPrograms": [
       "Undergraduate Business Programs",
       "Computer and Information Science",
@@ -2681,8 +2681,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$61,802",
-      "maximumUsd": 61802.0,
-      "minimumUsd": 61802.0,
+      "maximumUsd": 61802,
+      "minimumUsd": 61802,
       "scopes": [
         "private_single_rate"
       ],
@@ -2730,7 +2730,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MA",
-    "studentFacultyRatio": 9.0,
+    "studentFacultyRatio": 9,
     "topPrograms": [
       "Undergraduate Engineering Programs (No Doctorate)",
       "Mechanical Engineering",
@@ -2791,8 +2791,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$59,710",
-      "maximumUsd": 59710.0,
-      "minimumUsd": 59710.0,
+      "maximumUsd": 59710,
+      "minimumUsd": 59710,
       "scopes": [
         "private_single_rate"
       ],
@@ -2838,7 +2838,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "NJ",
-    "studentFacultyRatio": 5.0,
+    "studentFacultyRatio": 5,
     "topPrograms": [
       "Computer Science",
       "Econometrics and Quantitative Economics",
@@ -2895,8 +2895,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$9,992–$28,794",
-      "maximumUsd": 28794.0,
-      "minimumUsd": 9992.0,
+      "maximumUsd": 28794,
+      "minimumUsd": 9992,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -2945,7 +2945,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "IN",
-    "studentFacultyRatio": 14.0,
+    "studentFacultyRatio": 14,
     "topPrograms": [
       "Computer Science",
       "Mechanical Engineering",
@@ -3002,8 +3002,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$58,128",
-      "maximumUsd": 58128.0,
-      "minimumUsd": 58128.0,
+      "maximumUsd": 58128,
+      "minimumUsd": 58128,
       "scopes": [
         "private_single_rate"
       ],
@@ -3050,7 +3050,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "TX",
-    "studentFacultyRatio": 6.0,
+    "studentFacultyRatio": 6,
     "topPrograms": [
       "Computer and Information Sciences, General",
       "Biology/Biological Sciences, General",
@@ -3108,8 +3108,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$54,174",
-      "maximumUsd": 54174.0,
-      "minimumUsd": 54174.0,
+      "maximumUsd": 54174,
+      "minimumUsd": 54174,
       "scopes": [
         "private_single_rate"
       ],
@@ -3155,7 +3155,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "IN",
-    "studentFacultyRatio": 11.0,
+    "studentFacultyRatio": 11,
     "topPrograms": [
       "Civil Engineering",
       "Electrical Engineering",
@@ -3214,8 +3214,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$17,239–$36,001",
-      "maximumUsd": 36001.0,
-      "minimumUsd": 17239.0,
+      "maximumUsd": 36001,
+      "minimumUsd": 17239,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -3264,7 +3264,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "NJ",
-    "studentFacultyRatio": 15.0,
+    "studentFacultyRatio": 15,
     "topPrograms": [
       "Computer and Information Sciences, General",
       "Psychology, General",
@@ -3321,8 +3321,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$62,484",
-      "maximumUsd": 62484.0,
-      "minimumUsd": 62484.0,
+      "maximumUsd": 62484,
+      "minimumUsd": 62484,
       "scopes": [
         "private_single_rate"
       ],
@@ -3368,7 +3368,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CA",
-    "studentFacultyRatio": 6.0,
+    "studentFacultyRatio": 6,
     "topPrograms": [
       "Computer Science",
       "Human Biology",
@@ -3425,8 +3425,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$12,841–$40,328",
-      "maximumUsd": 40328.0,
-      "minimumUsd": 12841.0,
+      "maximumUsd": 40328,
+      "minimumUsd": 12841,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -3475,7 +3475,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "TX",
-    "studentFacultyRatio": 19.0,
+    "studentFacultyRatio": 19,
     "topPrograms": [
       "Industrial Engineering",
       "Aerospace Engineering",
@@ -3534,8 +3534,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$67,844",
-      "maximumUsd": 67844.0,
-      "minimumUsd": 67844.0,
+      "maximumUsd": 67844,
+      "minimumUsd": 67844,
       "scopes": [
         "private_single_rate"
       ],
@@ -3581,7 +3581,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MA",
-    "studentFacultyRatio": 10.0,
+    "studentFacultyRatio": 10,
     "topPrograms": [
       "Econometrics and Quantitative Economics",
       "Computer Science",
@@ -3640,8 +3640,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$14,850–$45,627",
-      "maximumUsd": 45627.0,
-      "minimumUsd": 14850.0,
+      "maximumUsd": 45627,
+      "minimumUsd": 14850,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -3692,7 +3692,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CA",
-    "studentFacultyRatio": 18.0,
+    "studentFacultyRatio": 18,
     "topPrograms": [
       "Real Estate",
       "Supply Chain Management/Logistics",
@@ -3751,8 +3751,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$15,247–$46,024",
-      "maximumUsd": 46024.0,
-      "minimumUsd": 15247.0,
+      "maximumUsd": 46024,
+      "minimumUsd": 15247,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -3803,7 +3803,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CA",
-    "studentFacultyRatio": 21.0,
+    "studentFacultyRatio": 21,
     "topPrograms": [
       "Research and Experimental Psychology, Other",
       "Management Sciences and Quantitative Methods, Other",
@@ -3862,8 +3862,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$14,237–$45,014",
-      "maximumUsd": 45014.0,
-      "minimumUsd": 14237.0,
+      "maximumUsd": 45014,
+      "minimumUsd": 14237,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -3914,7 +3914,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CA",
-    "studentFacultyRatio": 18.0,
+    "studentFacultyRatio": 18,
     "topPrograms": [
       "Biology/Biological Sciences, General",
       "Business/Managerial Economics",
@@ -3973,8 +3973,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$13,747–$44,524",
-      "maximumUsd": 44524.0,
-      "minimumUsd": 13747.0,
+      "maximumUsd": 44524,
+      "minimumUsd": 13747,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -4025,7 +4025,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CA",
-    "studentFacultyRatio": 18.0,
+    "studentFacultyRatio": 18,
     "topPrograms": [
       "Econometrics and Quantitative Economics",
       "Psychology, General",
@@ -4084,8 +4084,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$15,265–$46,042",
-      "maximumUsd": 46042.0,
-      "minimumUsd": 15265.0,
+      "maximumUsd": 46042,
+      "minimumUsd": 15265,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -4137,7 +4137,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CA",
-    "studentFacultyRatio": 19.0,
+    "studentFacultyRatio": 19,
     "topPrograms": [
       "Cognitive Science, General",
       "Anatomy",
@@ -4197,8 +4197,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$14,965–$45,742",
-      "maximumUsd": 45742.0,
-      "minimumUsd": 14965.0,
+      "maximumUsd": 45742,
+      "minimumUsd": 14965,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -4250,7 +4250,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CA",
-    "studentFacultyRatio": 17.0,
+    "studentFacultyRatio": 17,
     "topPrograms": [
       "Econometrics and Quantitative Economics",
       "Sociology, General",
@@ -4310,8 +4310,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$65,619",
-      "maximumUsd": 65619.0,
-      "minimumUsd": 65619.0,
+      "maximumUsd": 65619,
+      "minimumUsd": 65619,
       "scopes": [
         "private_single_rate"
       ],
@@ -4357,7 +4357,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "IL",
-    "studentFacultyRatio": 5.0,
+    "studentFacultyRatio": 5,
     "topPrograms": [
       "Econometrics and Quantitative Economics",
       "Mathematics, General",
@@ -4414,8 +4414,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$15,556–$41,943",
-      "maximumUsd": 41943.0,
-      "minimumUsd": 15556.0,
+      "maximumUsd": 41943,
+      "minimumUsd": 15556,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -4464,7 +4464,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CO",
-    "studentFacultyRatio": 19.0,
+    "studentFacultyRatio": 19,
     "topPrograms": [
       "Undergraduate Psychology Programs",
       "Business Administration and Management, General",
@@ -4524,8 +4524,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$6,381–$28,659",
-      "maximumUsd": 28659.0,
-      "minimumUsd": 6381.0,
+      "maximumUsd": 28659,
+      "minimumUsd": 6381,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -4574,7 +4574,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "FL",
-    "studentFacultyRatio": 16.0,
+    "studentFacultyRatio": 16,
     "topPrograms": [
       "Real Estate",
       "Marketing",
@@ -4631,8 +4631,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$11,180–$30,220",
-      "maximumUsd": 30220.0,
-      "minimumUsd": 11180.0,
+      "maximumUsd": 30220,
+      "minimumUsd": 11180,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -4682,7 +4682,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "GA",
-    "studentFacultyRatio": 17.0,
+    "studentFacultyRatio": 17,
     "topPrograms": [
       "Psychology, General",
       "Biology/Biological Sciences, General",
@@ -4740,8 +4740,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$18,060–$39,192",
-      "maximumUsd": 39192.0,
-      "minimumUsd": 18060.0,
+      "maximumUsd": 39192,
+      "minimumUsd": 18060,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -4790,7 +4790,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "IL",
-    "studentFacultyRatio": 20.0,
+    "studentFacultyRatio": 20,
     "topPrograms": [
       "Research and Experimental Psychology, Other",
       "Computer Engineering, General",
@@ -4847,8 +4847,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$10,964–$32,927",
-      "maximumUsd": 32927.0,
-      "minimumUsd": 10964.0,
+      "maximumUsd": 32927,
+      "minimumUsd": 10964,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -4897,7 +4897,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "IA",
-    "studentFacultyRatio": 15.0,
+    "studentFacultyRatio": 15,
     "topPrograms": [
       "Undergraduate Nursing Programs",
       "Exercise Science and Kinesiology",
@@ -4956,8 +4956,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$11,505–$40,306",
-      "maximumUsd": 40306.0,
-      "minimumUsd": 11505.0,
+      "maximumUsd": 40306,
+      "minimumUsd": 11505,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -5006,7 +5006,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MD",
-    "studentFacultyRatio": 18.0,
+    "studentFacultyRatio": 18,
     "topPrograms": [
       "Computer Science",
       "Information Science/Studies",
@@ -5063,8 +5063,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$18,309–$60,107",
-      "maximumUsd": 60107.0,
-      "minimumUsd": 18309.0,
+      "maximumUsd": 60107,
+      "minimumUsd": 18309,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -5113,7 +5113,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MI",
-    "studentFacultyRatio": 11.0,
+    "studentFacultyRatio": 11,
     "topPrograms": [
       "Computer and Information Sciences, General",
       "Business Administration and Management, General",
@@ -5170,8 +5170,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$16,488–$36,402",
-      "maximumUsd": 36402.0,
-      "minimumUsd": 16488.0,
+      "maximumUsd": 36402,
+      "minimumUsd": 16488,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -5220,7 +5220,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MN",
-    "studentFacultyRatio": 16.0,
+    "studentFacultyRatio": 16,
     "topPrograms": [
       "Management Information Systems",
       "Supply Chain Management/Logistics",
@@ -5279,8 +5279,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$8,989–$39,330",
-      "maximumUsd": 39330.0,
-      "minimumUsd": 8989.0,
+      "maximumUsd": 39330,
+      "minimumUsd": 8989,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -5329,7 +5329,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "NC",
-    "studentFacultyRatio": 15.0,
+    "studentFacultyRatio": 15,
     "topPrograms": [
       "Asian Studies, B.A. — Japanese Concentration",
       "Asian Studies, B.A. — Korean Studies Concentration",
@@ -5384,8 +5384,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$62,693",
-      "maximumUsd": 62693.0,
-      "minimumUsd": 62693.0,
+      "maximumUsd": 62693,
+      "minimumUsd": 62693,
       "scopes": [
         "private_single_rate"
       ],
@@ -5431,7 +5431,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "IN",
-    "studentFacultyRatio": 9.0,
+    "studentFacultyRatio": 9,
     "topPrograms": [
       "Finance, General",
       "Econometrics and Quantitative Economics",
@@ -5488,8 +5488,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$66,104",
-      "maximumUsd": 66104.0,
-      "minimumUsd": 66104.0,
+      "maximumUsd": 66104,
+      "minimumUsd": 66104,
       "scopes": [
         "private_single_rate"
       ],
@@ -5536,7 +5536,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "PA",
-    "studentFacultyRatio": 8.0,
+    "studentFacultyRatio": 8,
     "topPrograms": [
       "Financial Analytics",
       "Econometrics and Quantitative Economics",
@@ -5594,8 +5594,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$64,348",
-      "maximumUsd": 64348.0,
-      "minimumUsd": 64348.0,
+      "maximumUsd": 64348,
+      "minimumUsd": 64348,
       "scopes": [
         "private_single_rate"
       ],
@@ -5641,7 +5641,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "NY",
-    "studentFacultyRatio": 9.0,
+    "studentFacultyRatio": 9,
     "topPrograms": [
       "Biology/Biological Sciences, General",
       "Registered Nursing/Registered Nurse",
@@ -5698,8 +5698,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$12,688–$34,943",
-      "maximumUsd": 34943.0,
-      "minimumUsd": 12688.0,
+      "maximumUsd": 34943,
+      "minimumUsd": 12688,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -5749,7 +5749,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "SC",
-    "studentFacultyRatio": 18.0,
+    "studentFacultyRatio": 18,
     "topPrograms": [
       "International Business",
       "Data Analytics",
@@ -5809,8 +5809,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$68,237",
-      "maximumUsd": 68237.0,
-      "minimumUsd": 68237.0,
+      "maximumUsd": 68237,
+      "minimumUsd": 68237,
       "scopes": [
         "private_single_rate"
       ],
@@ -5857,7 +5857,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CA",
-    "studentFacultyRatio": 9.0,
+    "studentFacultyRatio": 9,
     "topPrograms": [
       "Management Science",
       "Computer Science",
@@ -5915,8 +5915,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$11,678–$42,778",
-      "maximumUsd": 42778.0,
-      "minimumUsd": 11678.0,
+      "maximumUsd": 42778,
+      "minimumUsd": 11678,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -5965,7 +5965,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "TX",
-    "studentFacultyRatio": 18.0,
+    "studentFacultyRatio": 18,
     "topPrograms": [
       "Business Administration",
       "Computer Science",
@@ -6022,8 +6022,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$22,323–$59,633",
-      "maximumUsd": 59633.0,
-      "minimumUsd": 22323.0,
+      "maximumUsd": 59633,
+      "minimumUsd": 22323,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -6072,7 +6072,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "VA",
-    "studentFacultyRatio": 15.0,
+    "studentFacultyRatio": 15,
     "topPrograms": [
       "Computer Science",
       "Data Science",
@@ -6129,8 +6129,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$12,643–$41,997",
-      "maximumUsd": 41997.0,
-      "minimumUsd": 12643.0,
+      "maximumUsd": 41997,
+      "minimumUsd": 12643,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -6181,7 +6181,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "WA",
-    "studentFacultyRatio": 20.0,
+    "studentFacultyRatio": 20,
     "topPrograms": [
       "Aeronautics and Astronautics",
       "Chemical Engineering",
@@ -6240,8 +6240,8 @@
       "comparisonSafe": false,
       "currency": "USD",
       "displayLabel": "$11,205–$40,603",
-      "maximumUsd": 40603.0,
-      "minimumUsd": 11205.0,
+      "maximumUsd": 40603,
+      "minimumUsd": 11205,
       "scopes": [
         "in_state",
         "out_of_state"
@@ -6290,7 +6290,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "WI",
-    "studentFacultyRatio": 18.0,
+    "studentFacultyRatio": 18,
     "topPrograms": [
       "Computer and Information Sciences, General",
       "Psychology, General",
@@ -6347,8 +6347,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$63,946",
-      "maximumUsd": 63946.0,
-      "minimumUsd": 63946.0,
+      "maximumUsd": 63946,
+      "minimumUsd": 63946,
       "scopes": [
         "private_single_rate"
       ],
@@ -6395,7 +6395,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "TN",
-    "studentFacultyRatio": 7.0,
+    "studentFacultyRatio": 7,
     "topPrograms": [
       "Social Sciences, General",
       "Econometrics and Quantitative Economics",
@@ -6453,8 +6453,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$62,982",
-      "maximumUsd": 62982.0,
-      "minimumUsd": 62982.0,
+      "maximumUsd": 62982,
+      "minimumUsd": 62982,
       "scopes": [
         "private_single_rate"
       ],
@@ -6501,7 +6501,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "MO",
-    "studentFacultyRatio": 7.0,
+    "studentFacultyRatio": 7,
     "topPrograms": [
       "Computer Science",
       "Finance, General",
@@ -6559,8 +6559,8 @@
       "comparisonSafe": true,
       "currency": "USD",
       "displayLabel": "$64,700",
-      "maximumUsd": 64700.0,
-      "minimumUsd": 64700.0,
+      "maximumUsd": 64700,
+      "minimumUsd": 64700,
       "scopes": [
         "private_single_rate"
       ],
@@ -6606,7 +6606,7 @@
     "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
     "sourceStatus": "verified_frozen_with_warnings",
     "state": "CT",
-    "studentFacultyRatio": 6.0,
+    "studentFacultyRatio": 6,
     "topPrograms": [
       "Econometrics and Quantitative Economics",
       "Computer and Information Sciences, General",
@@ -6637,5 +6637,2350 @@
       "count": 3,
       "hasWarnings": true
     }
+  },
+  {
+    "id": "candidate-v2:university-of-north-carolina-at-chapel-hill",
+    "name": "The University of North Carolina at Chapel Hill",
+    "nameZh": "北卡教堂山",
+    "chineseName": "北卡教堂山",
+    "aliases": [],
+    "latitude": 35.9049,
+    "longitude": -79.0469,
+    "state": "NC",
+    "city": "Chapel Hill",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-of-texas-at-austin",
+    "name": "The University of Texas at Austin",
+    "nameZh": "德州奥斯汀",
+    "chineseName": "德州奥斯汀",
+    "aliases": [],
+    "latitude": 30.2849,
+    "longitude": -97.7341,
+    "state": "TX",
+    "city": "Austin",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-of-illinois-at-urbana-champaign",
+    "name": "University of Illinois at Urbana Champaign",
+    "nameZh": "UIUC",
+    "chineseName": "UIUC",
+    "aliases": [],
+    "latitude": 40.102,
+    "longitude": -88.2272,
+    "state": "IL",
+    "city": "Champaign",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:wake-forest-university",
+    "name": "Wake Forest University",
+    "nameZh": "维克森林",
+    "chineseName": "维克森林",
+    "aliases": [],
+    "latitude": 36.1337,
+    "longitude": -80.2785,
+    "state": "NC",
+    "city": "Winston-Salem",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:case-western-reserve-university",
+    "name": "Case Western Reserve University",
+    "nameZh": "凯斯西储",
+    "chineseName": "凯斯西储",
+    "aliases": [],
+    "latitude": 41.5047,
+    "longitude": -81.6087,
+    "state": "OH",
+    "city": "Cleveland",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:virginia-polytechnic-institute-and-state-university",
+    "name": "Virginia Polytechnic Institute and State University",
+    "nameZh": "弗吉尼亚理工",
+    "chineseName": "弗吉尼亚理工",
+    "aliases": [],
+    "latitude": 37.2284,
+    "longitude": -80.4234,
+    "state": "VA",
+    "city": "Blacksburg",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:florida-state-university",
+    "name": "Florida State University",
+    "nameZh": "佛州州立",
+    "chineseName": "佛州州立",
+    "aliases": [],
+    "latitude": 30.4419,
+    "longitude": -84.2985,
+    "state": "FL",
+    "city": "Tallahassee",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:college-of-william-and-mary",
+    "name": "College of William and Mary",
+    "nameZh": "威廉玛丽",
+    "chineseName": "威廉玛丽",
+    "aliases": [],
+    "latitude": 37.2707,
+    "longitude": -76.7081,
+    "state": "VA",
+    "city": "Williamsburg",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-of-california-merced",
+    "name": "University of California Merced",
+    "nameZh": "UC Merced",
+    "chineseName": "UC Merced",
+    "aliases": [],
+    "latitude": 37.3641,
+    "longitude": -120.4248,
+    "state": "CA",
+    "city": "Merced",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:north-carolina-state-university",
+    "name": "North Carolina State University",
+    "nameZh": "NC State",
+    "chineseName": "NC State",
+    "aliases": [],
+    "latitude": 35.7847,
+    "longitude": -78.6821,
+    "state": "NC",
+    "city": "Raleigh",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:stony-brook-university",
+    "name": "Stony Brook University",
+    "nameZh": "Stony Brook",
+    "chineseName": "Stony Brook",
+    "aliases": [],
+    "latitude": 40.9171,
+    "longitude": -73.1234,
+    "state": "NY",
+    "city": "Stony Brook",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:villanova-university",
+    "name": "Villanova University",
+    "nameZh": "维拉诺瓦",
+    "chineseName": "维拉诺瓦",
+    "aliases": [],
+    "latitude": 40.0349,
+    "longitude": -75.3373,
+    "state": "PA",
+    "city": "Villanova",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-of-massachusetts-amherst",
+    "name": "University of Massachusetts Amherst",
+    "nameZh": "UMass Amherst",
+    "chineseName": "UMass Amherst",
+    "aliases": [],
+    "latitude": 42.3868,
+    "longitude": -72.5301,
+    "state": "MA",
+    "city": "Amherst",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:george-washington-university",
+    "name": "George Washington University",
+    "nameZh": "乔治华盛顿",
+    "chineseName": "乔治华盛顿",
+    "aliases": [],
+    "latitude": 38.9012,
+    "longitude": -77.0447,
+    "state": "DC",
+    "city": "Washington",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:pennsylvania-state-university",
+    "name": "The Pennsylvania State University",
+    "nameZh": "Penn State",
+    "chineseName": "Penn State",
+    "aliases": [],
+    "latitude": 40.7982,
+    "longitude": -77.8599,
+    "state": "PA",
+    "city": "University Park",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:michigan-state-university",
+    "name": "Michigan State University",
+    "nameZh": "密歇根州立",
+    "chineseName": "密歇根州立",
+    "aliases": [],
+    "latitude": 42.7018,
+    "longitude": -84.4822,
+    "state": "MI",
+    "city": "East Lansing",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:brandeis-university",
+    "name": "Brandeis University",
+    "nameZh": "Brandeis",
+    "chineseName": "Brandeis",
+    "aliases": [],
+    "latitude": 42.3657,
+    "longitude": -71.2653,
+    "state": "MA",
+    "city": "Waltham",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:tulane-university",
+    "name": "Tulane University",
+    "nameZh": "杜兰",
+    "chineseName": "杜兰",
+    "aliases": [],
+    "latitude": 29.94,
+    "longitude": -90.12,
+    "state": "LA",
+    "city": "New Orleans",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-of-miami",
+    "name": "University of Miami",
+    "nameZh": "迈阿密",
+    "chineseName": "迈阿密",
+    "aliases": [],
+    "latitude": 25.7215,
+    "longitude": -80.2791,
+    "state": "FL",
+    "city": "Coral Gables",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:rensselaer-polytechnic-institute",
+    "name": "Rensselaer Polytechnic Institute",
+    "nameZh": "RPI",
+    "chineseName": "RPI",
+    "aliases": [],
+    "latitude": 42.7301,
+    "longitude": -73.6767,
+    "state": "NY",
+    "city": "Troy",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-of-pittsburgh",
+    "name": "University of Pittsburgh",
+    "nameZh": "匹兹堡",
+    "chineseName": "匹兹堡",
+    "aliases": [],
+    "latitude": 40.4444,
+    "longitude": -79.9606,
+    "state": "PA",
+    "city": "Pittsburgh",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-of-connecticut",
+    "name": "University of Connecticut",
+    "nameZh": "UConn",
+    "chineseName": "UConn",
+    "aliases": [],
+    "latitude": 41.8072,
+    "longitude": -72.2534,
+    "state": "CT",
+    "city": "Storrs",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:syracuse-university",
+    "name": "Syracuse University",
+    "nameZh": "Syracuse",
+    "chineseName": "Syracuse",
+    "aliases": [],
+    "latitude": 43.0392,
+    "longitude": -76.1351,
+    "state": "NY",
+    "city": "Syracuse",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-of-california-riverside",
+    "name": "University of California Riverside",
+    "nameZh": "UC Riverside",
+    "chineseName": "UC Riverside",
+    "aliases": [],
+    "latitude": 33.9737,
+    "longitude": -117.3281,
+    "state": "CA",
+    "city": "Riverside",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:stevens-institute-of-technology",
+    "name": "Stevens Institute of Technology",
+    "nameZh": "Stevens",
+    "chineseName": "Stevens",
+    "aliases": [],
+    "latitude": 40.745,
+    "longitude": -74.0253,
+    "state": "NJ",
+    "city": "Hoboken",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:colorado-school-of-mines",
+    "name": "Colorado School of Mines",
+    "nameZh": "科罗拉多矿业",
+    "chineseName": "科罗拉多矿业",
+    "aliases": [],
+    "latitude": 39.7507,
+    "longitude": -105.2217,
+    "state": "CO",
+    "city": "Golden",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-at-buffalo",
+    "name": "University at Buffalo",
+    "nameZh": "UB",
+    "chineseName": "UB",
+    "aliases": [],
+    "latitude": 43.0008,
+    "longitude": -78.789,
+    "state": "NY",
+    "city": "Buffalo",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-of-illinois-at-chicago",
+    "name": "University of Illinois at Chicago",
+    "nameZh": "UIC",
+    "chineseName": "UIC",
+    "aliases": [],
+    "latitude": 41.8721,
+    "longitude": -87.648,
+    "state": "IL",
+    "city": "Chicago",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:clemson-university",
+    "name": "Clemson University",
+    "nameZh": "Clemson",
+    "chineseName": "Clemson",
+    "aliases": [],
+    "latitude": 34.6762,
+    "longitude": -82.8393,
+    "state": "SC",
+    "city": "Clemson",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-of-california-santa-cruz",
+    "name": "University of California Santa Cruz",
+    "nameZh": "UC Santa Cruz",
+    "chineseName": "UC Santa Cruz",
+    "aliases": [],
+    "latitude": 36.9914,
+    "longitude": -122.0609,
+    "state": "CA",
+    "city": "Santa Cruz",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:worcester-polytechnic-institute",
+    "name": "Worcester Polytechnic Institute",
+    "nameZh": "WPI",
+    "chineseName": "WPI",
+    "aliases": [],
+    "latitude": 42.2747,
+    "longitude": -71.8063,
+    "state": "MA",
+    "city": "Worcester",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:university-of-delaware",
+    "name": "University of Delaware",
+    "nameZh": "特拉华",
+    "chineseName": "特拉华",
+    "aliases": [],
+    "latitude": 39.679,
+    "longitude": -75.7491,
+    "state": "DE",
+    "city": "Newark",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:marquette-university",
+    "name": "Marquette University",
+    "nameZh": "Marquette",
+    "chineseName": "Marquette",
+    "aliases": [],
+    "latitude": 43.0389,
+    "longitude": -87.928,
+    "state": "WI",
+    "city": "Milwaukee",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:southern-methodist-university",
+    "name": "Southern Methodist University",
+    "nameZh": "SMU",
+    "chineseName": "SMU",
+    "aliases": [],
+    "latitude": 32.8422,
+    "longitude": -96.7844,
+    "state": "TX",
+    "city": "Dallas",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
+  },
+  {
+    "id": "candidate-v2:fordham-university",
+    "name": "Fordham University",
+    "nameZh": "Fordham",
+    "chineseName": "Fordham",
+    "aliases": [],
+    "latitude": 40.8617,
+    "longitude": -73.8857,
+    "state": "NY",
+    "city": "Bronx",
+    "country": "US",
+    "rankingTier": "other",
+    "rankingBand": "outside_numeric_scope",
+    "rankingSummary": {
+      "nationalRank": null,
+      "rankingTier": "other",
+      "rankingLabel": "Not in selected national ranking scope",
+      "sourceIds": [],
+      "status": "not_in_current_national_scope",
+      "filterBehavior": "exclude_from_numeric_range"
+    },
+    "enrollmentSummary": {
+      "undergraduate": null,
+      "graduate": null,
+      "total": null,
+      "referenceYear": null
+    },
+    "costSummary": {
+      "minimumUsd": null,
+      "maximumUsd": null,
+      "displayLabel": "Data pending source verification",
+      "comparisonSafe": false
+    },
+    "topPrograms": [],
+    "studentFacultyRatio": null,
+    "acceptanceRate": null,
+    "sat25": null,
+    "sat75": null,
+    "graduationRate": null,
+    "retentionRate": null,
+    "schoolType": "private",
+    "displayTier": "preview",
+    "previewOnly": true,
+    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
+    "sourceStatus": "pending_source_review",
+    "datasetVersion": "stage5-preview-ec8c66e",
+    "warningSummary": {
+      "codes": [
+        "candidate-v2_added_from_iecg_seed"
+      ],
+      "count": 1,
+      "hasWarnings": true
+    },
+    "nullableFields": [
+      "acceptanceRate",
+      "graduationRate",
+      "retentionRate",
+      "sat25",
+      "sat75",
+      "studentFacultyRatio",
+      "costSummary.minimumUsd",
+      "costSummary.maximumUsd",
+      "enrollmentSummary.undergraduate",
+      "enrollmentSummary.graduate",
+      "enrollmentSummary.total"
+    ]
   }
 ]
