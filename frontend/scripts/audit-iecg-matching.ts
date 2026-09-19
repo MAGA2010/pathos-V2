@@ -37,9 +37,9 @@ for (const p of iecg.profiles) {
 
 console.log("\n=== Schools in IECG but NOT in POI list (would need to be added) ===");
 const onlyInIeCG: any[] = [];
-for (const [k, p] of iecgKeys) {
+for (const [k, p] of Array.from(iecgKeys.entries())) {
   let matched = false;
-  for (const [k2, u] of poiKeys) {
+  for (const [k2, u] of Array.from(poiKeys.entries())) {
     if (k.includes(normalize(u.name)) || k2.includes(k)) {
       matched = true;
       break;
@@ -55,7 +55,7 @@ const onlyInPoi: any[] = [];
 for (const u of univ) {
   const n = normalize(u.name);
   let matched = false;
-  for (const [k, p] of iecgKeys) {
+  for (const [k, p] of Array.from(iecgKeys.entries())) {
     if (k.includes(n) || n.includes(k)) {
       matched = true;
       break;
