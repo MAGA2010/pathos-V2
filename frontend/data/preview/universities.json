@@ -4725,113 +4725,6 @@
       ],
       "status": "verified",
       "unit": "ratio",
-      "value": 0.4369,
-      "warnings": [
-        "uniform source-variable cohort year is not available in the frozen 2025 release metadata"
-      ]
-    },
-    "aliases": [
-      "University of Illinois Urbana-Champaign"
-    ],
-    "chineseName": "伊利诺伊大学厄巴纳-香槟分校",
-    "city": "Champaign",
-    "costSummary": {
-      "academicYear": "2023-24",
-      "comparisonSafe": false,
-      "currency": "USD",
-      "displayLabel": "$18,060–$39,192",
-      "maximumUsd": 39192,
-      "minimumUsd": 18060,
-      "scopes": [
-        "in_state",
-        "out_of_state"
-      ],
-      "sourceIds": [
-        "source_ipeds_ic2023_ay"
-      ],
-      "warnings": [
-        "Public in-state and out-of-state tuition are separate scopes."
-      ]
-    },
-    "country": "US",
-    "datasetVersion": "stage5-preview-ec8c66e",
-    "displayTier": "preview",
-    "id": "candidate-v2:university-of-illinois-urbana-champaign",
-    "latitude": 40.104718,
-    "longitude": -88.229114,
-    "name": "University of Illinois Urbana-Champaign",
-    "nameZh": "伊利诺伊大学厄巴纳-香槟分校",
-    "nationalRanking": 36,
-    "previewOnly": true,
-    "qualitySummary": {
-      "sourceLimited": true,
-      "status": "warning",
-      "warningCodes": [
-        "english_policy_pending_external_access",
-        "stale_reference_year",
-        "test_policy_pending_external_access"
-      ]
-    },
-    "rankingBand": "national_top_50",
-    "rankingSummary": {
-      "filterBehavior": "include_as_ranked",
-      "nationalRank": 36,
-      "rankingLabel": "#36",
-      "rankingTier": "national_top_50",
-      "sourceIds": [
-        "source_think_academy_top100_2026_pdf"
-      ],
-      "status": "ranked_in_selected_national_family"
-    },
-    "rankingTier": "national_top_50",
-    "rankingYear": null,
-    "region": "Great Lakes",
-    "schoolType": "public",
-    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
-    "sourceStatus": "verified_frozen_with_warnings",
-    "state": "IL",
-    "studentFacultyRatio": 20,
-    "topPrograms": [
-      "Research and Experimental Psychology, Other",
-      "Computer Engineering, General",
-      "Accounting",
-      "Finance, General",
-      "Computer Science"
-    ],
-    "undergraduateEnrollment": {
-      "nullReason": null,
-      "referenceYear": 2019,
-      "scope": "undergraduate_certificate_or_degree_seeking",
-      "sourceIds": [
-        "source_stage4b_college_scorecard_2025_05_19"
-      ],
-      "status": "verified",
-      "unit": null,
-      "value": 34623,
-      "warnings": [
-        "stale_reference_year"
-      ]
-    },
-    "warningSummary": {
-      "codes": [
-        "english_policy_pending_external_access",
-        "stale_reference_year",
-        "test_policy_pending_external_access"
-      ],
-      "count": 3,
-      "hasWarnings": true
-    }
-  },
-  {
-    "acceptanceRate": {
-      "nullReason": null,
-      "referenceYear": 2025,
-      "scope": "institution_undergraduate_admissions",
-      "sourceIds": [
-        "source_stage4b_college_scorecard_2025_05_19"
-      ],
-      "status": "verified",
-      "unit": "ratio",
       "value": 0.8467,
       "warnings": [
         "uniform source-variable cohort year is not available in the frozen 2025 release metadata"
@@ -5251,111 +5144,6 @@
         "test_policy_pending_external_access"
       ],
       "count": 5,
-      "hasWarnings": true
-    }
-  },
-  {
-    "acceptanceRate": {
-      "nullReason": null,
-      "referenceYear": 2025,
-      "scope": "institution_undergraduate_admissions",
-      "sourceIds": [
-        "source_stage4b_college_scorecard_2025_05_19"
-      ],
-      "status": "verified",
-      "unit": "ratio",
-      "value": 0.1874,
-      "warnings": [
-        "uniform source-variable cohort year is not available in the frozen 2025 release metadata"
-      ]
-    },
-    "aliases": [
-      "University of North Carolina—Chapel Hill"
-    ],
-    "chineseName": "北卡罗来纳大学教堂山分校",
-    "city": "Chapel Hill",
-    "costSummary": {
-      "academicYear": "2023-24",
-      "comparisonSafe": false,
-      "currency": "USD",
-      "displayLabel": "$8,989–$39,330",
-      "maximumUsd": 39330,
-      "minimumUsd": 8989,
-      "scopes": [
-        "in_state",
-        "out_of_state"
-      ],
-      "sourceIds": [
-        "source_ipeds_ic2023_ay"
-      ],
-      "warnings": [
-        "Public in-state and out-of-state tuition are separate scopes."
-      ]
-    },
-    "country": "US",
-    "datasetVersion": "stage5-preview-ec8c66e",
-    "displayTier": "preview",
-    "id": "candidate-v2:university-of-north-carolina-chapel-hill",
-    "latitude": 35.911769,
-    "longitude": -79.050969,
-    "name": "University of North Carolina—Chapel Hill",
-    "nameZh": "北卡罗来纳大学教堂山分校",
-    "nationalRanking": 26,
-    "previewOnly": true,
-    "qualitySummary": {
-      "sourceLimited": true,
-      "status": "warning",
-      "warningCodes": [
-        "english_policy_pending_external_access",
-        "stale_reference_year",
-        "test_policy_pending_external_access"
-      ]
-    },
-    "rankingBand": "national_top_50",
-    "rankingSummary": {
-      "filterBehavior": "include_as_ranked",
-      "nationalRank": 26,
-      "rankingLabel": "#26",
-      "rankingTier": "national_top_50",
-      "sourceIds": [
-        "source_think_academy_top100_2026_pdf"
-      ],
-      "status": "ranked_in_selected_national_family"
-    },
-    "rankingTier": "national_top_50",
-    "rankingYear": null,
-    "region": "Southeast",
-    "schoolType": "public",
-    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
-    "sourceStatus": "verified_frozen_with_warnings",
-    "state": "NC",
-    "studentFacultyRatio": 15,
-    "topPrograms": [
-      "Asian Studies, B.A. — Japanese Concentration",
-      "Asian Studies, B.A. — Korean Studies Concentration",
-      "Asian Studies, B.A. — South Asian Studies Concentration"
-    ],
-    "undergraduateEnrollment": {
-      "nullReason": null,
-      "referenceYear": 2019,
-      "scope": "undergraduate_certificate_or_degree_seeking",
-      "sourceIds": [
-        "source_stage4b_college_scorecard_2025_05_19"
-      ],
-      "status": "verified",
-      "unit": null,
-      "value": 20556,
-      "warnings": [
-        "stale_reference_year"
-      ]
-    },
-    "warningSummary": {
-      "codes": [
-        "english_policy_pending_external_access",
-        "stale_reference_year",
-        "test_policy_pending_external_access"
-      ],
-      "count": 3,
       "hasWarnings": true
     }
   },
@@ -5934,7 +5722,7 @@
     "id": "candidate-v2:university-of-texas-austin",
     "latitude": 30.282825,
     "longitude": -97.738273,
-    "name": "University of Texas—Austin",
+    "name": "The University of Texas at Austin",
     "nameZh": "德克萨斯大学奥斯汀分校",
     "nationalRanking": 30,
     "previewOnly": true,
@@ -6660,91 +6448,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 21075,
+      "graduate": 11605,
+      "total": 32680,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
-    },
-    "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
-    "sat25": null,
-    "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
-    "schoolType": "private",
-    "displayTier": "preview",
-    "previewOnly": true,
-    "sourceCommit": "ec8c66e200b566dba4de35987aa5213960749a57",
-    "sourceStatus": "pending_source_review",
-    "datasetVersion": "stage5-preview-ec8c66e",
-    "warningSummary": {
-      "codes": [
-        "candidate-v2_added_from_iecg_seed"
+      "minimumUsd": 60040,
+      "maximumUsd": 60040,
+      "displayLabel": "USD60,040",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
       ],
-      "count": 1,
-      "hasWarnings": true
-    },
-    "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
-      "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
-    ]
-  },
-  {
-    "id": "candidate-v2:university-of-texas-at-austin",
-    "name": "The University of Texas at Austin",
-    "nameZh": "德州奥斯汀",
-    "chineseName": "德州奥斯汀",
-    "aliases": [],
-    "latitude": 30.2849,
-    "longitude": -97.7341,
-    "state": "TX",
-    "city": "Austin",
-    "country": "US",
-    "rankingTier": "other",
-    "rankingBand": "outside_numeric_scope",
-    "rankingSummary": {
-      "nationalRank": null,
-      "rankingTier": "other",
-      "rankingLabel": "Not in selected national ranking scope",
       "sourceIds": [],
-      "status": "not_in_current_national_scope",
-      "filterBehavior": "exclude_from_numeric_range"
-    },
-    "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
-    },
-    "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 15.3,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 85,
+    "retentionRate": 96,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -6759,17 +6487,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -6794,24 +6514,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 35564,
+      "graduate": 20999,
+      "total": 56563,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 57622,
+      "maximumUsd": 65722,
+      "displayLabel": "$57,622-$65,722",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 43.7,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 70,
+    "retentionRate": 93,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -6826,17 +6553,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -6861,24 +6580,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 5471,
+      "graduate": 3650,
+      "total": 9121,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 94600,
+      "maximumUsd": 94600,
+      "displayLabel": "USD94,600",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 21.56,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 86,
+    "retentionRate": 94,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -6893,17 +6619,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -6928,24 +6646,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 6186,
+      "graduate": 6080,
+      "total": 12266,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 88125,
+      "maximumUsd": 88125,
+      "displayLabel": "$88,125",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 37.78,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 64,
+    "retentionRate": 92,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -6960,17 +6685,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -6995,24 +6712,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 30161,
+      "graduate": 5920,
+      "total": 36081,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 51582,
+      "maximumUsd": 51582,
+      "displayLabel": "USD51,582",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 13,
+    "acceptanceRate": 55,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 64,
+    "retentionRate": 91,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7027,17 +6751,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -7062,24 +6777,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 32711,
+      "graduate": 11160,
+      "total": 43871,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 45830,
+      "maximumUsd": 45830,
+      "displayLabel": "USD45,830",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 1,
+    "acceptanceRate": 24.22,
     "sat25": null,
     "sat75": null,
     "graduationRate": null,
-    "retentionRate": null,
+    "retentionRate": 95,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7094,17 +6816,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
       "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -7129,24 +6843,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 7063,
+      "graduate": 2755,
+      "total": 9818,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 69326,
+      "maximumUsd": 69326,
+      "displayLabel": "USD 69,326",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 34.1,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 84,
+    "retentionRate": 95,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7161,17 +6882,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -7196,24 +6909,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 8372,
+      "graduate": 738,
+      "total": 9110,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 83184,
+      "maximumUsd": 83184,
+      "displayLabel": "USD 83,184",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 91.52,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 67,
+    "retentionRate": 93,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7228,17 +6948,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -7263,24 +6975,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 28422,
+      "graduate": 10042,
+      "total": 38464,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 53004,
+      "maximumUsd": 53004,
+      "displayLabel": "USD 53,004",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 19,
+    "acceptanceRate": 41.67,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 67,
+    "retentionRate": 93,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7295,17 +7014,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -7330,24 +7040,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 18263,
+      "graduate": 8426,
+      "total": 26689,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 52798,
+      "maximumUsd": 52798,
+      "displayLabel": "USD 52,798",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 19,
+    "acceptanceRate": 49,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 66,
+    "retentionRate": 89,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7362,17 +7079,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -7397,24 +7105,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 7065,
+      "graduate": 3054,
+      "total": 10119,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 71510,
+      "maximumUsd": 71510,
+      "displayLabel": "USD 71,510",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 25.1,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 90,
+    "retentionRate": 93,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7429,17 +7144,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -7464,24 +7171,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 23920,
+      "graduate": 7806,
+      "total": 31726,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 63027,
+      "maximumUsd": 63027,
+      "displayLabel": "USD 63,027",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 59.73,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 75,
+    "retentionRate": 92,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7496,17 +7210,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -7531,24 +7237,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 11,
+      "graduate": 13697,
+      "total": 13708,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 80140,
+      "maximumUsd": 80140,
+      "displayLabel": "$80,140",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 1,
+    "acceptanceRate": 47.1,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 75,
+    "retentionRate": 92,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7563,17 +7276,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -7598,24 +7302,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 42604,
+      "graduate": 6877,
+      "total": 49481,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 54110,
+      "maximumUsd": 54110,
+      "displayLabel": "USD54,110",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 60.6,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 52,
+    "retentionRate": 86,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7630,17 +7341,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -7665,24 +7368,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 41234,
+      "graduate": 10855,
+      "total": 52089,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 64211,
+      "maximumUsd": 64211,
+      "displayLabel": "USD64,211",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 16,
+    "acceptanceRate": 84.8,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 62,
+    "retentionRate": 90,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7697,17 +7407,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -7732,24 +7433,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 3632,
+      "graduate": 1673,
+      "total": 5305,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 87624,
+      "maximumUsd": 87624,
+      "displayLabel": "$87,624",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 40.47,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 78,
+    "retentionRate": 87,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7764,17 +7472,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -7799,20 +7499,27 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 7283,
+      "graduate": 5118,
+      "total": 12401,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 83632,
+      "maximumUsd": 83632,
+      "displayLabel": "$83,632",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 14.1,
     "sat25": null,
     "sat75": null,
     "graduationRate": null,
@@ -7831,17 +7538,11 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
       "graduationRate",
       "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -7866,24 +7567,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 13250,
+      "graduate": 6602,
+      "total": 19852,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 86406,
+      "maximumUsd": 86406,
+      "displayLabel": "USD86,406",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 13,
+    "acceptanceRate": 18.9,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 72,
+    "retentionRate": 94,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7898,17 +7606,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -7933,24 +7632,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 5743,
+      "graduate": 1306,
+      "total": 7049,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 87752,
+      "maximumUsd": 87752,
+      "displayLabel": "$87,752",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 14,
+    "acceptanceRate": 63.4,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 71,
+    "retentionRate": 91,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -7965,17 +7671,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8000,24 +7697,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 20418,
+      "graduate": 9509,
+      "total": 29927,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 58940,
+      "maximumUsd": 58940,
+      "displayLabel": "$58,940",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 1,
+    "acceptanceRate": 58.1,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 65,
+    "retentionRate": 92,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8032,17 +7736,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8067,24 +7762,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 19388,
+      "graduate": 7976,
+      "total": 27364,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 60790,
+      "maximumUsd": 60790,
+      "displayLabel": "USD60,790",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 15,
+    "acceptanceRate": 54.1,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 75,
+    "retentionRate": 91,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8099,17 +7801,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8134,24 +7827,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 15739,
+      "graduate": 7209,
+      "total": 22948,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 94792,
+      "maximumUsd": 94792,
+      "displayLabel": "USD 94,792",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 1,
+    "acceptanceRate": 41.69,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 74,
+    "retentionRate": 91,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8166,17 +7866,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8201,24 +7892,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 22599,
+      "graduate": 3785,
+      "total": 26384,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 77803,
+      "maximumUsd": 77803,
+      "displayLabel": "$77,803",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 22,
+    "acceptanceRate": 76.9,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 65,
+    "retentionRate": 87,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8233,17 +7931,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8268,24 +7957,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 4236,
+      "graduate": 4233,
+      "total": 8469,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 87926,
+      "maximumUsd": 87926,
+      "displayLabel": "$ 87,926",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 10,
+    "acceptanceRate": 47.6,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 83,
+    "retentionRate": 93,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8300,17 +7996,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8335,24 +8022,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 5733,
+      "graduate": 1675,
+      "total": 7408,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 69714,
+      "maximumUsd": 69714,
+      "displayLabel": "$69,714",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 16,
+    "acceptanceRate": 58,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 65,
+    "retentionRate": 94,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8367,17 +8061,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8402,24 +8087,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 20360,
+      "graduate": 11543,
+      "total": 31903,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 55364,
+      "maximumUsd": 55364,
+      "displayLabel": "$55,364",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 12,
+    "acceptanceRate": 74.2,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 55,
+    "retentionRate": 85,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8434,17 +8126,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8469,24 +8152,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 22495,
+      "graduate": 11411,
+      "total": 33906,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 58328,
+      "maximumUsd": 58328,
+      "displayLabel": "$ 58,328",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 77.4,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 41,
+    "retentionRate": 80,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8501,17 +8191,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -8536,24 +8218,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 23401,
+      "graduate": 5676,
+      "total": 29077,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 55890,
+      "maximumUsd": 55890,
+      "displayLabel": "$ $55,890",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 38.3,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 68,
+    "retentionRate": 93,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8568,17 +8257,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   },
   {
@@ -8603,24 +8284,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 17940,
+      "graduate": 1998,
+      "total": 19938,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 78477,
+      "maximumUsd": 78477,
+      "displayLabel": "$78,477",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 22,
+    "acceptanceRate": 65.6,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 57,
+    "retentionRate": 88,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8635,17 +8323,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8670,24 +8349,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 5558,
+      "graduate": 2026,
+      "total": 7584,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 82866,
+      "maximumUsd": 82866,
+      "displayLabel": "$82,866",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 13,
+    "acceptanceRate": 60,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 83,
+    "retentionRate": 94,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8702,17 +8388,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8737,24 +8414,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 18159,
+      "graduate": 4449,
+      "total": 22608,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 61036,
+      "maximumUsd": 61036,
+      "displayLabel": "$61,036",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 12,
+    "acceptanceRate": 63.6,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 72,
+    "retentionRate": 90,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8769,17 +8453,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8804,24 +8479,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 8045,
+      "graduate": 3701,
+      "total": 11746,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 67070,
+      "maximumUsd": 71510,
+      "displayLabel": "$67,070–$71,510",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 13,
+    "acceptanceRate": 81.34,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 66,
+    "retentionRate": 91,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8836,17 +8518,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8871,24 +8544,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 7285,
+      "graduate": 4831,
+      "total": 12116,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 93090,
+      "maximumUsd": 93090,
+      "displayLabel": "$93,090",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
-    "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "studentFacultyRatio": 11,
+    "acceptanceRate": 63.3,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 76,
+    "retentionRate": 91,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8903,17 +8583,8 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
-      "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "sat75"
     ]
   },
   {
@@ -8938,24 +8609,31 @@
       "filterBehavior": "exclude_from_numeric_range"
     },
     "enrollmentSummary": {
-      "undergraduate": null,
-      "graduate": null,
-      "total": null,
-      "referenceYear": null
+      "undergraduate": 10307,
+      "graduate": 5846,
+      "total": 16153,
+      "referenceYear": 2024
     },
     "costSummary": {
-      "minimumUsd": null,
-      "maximumUsd": null,
-      "displayLabel": "Data pending source verification",
-      "comparisonSafe": false
+      "minimumUsd": 90010,
+      "maximumUsd": 90010,
+      "displayLabel": "$90,010",
+      "comparisonSafe": true,
+      "scopes": [
+        "institution_undergraduate_tuition_published"
+      ],
+      "sourceIds": [],
+      "warnings": [],
+      "academicYear": "2025-26",
+      "currency": "USD"
     },
     "topPrograms": [],
     "studentFacultyRatio": null,
-    "acceptanceRate": null,
+    "acceptanceRate": 56.27,
     "sat25": null,
     "sat75": null,
-    "graduationRate": null,
-    "retentionRate": null,
+    "graduationRate": 76,
+    "retentionRate": 87,
     "schoolType": "private",
     "displayTier": "preview",
     "previewOnly": true,
@@ -8970,17 +8648,9 @@
       "hasWarnings": true
     },
     "nullableFields": [
-      "acceptanceRate",
-      "graduationRate",
-      "retentionRate",
       "sat25",
       "sat75",
-      "studentFacultyRatio",
-      "costSummary.minimumUsd",
-      "costSummary.maximumUsd",
-      "enrollmentSummary.undergraduate",
-      "enrollmentSummary.graduate",
-      "enrollmentSummary.total"
+      "studentFacultyRatio"
     ]
   }
 ]
