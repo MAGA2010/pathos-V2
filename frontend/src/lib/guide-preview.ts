@@ -551,35 +551,49 @@ export function extractGuidePreview(input: ExtractInput): GuidePreview {
   }
 
   // 本科录取中位线 → SAT / ACT / GPA
-  // P0-4: handle BOTH "SAT 阅读EBRW：730-780" (Princeton) and
-  //        "SAT: 1500-1560 阅读EBRW：740-780" (Stanford: SAT total + EBRW)
+  // P0-4 v3: search the 中位线 section FIRST, then fall back to
+  // 申请基本要求 + 本科招生情况 (Cornell writes "中位数：SAT:1500 ACT 34"
+  // inside the requirements section). Handle Princeton "SAT 阅读EBRW：730-780",
+  // Stanford "SAT: 1500-1560 阅读EBRW：740-780", UC Irvine "SAT: 阅读EBRW 600-740",
+  // Yale "SAT: 1500-1560阅读EBRW: 740-780", and Chinese "中位数：SAT:1500 ACT 34".
+  const extractFromText = (text: string): MidRangeScores | null => {
+    if (!text) return null;
+    const SEP = "[\\s：:]+";
+    const firstHit = (re: RegExp): RegExpMatchArray | null => {
+      const m = text.match(re);
+      return m && m[1] ? m : null;
+    };
+    const satEbrw = (
+      firstHit(new RegExp("SAT\\s*阅读EBRW" + SEP + "(\\d{3,4}\\s*[-—–~]\\s*\\d{3,4})", "i")) ??
+      firstHit(new RegExp("阅读EBRW" + SEP + "(\\d{3,4}\\s*[-—–~]\\s*\\d{3,4})", "i")) ??
+      firstHit(new RegExp("EBRW" + SEP + "(\\d{3,4}\\s*[-—–~]\\s*\\d{3,4})", "i"))
+    )?.[1] ?? "";
+    const satMath = (
+      firstHit(new RegExp("(?:数学\\s*Math|SAT\\s*Math|数学" + SEP + "Math)" + SEP + "(\\d{3,4}\\s*[-—–~]\\s*\\d{3,4})", "i")) ??
+      firstHit(new RegExp("数学" + SEP + "(\\d{3,4}\\s*[-—–~]\\s*\\d{3,4})"))
+    )?.[1] ?? "";
+    const satTotal = satEbrw ? "" : (firstHit(/SAT[：:]s*(d{4}s*[-—–~]s*d{4})/)?.[1] ?? "");
+    const act = firstHit(new RegExp("ACT" + SEP + "(\\d{2}\\s*[-—–~]\\s*\\d{2})", "i"))?.[1] ?? "";
+    const gpa = firstHit(/(?:高中平均GPA|Averages*GPA|平均GPA|加权GPA)s*[：:]?s*(d.d{1,3})/i)?.[1] ?? "";
+    const finalEbrw = satEbrw || satTotal;
+    if (finalEbrw || satMath || act || gpa) {
+      return { satEbrw: finalEbrw, satMath, act, gpa };
+    }
+    return null;
+  };
+
   const mid = sections.find(
     (s) => s.title?.startsWith("本科录取中位线") || s.title?.startsWith("Mid-Range"),
   );
-  if (mid) {
-    // Walk year blocks; most recent is typically first.
-    const yearBlocks = mid.text.split(/\d{4}入学[季年]?/);
-    const latestText = yearBlocks[yearBlocks.length - 1] || mid.text;
-
-    const satEbrwMatch =
-      latestText.match(/SAT\s*阅读EBRW[：:]\s*(\d+\s*[-—–~]\s*\d+)/i) ||
-      latestText.match(/阅读EBRW[：:]\s*(\d+\s*[-—–~]\s*\d+)/i);
-    const satMathMatch =
-      latestText.match(/(?:数学Math|SAT\s*Math|Math)[：:]\s*(\d+\s*[-—–~]\s*\d+)/i);
-    // SAT total (Stanford format): "SAT: 1500-1560" — capture only if no EBRW already found
-    const satTotalMatch =
-      !satEbrwMatch && latestText.match(/^\s*SAT[：:]\s*(\d{3,4}\s*[-—–~]\s*\d{3,4})/im);
-    const actMatch = latestText.match(/ACT[：:\s]+(\d+\s*[-—–~]\s*\d+)/);
-    const gpaMatch =
-      latestText.match(/(?:高中平均GPA|Average GPA|平均GPA|GPA)\s*[：:]?\s*([\d.]+)/i);
-
-    const satEbrw = (satEbrwMatch && satEbrwMatch[1]) || (satTotalMatch && satTotalMatch[1]) || "";
-    const satMath = (satMathMatch && satMathMatch[1]) || "";
-    const act = (actMatch && actMatch[1]) || "";
-    const gpa = (gpaMatch && gpaMatch[1]) || "";
-
-    if (satEbrw || satMath || act || gpa) {
-      out.midRangeScores = { satEbrw, satMath, act, gpa };
+  const reqs = sections.find(
+    (s) => s.title?.includes("申请基本要求") || s.title?.includes("录取要求"),
+  );
+  const enroll = sections.find((s) => s.title?.includes("本科招生情况"));
+  for (const candidate of [mid?.text, reqs?.text, enroll?.text]) {
+    const result = extractFromText(candidate ?? "");
+    if (result) {
+      out.midRangeScores = result;
+      break;
     }
   }
 
