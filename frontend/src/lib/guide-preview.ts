@@ -268,11 +268,28 @@ export function parsePrograms(text: string | undefined, maxCount = 8): ProgramEn
   if (!text) return [];
   const out: ProgramEntry[] = [];
 
+  // Filter out college/school header lines that bleed in as "programs":
+  //   "Haas School of Business", "College of Letters and Science",
+  //   "School of Engineering", "文理学院 (College of Arts and Sciences)", etc.
+  const isCollegeHeader = (s: string): boolean => {
+    const trimmed = s.trim();
+    if (trimmed.length > 50) return false;
+    // Pure ASCII headers (no Chinese): looks like a college/school/department name
+    if (!/[\u4e00-\u9fff]/.test(trimmed)) {
+      return /\b(College|School|Department|Faculty|Institute|Division|School of|College of)\b/i.test(trimmed);
+    }
+    // Chinese header: ends with "学院" or starts with "【...研究生】"
+    return /(学院|研究生)$/.test(trimmed) || /^【.*】/.test(trimmed);
+  };
+
   const splitOnDashSeparator = (raw: string): void => {
-    const chunks = raw.split(/\s+[-\u2013\u2014]\s+/);
+    // Only split on dash when followed by uppercase ASCII letter (program start).
+    // Avoids splitting "会计Aerospace Engineering" into two chunks.
+    const chunks = raw.split(/\s+[-\u2013\u2014]\s+(?=[A-Z][a-z])/);
     for (const chunk of chunks) {
       const c = chunk.trim();
-      if (!c) continue;
+      if (!c || isCollegeHeader(c)) continue;
+      // If chunk still has multiple English-CJK pairs (un-split), split by CJK boundary
       const sub = c.split(/\s+[-\u2013\u2014]\s+/);
       let name = "";
       let nameZh = "";
@@ -286,7 +303,7 @@ export function parsePrograms(text: string | undefined, maxCount = 8): ProgramEn
           nameZh = m[2].trim();
         }
       }
-      if (name && nameZh && name.length >= 2 && nameZh.length >= 2) {
+      if (name && nameZh && name.length >= 2 && nameZh.length >= 2 && !isCollegeHeader(name)) {
         out.push({ name, nameZh });
         if (out.length >= maxCount) break;
       }
