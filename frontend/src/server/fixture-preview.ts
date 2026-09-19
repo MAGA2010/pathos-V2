@@ -140,6 +140,8 @@ function toSummary(u: RawUniversityRecord) {
       : null,
     studentFacultyRatio: sfr,
     qualitySummary: { coveragePercent: 0, warningCodes: ["source_review_not_completed"] },
+    enrollmentSummary: undefined,
+    topPrograms: Array.isArray(u.programs) ? u.programs.slice(0, 5) : undefined,
     displayTier: "preview",
     previewOnly: true,
     datasetVersion: "fixture-2026-07-24",

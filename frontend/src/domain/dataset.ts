@@ -105,6 +105,13 @@ export interface UniversitySummary {
     coveragePercent?: number;
     warningCodes?: string[];
   };
+  /** List view program tags (e.g. "Computer Science", "Mechanical Engineering")
+   *  extracted from the upstream preview bundle. Surfaced by the topic
+   *  dashboards so parents/teachers can spot CS / Engineering / Liberal Arts
+   *  strong schools without drilling into the per-school detail page. The
+   *  detail page exposes the full programs[] array; this summary field is
+   *  intentionally names-only. */
+  topPrograms?: readonly string[];
   /** Flat admissions / outcomes snapshot. Populated by db:enrich from
    *  university_details. acceptanceRate is stored as a percent (0-100),
    *  not a ratio. sat25/sat75 are the sum of math and reading middle-50. */

@@ -227,6 +227,10 @@ export function parseUniversitySummary(raw: unknown): UniversitySummary {
     costSummary: parseCostSummary(o.costSummary),
     studentFacultyRatio: unwrapValue(validateNullable<number>((v) => validateNumber(v, { min: 0 }))(o.studentFacultyRatio), o.studentFacultyRatio) as number | undefined,
     qualitySummary: parseQualitySummary(o.qualitySummary),
+    enrollmentSummary: parseEnrollmentSummary(o.undergraduateEnrollment),
+    topPrograms: Array.isArray(o.topPrograms)
+      ? (o.topPrograms as unknown[]).filter((v): v is string => typeof v === "string")
+      : undefined,
     // Legacy top-level mirrors so existing consumers keep compiling.
     rankingTier: tierRes.value,
     rankingBand: typeof o.rankingBand === "string" ? o.rankingBand : undefined,
@@ -272,6 +276,20 @@ function parseCostSummary(raw: unknown): UniversitySummary["costSummary"] {
   };
 }
 
+
+function parseEnrollmentSummary(raw: unknown): UniversitySummary["enrollmentSummary"] {
+  if (!raw || typeof raw !== "object") return undefined;
+  const o = raw as Record<string, unknown>;
+  const numericValue = typeof o.value === "number" ? o.value : null;
+  const numericYear = typeof o.referenceYear === "number" ? o.referenceYear : null;
+  if (numericValue === null && numericYear === null) return undefined;
+  return {
+    undergraduate: numericValue,
+    graduate: null,
+    total: null,
+    referenceYear: numericYear,
+  };
+}
 function parseQualitySummary(raw: unknown): UniversitySummary["qualitySummary"] {
   if (!raw || typeof raw !== "object") return undefined;
   const o = raw as Record<string, unknown>;
