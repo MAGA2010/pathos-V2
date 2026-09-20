@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>大数据精准选校系统-AI选校互动具有参考意义的院校库</title>
+    <meta charset="utf-8" />
+    <meta itemprop="name" property="og:title" content="大数据精准选校系统-AI选校互动具有参考意义的院校库" />
+    <meta name="keywords" content="大数据精准选校系统" />
+    <meta name="description" itemprop="description" property="og:description" content="大数据精准选校系统" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="renderer" content="webkit" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"
+    />
+    
+    <script>
+      // 动态设定根节点的fontSize，即rem的基数
+      var Dpr = 1,
+        uAgent = window.navigator.userAgent;
+      var isIOS = uAgent.match(/iphone/i);
+      var isYIXIN = uAgent.match(/yixin/i);
+      var is2345 = uAgent.match(/Mb2345/i);
+      var ishaosou = uAgent.match(/mso_app/i);
+      var isSogou = uAgent.match(/sogoumobilebrowser/gi);
+      var isLiebao = uAgent.match(/liebaofast/i);
+      var isGnbr = uAgent.match(/GNBR/i);
+      var wFsize, wDpr;
+      function isMobile(ua) {
+        var ua = ua || "";
+        return (
+          ua.match(/Android/i) ||
+          ua.match(/webOS/i) ||
+          ua.match(/iPhone/i) ||
+          ua.match(/iPad/i) ||
+          ua.match(/iPod/i) ||
+          ua.match(/BlackBerry/i) ||
+          ua.match(/Windows Phone/i)
+        );
+      }
+      function resizeRoot() {
+        var wWidth =
+          screen.width > 0
+            ? window.innerWidth >= screen.width || window.innerWidth == 0
+              ? screen.width
+              : window.innerWidth
+            : window.innerWidth;
+        var wHeight =
+          screen.height > 0
+            ? window.innerHeight >= screen.height || window.innerHeight == 0
+              ? screen.height
+              : window.innerHeight
+            : window.innerHeight;
+        if (window.devicePixelRatio) {
+          wDpr = window.devicePixelRatio;
+        } else {
+          wDpr = isIOS ? (wWidth > 818 ? 3 : wWidth > 480 ? 2 : 1) : 1; // 手动设置dpr，Android都为1
+        }
+        // 横屏情况
+        if (wWidth > wHeight) {
+          wWidth = wHeight;
+        }
+        wFsize = (wWidth * 10) / 375; // 在375宽度下，1 rem = 10px;
+        window.screenWidth_ = wWidth;
+        if (isYIXIN || is2345 || ishaosou || isSogou || isLiebao || isGnbr) {
+          //YIXIN 和 2345 调用系统浏览器时候的bug，需要一点延迟来获取
+          setTimeout(function () {
+            wWidth =
+              screen.width > 0
+                ? window.innerWidth >= screen.width || window.innerWidth == 0
+                  ? screen.width
+                  : window.innerWidth
+                : window.innerWidth;
+            wHeight =
+              screen.height > 0
+                ? window.innerHeight >= screen.height || window.innerHeight == 0
+                  ? screen.height
+                  : window.innerHeight
+                : window.innerHeight;
+            wFsize = (wWidth * 10) / 375; // 在375宽度下，1 rem = 10px;
+          }, 500);
+        }
+      }
+      resizeRoot();
+      document.addEventListener(
+        "DOMContentLoaded",
+        function (e) {
+          if (isMobile(uAgent)) {
+            document.getElementsByTagName("html")[0].dataset.dpr = wDpr;
+            document.getElementsByTagName("html")[0].style.fontSize = wFsize + "px";
+          } else {
+            document.getElementsByTagName("html")[0].dataset.dpr = wDpr;
+          }
+        },
+        false
+      );
+    </script>
+    
+    <meta name="apple-mobile-web-app-title" content="AI选校互动院校库" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <meta name="full-screen" content="yes" />
+    <meta name="x5-fullscreen" content="true" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="baidu-site-verification" content="codeva-vQvWCKHwIw" />
+    <meta name="google-site-verification" content="T-wiguUpm9487uL_1xldriEqaszD_2oh7Wh7azf8PJs" />
+    <!-- <meta name="theme-color" content="#078CF1" />
+    <meta name="msapplication-TileColor" content="#078CF1" /> -->
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" type="image/png" sizes="90x90" href="https://media.xuanxiaodi.com/xxd-frontend/public/prd/images/favicon-90x90.png">
+    <link rel="icon" type="image/png" sizes="120x120" href="https://media.xuanxiaodi.com/xxd-frontend/public/prd/images/favicon-120x120.png">
+    <link rel="icon" type="image/png" sizes="400x400" href="https://media.xuanxiaodi.com/xxd-frontend/public/prd/images/favicon-400x400.png">
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/sitemap.xml" />
+    <link rel="search" type="application/opensearchdescription+xml" title="AI选校互动" href="/opensearch.xml" />
+    <meta name="google" value="notranslate" />
+    <meta http-equiv="Content-Security-Policy" content="default-src &#39;unsafe-inline&#39; &#39;unsafe-eval&#39; &#39;self&#39; blob: data: baidumap: androidamap: bdapp: iosamap: xuanxiaodi: *.ravenjs.com *.smartstudy.com media.xuanxiaodi.com https://res.wx.qq.com *.aliyuncs.com *.alicdn.com *.baidu.com *.bdstatic.com *.bdimg.com *.qbox.me *.cdn.bcebos.com *.uhomes.com *.uhouzz.com *.uhzcdn.com *.bankofchina.com *.amazonaws.com.cn wework.qpic.cn *.7moor.com umini.shujupie.com lf-cdn.coze.cn lf-coze-web-cdn.coze.cn api.coze.cn *.bytednsdoc.com *.byteimg.com *.xuanxiaodi.com nisportal.10010.com enrichgw.10010.com *.10010.com:38750 *.10010.com:9001 hs.wosms.cn dypns-operator.oss-cn-hangzhou.aliyuncs.com *.aliyuncs.com verify.cmpassport.com www.cmpassport.com 1og-h5.cmpassRgkt.com:9443 open.e.189.cn id6.me login.e.189.cn static.e.189.cn e.189.cn ux.21cn.com api-e189.21cn.com e189.21cn.com dypns.alysm.cn *.cmpassport.com hs.wosms.cn log-h5.cmpassport.com log-h5.cmpassport.com:9443" />
+
+    <style>
+      @font-face {
+        font-family: dinCondBold;
+        src: url("/font/DINCond-Bold.otf");
+      }
+
+      @font-face {
+        font-family: gothamBook;
+        src: url("/font/GothamBook.otf");
+      }
+
+      @font-face {
+        font-family: gothamMedium;
+        src: url("/font/GothamMedium.otf");
+      }
+
+      @font-face {
+        font-family: gothamBold;
+        src: url("/font/GothamBold.otf");
+      }
+    </style>
+    
+    <link rel="dns-prefetch" href="//cdn.ravenjs.com" />
+    
+    <link rel="dns-prefetch" href="//hm.baidu.com" />
+    
+    <link rel="dns-prefetch" href="//media.xuanxiaodi.com" />
+    
+    <link rel="dns-prefetch" href="//cdn.ravenjs.com" />
+    
+    <link rel="dns-prefetch" href="//zz.bdstatic.com" />
+    
+    <link rel="dns-prefetch" href="//cambrian-images.cdn.bcebos.com" />
+     
+    
+    <link rel="stylesheet" href="https://media.xuanxiaodi.com/xxd-frontend/public/prd/pc/index.42449877.css?hash=cbb598" />
+    <!--[if lte IE 7]>
+      <script>
+        location.href = "/error/ie.html";
+      </script>
+    <![endif]-->
+
+    <!--[if lte IE 9]>
+      <script type="text/javascript" src="/html5shiv.min.js"></script>
+      <script type="text/javascript" src="/respond.min.js"></script>
+      <script type="text/javascript" src="/rem.min.js"></script>
+      <script type="text/javascript" src="/ie9.min.js"></script>
+    <![endif]-->
+
+     
+  </head>
+
+  <body lang="zh-CN">
+    <!--    -->
+    
+    <div id="root"><div data-reactroot="" data-reactid="1" data-react-checksum="703470207"><div class="container-smart-school-test-index-regular pc" data-reactid="2"><div class="logo" data-reactid="3"><img alt="一站式美国留学专家" class="image-src" src="/images/smart_school_test/regular/logo.png" data-reactid="4"/></div><h1 class="title" data-reactid="5">大数据智能留学诊断系统</h1><p class="smaller" data-reactid="6">（美国版）</p><h2 class="subtitle" data-reactid="7">重磅上线</h2><div class="buttons" data-reactid="8"><div class="is-parent" data-reactid="9"><span data-reactid="10"><span class="is-parent-checkbox " data-reactid="11"></span><!-- react-text: 12 -->我是家长<!-- /react-text --></span></div><a class="button graduate" href="/smart-school-test/regular/question-graduate-student?_pid=" data-reactid="13">点击开启美研诊断</a><a class="button undergraduate" href="/smart-school-test/regular/question-undergraduate-student?_pid=" data-reactid="14">点击开启美本诊断</a></div><div class="features" data-reactid="15"><img src="/images/smart_school_test/regular/features_pc.png" alt="features" data-reactid="16"/></div></div></div></div>
+
+    
+    <div id="wx_logo" style="margin: 0 auto; display: none;">
+      <img src="/images/app_logo.png" alt="微信内浏览器，抓取的网址图标" />
+    </div>
+    <script>
+      window.addEventListener("load", function () {
+        var urls = [
+          "/load_thirdparty.js",
+          "/fix_screen.js",
+          // "//media8.smartstudy.com/data/access.js",
+          //"//media8.smartstudy.com/common/video/js/zkw_video.js",
+          //  // load prod async scripts
+          "/load_thirdparty.prod.js",
+          "//cdn.ravenjs.com/3.19.1/raven.min.js",
+          // 
+        ];
+        urls.forEach(function (url) {
+          url && asyncAddScripts(url, true);
+        });
+        var syncUrls = [
+          "/states/nW5UBZU2R08iBH9x4KiskJgx0ve2SQlS1789907659103.js",
+          "https://media.xuanxiaodi.com/xxd-frontend/public/prd/pc/index.42449877.js?hash=f90404",
+          // 
+        ];
+        syncUrls.forEach(function (url) {
+          url && asyncAddScripts(url, false);
+        });
+      });
+
+      // 
+      if (window.Raven && Raven.config instanceof Function) {
+        Raven.config("//5537b456a900441bba14a2926c07f7e9@sentry.smartstudy.com/5").install();
+      }
+      // 
+
+      function asyncAddScripts(url, isAsync) {
+        var bp = document.createElement("script");
+        bp.async = isAsync;
+        bp.defer = isAsync;
+        bp.src = url;
+        var ss = document.getElementsByTagName("script");
+        var s = ss[ss.length - 1];
+        s.parentNode.insertBefore(bp, s);
+      }
+    </script>
+    <script>
+      window.addEventListener("load", function () {
+        var style = document.createElement("style");
+        style.innerHTML = `
+          @font-face {
+            font-family: dinCondBold;
+            src: url('/font/DINCond-Bold.otf');
+          }
+
+          @font-face {
+            font-family: gothamBook;
+            src: url('/font/GothamBook.otf');
+          }
+
+          @font-face {
+            font-family: gothamMedium;
+            src: url('/font/GothamMedium.otf');
+          }
+
+          @font-face {
+            font-family: gothamBold;
+            src: url('/font/GothamBold.otf');
+          }
+        `;
+      });
+    </script>
+    <script src="/font/iconfontxxd/iconfont.js"></script>
+    <script src="/font/iconfontxxd/new-iconfont/iconfont.js"></script>
+    <script>
+      (function(w, d, s, q, i) {
+      w[q] = w[q] || [];
+      var f = d.getElementsByTagName(s)[0],j = d.createElement(s);
+      j.async = true;
+      j.id = 'beacon-aplus';
+      j.src = 'https://d.alicdn.com/alilog/mlog/aplus/' + i + '.js';
+      f.parentNode.insertBefore(j, f);
+     })(window, document, 'script', 'aplus_queue', '203467608');
+   
+       //集成应用的appKey
+       aplus_queue.push({
+         action: 'aplus.setMetaInfo',
+         arguments: ['appKey', '6788c9fb9a16fe6dcd2ed6f8']
+       });
+       /************************以下内容为可选配置内容****************************/
+       //sdk提供手动pv发送机制，启用手动pv(即关闭自动pv)，需设置aplus-waiting=MAN;
+       //注意：由于单页面路由改变时不会刷新页面，无法自动发送pv，所以对于单页应用，强烈建议您关闭自动PV, 手动控制PV事件
+      //  aplus_queue.push({
+      //    action: 'aplus.setMetaInfo',
+      //    arguments: ['aplus-waiting', 'MAN']
+      //  });
+       //是否开启调试模式 
+       aplus_queue.push({
+         action: 'aplus.setMetaInfo',
+         arguments: ['DEBUG', false]
+       });
+       //是否指定用作计算umid的id类型，默认为cnaid，目前支持:
+       //1. 微信和QQ: openid; 字节和百度 anonymousid; 支付宝 alipay_id
+       //2. 微信、QQ、字节、百度平台的 unionid
+       //3. 业务方自己生成的随机id uuid
+       aplus_queue.push({
+         action: 'aplus.setMetaInfo',
+         arguments: ['aplus-idtype', 'unionid'] //取值参考见附表1
+       });
+       /******************************************************************/
+     </script>
+    
+      <script type="text/javascript" src="https://webchat02.7moor.com/javascripts/7moorInit.js?accessId=1ac4ad50-cbde-11ef-8463-21ea3609fd7c&autoShow=false&language=ZHCN" async='async'></script>
+    
+    <script src="/chat-app-sdk/index.js"></script>
+    <!-- 阿里一键登录 SDK -->
+     <script type="text/javascript" charset="utf-8" src="/numberAuth-web-sdk.2.0.30-2.js"></script>
+  </body>
+</html>
