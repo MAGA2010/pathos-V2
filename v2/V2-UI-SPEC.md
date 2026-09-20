@@ -1,13 +1,16 @@
-# PathOS v2 UI SPEC（UI 设计系统）
+# PathOS v2 UI SPEC（UI 设计系统）v2.1
 
 > **核心目的**：让任何前端 AI 拿到这份文档都能复现 v2 启动版的 UI。
+>
+> **v2.1 修订**：修复 Tailwind `<alpha-value>` 兼容 + 暗色模式命名 + 4 色继承 v1
 
 ---
 
 ## 0. 设计哲学
 
 - **v1 沉淀保留**：editorial 风格（bracket frames / wave fields / earth from orbit）作为品牌资产
-- **工具型清晰度**：所有工具页面（智能选校 / 时序 / 对比）用 SaaS 清晰度（高对比 / 紧凑 / 操作可见）
+- **v1 4 色保留**：cobalt / persimmon / jade / ink（不只 2 色）
+- **工具型清晰度**：所有工具页面（智能选校 / 时序 / 对比）用 SaaS 清晰度
 - **missing-first**：每个字段缺失时诚实显示"暂无"而非省略或 0
 - **数据置信度可视化**：每个数据点的 verified + asOf 都可见
 - **家庭端 vs 学校端**：双层 UI（学校端 = 工具型 / 家庭端 = 叙事型）
@@ -16,116 +19,130 @@
 
 ## 1. 设计 Tokens
 
-### 1.1 颜色 Tokens（基于 v1 17 个 CSS vars 扩展）
+### 1.1 颜色 Tokens（v1 已有 4 色，v2 扩展）
+
+**重要**：v1 已经有完整 4 色 token，v2 必须保留所有。
 
 ```css
 /* frontend/src/app/globals.css */
 :root {
-  /* 基础色 - Surface */
+  /* === Surface === */
   --color-surface-base: #f6f3ed;       /* 暖白 */
   --color-surface-raised: #ffffff;     /* 卡片 */
   --color-surface-sunken: #efebe3;     /* 嵌入 */
   --color-surface-overlay: rgba(0,0,0,0.5);  /* 模态 */
 
-  /* 主色 - Cobalt (保留 v1) */
+  /* === 主色 - Cobalt === */
   --color-cobalt-50: #e8eef5;
   --color-cobalt-100: #c5d3e6;
-  --color-cobalt-500: #1f4e96;        /* 主色 */
+  --color-cobalt-500: #1f4e96;         /* 主色 */
   --color-cobalt-700: #143870;
   --color-cobalt-900: #0a2147;
 
-  /* 强调色 - Persimmon (保留 v1) */
+  /* === 强调色 - Persimmon === */
   --color-persimmon-50: #fce8e1;
   --color-persimmon-100: #f7c5b3;
-  --color-persimmon-500: #d65a3c;       /* 警告/强调 */
+  --color-persimmon-500: #d65a3c;      /* 警告/强调 */
   --color-persimmon-700: #a83f24;
 
-  /* 文本色 - Text */
-  --color-text-primary: #1a1a1a;
-  --color-text-secondary: #4a4a4a;
-  --color-text-tertiary: #8a8a8a;
-  --color-text-inverse: #ffffff;
+  /* === 成功色 - Jade（v1 已有，v2 必须保留） === */
+  --color-jade-50: #e6f4ec;
+  --color-jade-100: #b3e0c4;
+  --color-jade-500: #2d8659;           /* 成功 */
+  --color-jade-700: #1f5f40;
 
-  /* 语义色 - Semantic */
-  --color-success: #2d8659;             /* 绿 */
-  --color-warning: #d4a017;             /* 黄 */
-  --color-danger: #c8392e;              /* 红 */
-  --color-info: #1f4e96;               /* 蓝 */
+  /* === 文本色 - Ink === */
+  --color-ink-primary: #1a1a1a;
+  --color-ink-secondary: #4a4a4a;
+  --color-ink-tertiary: #8a8a8a;
+  --color-ink-inverse: #ffffff;
 
-  /* 数据置信度色 */
-  --color-data-verified: #2d8659;      /* 已验证 */
-  --color-data-pending: #d4a017;       /* 待验证 */
-  --color-data-missing: #8a8a8a;        /* 缺失 */
-  --color-data-stale: #c8392e;         /* 陈旧 */
+  /* === 文本色 - 别名（兼容） === */
+  --color-text-primary: var(--color-ink-primary);
+  --color-text-secondary: var(--color-ink-secondary);
+  --color-text-tertiary: var(--color-ink-tertiary);
 
-  /* 数据新鲜度色 */
-  --color-freshness-fresh: #2d8659;     /* < 30 天 */
-  --color-freshness-aging: #d4a017;     /* 30-90 天 */
-  --color-freshness-stale: #c8392e;     /* > 90 天 */
+  /* === 语义色 === */
+  --color-success: var(--color-jade-500);
+  --color-warning: #d4a017;
+  --color-danger: #c8392e;
+  --color-info: var(--color-cobalt-500);
+
+  /* === 数据置信度色 === */
+  --color-data-verified: var(--color-jade-500);
+  --color-data-pending: #d4a017;
+  --color-data-missing: var(--color-ink-tertiary);
+  --color-data-stale: #c8392e;
+
+  /* === 数据新鲜度色 === */
+  --color-freshness-fresh: var(--color-jade-500);   /* < 30 天 */
+  --color-freshness-aging: #d4a017;                  /* 30-90 天 */
+  --color-freshness-stale: #c8392e;                  /* > 90 天 */
 }
 
-[data-theme="dark"] {
+/* ✅ 修复：暗色模式命名与 Tailwind darkMode: "class" 配合
+   Tailwind 在 html.dark 时生成 .dark xxx 选择器
+   不需要额外的 [data-theme] 选择器 */
+.dark {
   --color-surface-base: #11161a;
   --color-surface-raised: #1a1f24;
-  --color-text-primary: #f6f3ed;
-  /* ... dark 模式覆盖 */
+  --color-ink-primary: #f6f3ed;
+  --color-ink-secondary: #c4c8cc;
+  --color-ink-tertiary: #6e7479;
 }
 ```
+
+---
 
 ### 1.2 字体 Tokens
 
 ```css
 :root {
-  /* 字体族 */
-  --font-sans: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  --font-serif: "Source Serif Pro", "Noto Serif SC", serif;   /* editorial */
-  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-serif: 'Source Serif Pro', 'Noto Serif SC', serif;   /* editorial */
+  --font-mono: 'JetBrains Mono', monospace;
 
-  /* 字号 */
-  --font-size-xs: 0.75rem;   /* 12px */
-  --font-size-sm: 0.875rem;  /* 14px */
-  --font-size-base: 1rem;    /* 16px */
-  --font-size-lg: 1.125rem;  /* 18px */
-  --font-size-xl: 1.25rem;   /* 20px */
-  --font-size-2xl: 1.5rem;   /* 24px */
-  --font-size-3xl: 1.875rem; /* 30px */
-  --font-size-4xl: 2.25rem;  /* 36px */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
 
-  /* 字重 */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* 行高 */
   --line-height-tight: 1.2;
   --line-height-base: 1.5;
   --line-height-relaxed: 1.75;
 }
 ```
 
+---
+
 ### 1.3 间距 / 圆角 / 阴影 Tokens
 
 ```css
 :root {
-  /* 间距 */
-  --space-1: 0.25rem;   /* 4px */
-  --space-2: 0.5rem;    /* 8px */
-  --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px */
-  --space-6: 1.5rem;    /* 24px */
-  --space-8: 2rem;      /* 32px */
-  --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
 
-  /* 圆角 */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-full: 9999px;
 
-  /* 阴影 */
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
   --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
   --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
@@ -133,241 +150,224 @@
 }
 ```
 
-### 1.4 Tailwind 配置（`frontend/tailwind.config.ts`）
+---
+
+### 1.4 Tailwind 配置（修复 `<alpha-value>` 兼容）
+
+**关键**：Tailwind 3.3+ 支持 `<alpha-value>` 占位符，但**CSS vars 必须定义为 RGB 数字**（如 `31 78 150`），不是 hex。
 
 ```typescript
-import type { Config } from "tailwindcss";
+// frontend/tailwind.config.ts
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  darkMode: "class",
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  darkMode: 'class',  // html.dark 触发暗色
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       colors: {
+        // ✅ 修复：使用 rgb(var(--xxx) / <alpha-value>) 支持 opacity
         surface: {
-          base: "var(--color-surface-base)",
-          raised: "var(--color-surface-raised)",
-          sunken: "var(--color-surface-sunken)",
+          base: 'rgb(var(--c-surface-base) / <alpha-value>)',
+          raised: 'rgb(var(--c-surface-raised) / <alpha-value>)',
+          sunken: 'rgb(var(--c-surface-sunken) / <alpha-value>)',
         },
         cobalt: {
-          50: "var(--color-cobalt-50)",
-          100: "var(--color-cobalt-100)",
-          500: "var(--color-cobalt-500)",
-          700: "var(--color-cobalt-700)",
-          900: "var(--color-cobalt-900)",
+          50: 'rgb(var(--c-cobalt-50) / <alpha-value>)',
+          100: 'rgb(var(--c-cobalt-100) / <alpha-value>)',
+          500: 'rgb(var(--c-cobalt-500) / <alpha-value>)',
+          700: 'rgb(var(--c-cobalt-700) / <alpha-value>)',
+          900: 'rgb(var(--c-cobalt-900) / <alpha-value>)',
         },
         persimmon: {
-          50: "var(--color-persimmon-50)",
-          100: "var(--color-persimmon-100)",
-          500: "var(--color-persimmon-500)",
-          700: "var(--color-persimmon-700)",
+          50: 'rgb(var(--c-persimmon-50) / <alpha-value>)',
+          100: 'rgb(var(--c-persimmon-100) / <alpha-value>)',
+          500: 'rgb(var(--c-persimmon-500) / <alpha-value>)',
+          700: 'rgb(var(--c-persimmon-700) / <alpha-value>)',
+        },
+        jade: {
+          50: 'rgb(var(--c-jade-50) / <alpha-value>)',
+          100: 'rgb(var(--c-jade-100) / <alpha-value>)',
+          500: 'rgb(var(--c-jade-500) / <alpha-value>)',
+          700: 'rgb(var(--c-jade-700) / <alpha-value>)',
+        },
+        ink: {
+          DEFAULT: 'rgb(var(--c-ink-primary) / <alpha-value>)',
+          primary: 'rgb(var(--c-ink-primary) / <alpha-value>)',
+          secondary: 'rgb(var(--c-ink-secondary) / <alpha-value>)',
+          tertiary: 'rgb(var(--c-ink-tertiary) / <alpha-value>)',
+          inverse: 'rgb(var(--c-ink-inverse) / <alpha-value>)',
         },
         text: {
-          primary: "var(--color-text-primary)",
-          secondary: "var(--color-text-secondary)",
-          tertiary: "var(--color-text-tertiary)",
+          primary: 'rgb(var(--c-text-primary) / <alpha-value>)',
+          secondary: 'rgb(var(--c-text-secondary) / <alpha-value>)',
+          tertiary: 'rgb(var(--c-text-tertiary) / <alpha-value>)',
         },
-        success: "var(--color-success)",
-        warning: "var(--color-warning)",
-        danger: "var(--color-danger)",
+        success: 'rgb(var(--c-jade-500) / <alpha-value>)',
+        warning: 'rgb(var(--color-warning-rgb) / <alpha-value>)',
+        danger: 'rgb(var(--color-danger-rgb) / <alpha-value>)',
         data: {
-          verified: "var(--color-data-verified)",
-          pending: "var(--color-data-pending)",
-          missing: "var(--color-data-missing)",
-          stale: "var(--color-data-stale)",
+          verified: 'rgb(var(--c-jade-500) / <alpha-value>)',
+          pending: 'rgb(var(--color-warning-rgb) / <alpha-value>)',
+          missing: 'rgb(var(--c-ink-tertiary) / <alpha-value>)',
+          stale: 'rgb(var(--color-danger-rgb) / <alpha-value>)',
         },
       },
       fontFamily: {
-        sans: "var(--font-sans)",
-        serif: "var(--font-serif)",
-        mono: "var(--font-mono)",
+        sans: 'var(--font-sans)',
+        serif: 'var(--font-serif)',
+        mono: 'var(--font-mono)',
       },
     },
   },
 };
 
 export default config;
+
+// ✅ globals.css 对应：CSS vars 必须用 RGB 数字
+:root {
+  --c-surface-base: 246 243 237;
+  --c-surface-raised: 255 255 255;
+  --c-cobalt-500: 31 78 150;
+  --c-persimmon-500: 214 90 60;
+  --c-jade-500: 45 134 89;
+  --c-ink-primary: 26 26 26;
+  --color-warning-rgb: 212 160 23;
+  --color-danger-rgb: 200 57 46;
+}
+
+.dark {
+  --c-surface-base: 17 22 26;
+  --c-surface-raised: 26 31 36;
+  --c-ink-primary: 246 243 237;
+}
 ```
 
 ---
 
-## 2. 组件库
+## 2. 组件库（基于 v1 已有资产）
 
-### 2.1 通用组件
+### 2.1 v1 已有的组件（必须复用）
+
+| v1 组件 | 路径 | v2 用途 |
+|---|---|---|
+| `ProvenanceBadge` | `frontend/src/components/university/ProvenanceBadge.tsx` | 数据出处徽章基础 |
+| `UniversityProfilePanel` | `frontend/src/components/university/UniversityProfilePanel.tsx` | B1 学校深度页基础 |
+| `FlipModuleCard` | `frontend/src/components/home/FlipModuleCard.tsx` | 家庭端首页卡片 |
+
+### 2.2 v2 新增组件（基于 v1 扩展）
 
 | 组件 | 文件 | 用途 |
 |---|---|---|
-| `Button` | `components/ui/Button.tsx` | 通用按钮（primary/secondary/ghost） |
-| `Card` | `components/ui/Card.tsx` | 卡片容器 |
-| `Badge` | `components/ui/Badge.tsx` | 徽章（verified/data status） |
-| `Tooltip` | `components/ui/Tooltip.tsx` | 提示 |
-| `Table` | `components/ui/Table.tsx` | 表格 |
-| `Modal` | `components/ui/Modal.tsx` | 模态对话框 |
-| `Tabs` | `components/ui/Tabs.tsx` | 标签页 |
-| `Select` | `components/ui/Select.tsx` | 选择器 |
-| `Input` | `components/ui/Input.tsx` | 输入框 |
-| `Avatar` | `components/ui/Avatar.tsx` | 头像（顾问 / 学校校徽） |
-| `Progress` | `components/ui/Progress.tsx` | 进度条 |
-
-### 2.2 数据可视化组件（核心）
-
-| 组件 | 文件 | 用途 |
-|---|---|---|
-| `DataProvenanceBadge` | `components/data/DataProvenanceBadge.tsx` | 数据出处徽章 |
+| `DataProvenanceBadge` | `components/data/DataProvenanceBadge.tsx` | 基于 v1 ProvenanceBadge |
 | `DataProvenanceCard` | `components/data/DataProvenanceCard.tsx` | 数据出处卡片 |
-| `DataStalenessIndicator` | `components/data/DataStalenessIndicator.tsx` | 数据新鲜度（颜色编码） |
-| `ConfidenceScore` | `components/data/ConfidenceScore.tsx` | 数据置信度评分 |
-| `SourceReconciliation` | `components/data/SourceReconciliation.tsx` | 跨源数据调和 |
-| `ComparisonShareCard` | `components/data/ComparisonShareCard.tsx` | 对比分享卡 |
-
-### 2.3 学校端专用组件
-
-| 组件 | 文件 | 用途 |
-|---|---|---|
-| `RankingCard` | `components/school/RankingCard.tsx` | 排名卡（US News/QS/THE） |
-| `FinancialTable` | `components/school/FinancialTable.tsx` | 财务表（学位 × 类型 × 金额） |
+| `DataStalenessIndicator` | `components/data/DataStalenessIndicator.tsx` | 数据新鲜度 |
+| `SchoolDetailView` | `components/school/SchoolDetailView.tsx` | B1 学校深度页包装（v2） |
+| `SchoolHeader` | `components/school/SchoolHeader.tsx` | 学校头图 + verified |
+| `RankingCard` | `components/school/RankingCard.tsx` | 排名跨源调和 |
+| `FinancialTable` | `components/school/FinancialTable.tsx` | 财务表 |
 | `RequirementTable` | `components/school/RequirementTable.tsx` | 录取要求表 |
-| `TimeSeriesChart` | `components/timeseries/TimeSeriesChart.tsx` | 时序图 |
-| `MajorStrengthsGrid` | `components/school/MajorStrengthsGrid.tsx` | 强势专业网格 |
-| `HistoryTimeline` | `components/school/HistoryTimeline.tsx` | 历史时间轴 |
-| `NotableAlumniGrid` | `components/school/NotableAlumniGrid.tsx` | 知名校友 |
-| `SchoolComparisonTable` | `components/school/SchoolComparisonTable.tsx` | 学校对比表 |
-
-### 2.4 家庭端专用组件
-
-| 组件 | 文件 | 用途 |
-|---|---|---|
-| `SchoolStoryCard` | `components/family/SchoolStoryCard.tsx` | 学校故事卡 |
-| `MajorExplainer` | `components/family/MajorExplainer.tsx` | 专业解读卡 |
-| `PolicyExplainer` | `components/family/PolicyExplainer.tsx` | 政策解读 |
-| `ROICalculator` | `components/family/ROICalculator.tsx` | 投资回报计算 |
-| `ApplicationTimeline` | `components/family/ApplicationTimeline.tsx` | 申请流程时间线 |
-
-### 2.5 工具组件
-
-| 组件 | 文件 | 用途 |
-|---|---|---|
+| `TimeSeriesEntry` | `components/school/TimeSeriesEntry.tsx` | 时序入口 |
+| `TimeSeriesChart` | `components/timeseries/TimeSeriesChart.tsx` | B3 折线图 |
+| `MajorStrengthsGrid` | `components/school/MajorStrengthsGrid.tsx` | 强势专业 |
+| `HistoryTimeline` | `components/school/HistoryTimeline.tsx` | 历史时间轴（结构化） |
+| `NotableAlumniGrid` | `components/school/NotableAlumniGrid.tsx` | 校友（分类） |
+| `FacilityGrid` | `components/school/FacilityGrid.tsx` | 设施（结构化） |
+| `SchoolComparisonTable` | `components/school/SchoolComparisonTable.tsx` | B2 跨校对比 |
+| `MajorTimeSeries` | `components/major/MajorTimeSeries.tsx` | 专业时序 |
 | `GPACalculator` | `components/tools/GPACalculator.tsx` | GPA 计算器 |
-| `ROICalculatorForm` | `components/tools/ROICalculatorForm.tsx` | ROI 计算表单 |
-| `SmartMatchTool` | `components/tools/SmartMatchTool.tsx` | 智能匹配（v1 升级） |
-| `EventStream` | `components/tools/EventStream.tsx` | S3 新专业事件流 |
+| `ROICalculator` | `components/tools/ROICalculator.tsx` | ROI 计算器 |
+| `EventStream` | `components/tools/EventStream.tsx` | S3 事件流 |
+
+### 2.3 学校端 NavBar（v2 紧凑型）
+
+```tsx
+// components/layout/NavBarSchool.tsx
+import { School, Map, BarChart3, Layers, Radar, Calculator } from 'lucide-react';
+
+const NAV_ITEMS = [
+  { href: '/s/home', label: '首页', icon: School },
+  { href: '/s/map', label: '地图', icon: Map },
+  { href: '/s/compare', label: '对比', icon: BarChart3 },
+  { href: '/s/timeseries', label: '时序', icon: BarChart3 },
+  { href: '/s/majors', label: '专业', icon: Layers },
+  { href: '/s/radar', label: '雷达', icon: Radar },
+  { href: '/s/calculator', label: '工具', icon: Calculator },
+];
+```
+
+### 2.4 家庭端 NavBar（v2 叙事型）
+
+```tsx
+// components/layout/NavBarFamily.tsx
+const NAV_ITEMS = [
+  { href: '/f/home', label: '首页' },
+  { href: '/f/policy', label: '政策' },
+  { href: '/f/calculator/roi', label: 'ROI 计算' },
+];
+```
 
 ---
 
-## 3. 关键页面布局
+## 3. 关键页面布局（参考 V2-EXEC-SPEC.md §模块 #6 / §模块 #7）
 
-### 3.1 学校端首页（`/s/home`）
+### 3.1 学校端学校详情页（`/s/[slug]`）
 
-```
-┌─────────────────────────────────────────────────────────┐
-│ [NavBar: 学校端 紧凑型]                          [👤 用户]│
-├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  PathOS · 学校端                                          │
-│  "为留学顾问 / 老师设计的信息集合与展示"               │
-│                                                          │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐    │
-│  │ 📊 时序   │ │ ⚖️ 对比   │ │ 🎓 专业   │ │ 🆕 雷达   │   │
-│  │ 看趋势   │ │ 跨校对比 │ │ 专业对比 │ │ 新专业   │    │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘    │
-│                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 🗺️ 留学地图                                          │  │
-│  │ v1 MapLibre 升级版（带数据层）                     │  │
-│  └──────────────────────────────────────────────────┘  │
-│                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 📚 Top 5 学校                                          │  │
-│  │ Princeton | Harvard | MIT | Stanford | Yale         │  │
-│  └──────────────────────────────────────────────────┘  │
-│                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 📊 最近时序解读                                        │  │
-│  │ · 藤校录取率近 5 年变化                              │  │
-│  │ · SAT 标化政策影响分析                                │  │
-│  └──────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────┘
-```
+**ASCII 布局见 V2-EXEC-SPEC.md §模块 #6**
 
-### 3.2 学校端学校详情页（`/s/[slug]`）
+关键组件：
+1. SchoolHeader（头图 + verified）
+2. RankingCard（US News + QS + THE + 调和）
+3. FinancialTable（学位 × 类型 × 金额）
+4. RequirementTable（语言 / 标化）
+5. TimeSeriesEntry（→ B3 时序入口）
+6. MajorStrengthsGrid（→ B2 跨校对比入口）
+7. HistoryTimeline（结构化历史时间轴）
+8. NotableAlumniGrid（分类：总统/诺奖/普利策）
+9. FacilityGrid（结构化设施）
+10. DataProvenanceCard（数据出处）
 
-见 V2-EXEC-SPEC.md 模块 #6 的 ASCII 布局。
+### 3.2 学校端专业对比页（`/s/major/[id]`）
 
-### 3.3 学校端专业对比页（`/s/major/[id]`）
+**ASCII 布局见 V2-EXEC-SPEC.md §模块 #7**
+
+关键组件：
+1. SchoolComparisonTable（跨校对比表）
+2. MajorTimeSeries（专业时序）
+3. SuitabilitySection（适合谁）
+4. CaseList（录取案例）
+
+### 3.3 家庭端学校故事页（`/f/school/[slug]`）
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ [NavBar: 学校端]                                          │
+│ [NavBar: 家庭端 叙事型]                          [👤] │
 ├─────────────────────────────────────────────────────────┤
 │                                                          │
-│  Computer Science 计算机科学                              │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 工程 / 计算机科学 / 跨校对比                       │  │
-│  │ ┌────────────────────────────────────────────┐    │  │
-│  │ │ 跨校对比（8 所学校）                        │    │  │
-│  │ │ 学校    排名   录取率  招生  学费   起薪    │    │  │
-│  │ │ MIT    #1     4%     1100  $82k  $156k    │    │  │
-│  │ │ ...                                          │    │  │
-│  │ └────────────────────────────────────────────┘    │  │
-│  └──────────────────────────────────────────────────┘  │
+│  哈佛 387 年的故事                                        │
+│  一所学校的过去、现在与未来                                │
 │                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 📊 近 5 年录取率趋势                                 │  │
-│  │ [Recharts LineChart, 8 条线]                       │  │
-│  └──────────────────────────────────────────────────┘  │
+│  [大图 + 校徽]                                            │
 │                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 📊 近 5 年学费趋势                                   │  │
-│  │ [Recharts LineChart]                                │  │
-│  └──────────────────────────────────────────────────┘  │
+│  哈佛建于 1636 年，是全美最古老的大学。                    │
+│  在 387 年里，8 位美国总统从这里走出，                       │
+│  75 位诺贝尔奖获得者在此工作......                         │
 │                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 🎯 适合谁                                              │  │
-│  │ · 兴趣：算法、逻辑、问题解决                        │  │
-│  │ · 优势：数学、物理                                   │  │
-│  │ · 职业：软件工程 / 数据科学 / AI                     │  │
-│  └──────────────────────────────────────────────────┘  │
+│  [数据出处：IECG]                                         │
 │                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 🎓 录取案例                                           │  │
-│  │ · 张同学 · 普高 GPA 3.95 · SAT 1580 · MIT CS    │  │
-│  │ · 李同学 · 美高 GPA 3.85 · SAT 1520 · Stanford CS│  │
-│  └──────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────┘
-```
-
-### 3.4 家庭端首页（`/f/home`）
-
-```
-┌─────────────────────────────────────────────────────────┐
-│ [NavBar: 家庭端 叙事型]                          [👤 用户]│
-├─────────────────────────────────────────────────────────┤
+│  ——                                                      │
 │                                                          │
-│  PathOS · 家庭端                                          │
-│  "帮助家长 / 学生读懂大学、选对方向"                    │
+│  哈佛的今天                                               │
+│  [对比 MIT / 斯坦福 / 耶鲁]                              │
+│  [Harvard vs MIT 排名折线图]                             │
 │                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 🏫 学校故事 (叙事型首屏)                             │  │
-│  │  · 哈佛 387 年的故事                                │  │
-│  │  · MIT 如何成为 MIT                                  │  │
-│  │  · 斯坦福与硅谷的共生                                │  │
-│  └──────────────────────────────────────────────────┘  │
+│  ——                                                      │
 │                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 🎓 专业解读                                            │  │
-│  │  · CS 真的还值得读吗？                                │  │
-│  │  · 哈佛新开了人类学专业，适合谁？                    │  │
-│  └──────────────────────────────────────────────────┘  │
+│  如果你想申请哈佛：                                       │
+│  · 录取率约 4%                                            │
+│  · SAT 中位 1520                                           │
+│  · 文书题目：[Common App 5 个选题之一]                     │
 │                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 📋 政策变化                                            │  │
-│  │  · SAT 标化可选，对我家孩子有什么影响？              │  │
-│  └──────────────────────────────────────────────────┘  │
-│                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 💰 留学值不值？                                        │  │
-│  │  [ROI 计算 ROICalculator]                            │  │
-│  └──────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -375,62 +375,47 @@ export default config;
 
 ## 4. 交互模式
 
-### 4.1 数据出处展示
+### 4.1 数据出处展示（基于 v1 ProvenanceBadge）
 
-每个数据点都有 verified 标签：
 ```tsx
-<span className="inline-flex items-center gap-1">
-  <DataProvenanceBadge
-    source={meta.source}      // IECG / IPEDS / US News / College Scorecard / 学校官网
-    asOf={meta.asOf}           // "2024-08-15"
-    confidence={meta.confidence}  // 0-100
-  />
-</span>
+import { ProvenanceBadge } from '@/components/university/ProvenanceBadge';
+
+<ProvenanceBadge status="live_verified_exact" />
+// 渲染：来源已实时验证
 ```
 
-颜色编码：
-- verified + < 30 天 → 绿色实心徽章
-- verified + 30-90 天 → 黄色实心徽章
-- verified + > 90 天 → 红色实心徽章
-- pending → 灰色虚线徽章
-- missing → 灰色"暂无"
+### 4.2 数据新鲜度指示
 
-### 4.2 缺失值处理（missing-first）
+```tsx
+<DataStalenessIndicator asOf="2024-08-15" />
+// < 30 天 → 绿点
+// 30-90 天 → 黄点
+// > 90 天 → 红点
+```
+
+### 4.3 缺失值处理（missing-first）
 
 ```tsx
 {value !== null && value !== undefined ? value : (
-  <span className="text-text-tertiary italic">暂无</span>
+  <span className="text-ink-tertiary italic">暂无</span>
 )}
 ```
-
-### 4.3 新鲜度指示
-
-```tsx
-<DataStalenessIndicator asOf={asOf} />
-```
-
-颜色编码：
-- < 30 天 → 绿点 `bg-green-500`
-- 30-90 天 → 黄点 `bg-yellow-500`
-- > 90 天 → 红点 `bg-red-500`
 
 ### 4.4 对比分享卡
 
 ```tsx
 <ComparisonShareCard
-  schools={['princeton', 'mit', 'stanford']}
+  schools={['princeton-university', 'mit', 'stanford-university']}
   metrics={['ranking', 'tuition', 'acceptanceRate']}
 />
+// 生成 PNG 图片，含 Logo + 数据 + 二维码
 ```
-
-输出：1 张 PNG 图片，含 Logo + 数据 + 二维码（点击跳回 v2）。
 
 ---
 
 ## 5. 响应式断点
 
 ```css
-/* Tailwind 默认 */
 sm: 640px    /* 平板 */
 md: 768px    /* 中屏 */
 lg: 1024px   /* 桌面 */
@@ -455,17 +440,25 @@ xl: 1280px   /* 大屏 */
 - 屏幕阅读器友好的数据表
 - missing-first 文案对屏读友好
 
+### 6.1 a11y 测试工具
+
+```bash
+# Lighthouse a11y 评分 ≥ 95
+npx lighthouse http://localhost:3017 --only-categories=accessibility
+
+# axe-core 自动化测试
+npm run test -- --grep "a11y"
+```
+
 ---
 
 ## 7. 动效
 
 ```css
-/* 简约动效 - 不干扰内容阅读 */
 --transition-fast: 150ms ease;
 --transition-base: 250ms ease;
 --transition-slow: 400ms ease;
 
-/* reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition-duration: 0ms !important;
@@ -476,8 +469,42 @@ xl: 1280px   /* 大屏 */
 
 ---
 
-**学习资源**：
-- v1 `frontend/tailwind.config.ts`
-- v1 `frontend/src/app/globals.css`
-- v1 `frontend/src/components/home/FlipModuleCard.tsx`
-- v1 `frontend/review-shots/` 视觉参考
+## 8. PWA 配置（D11 决策）
+
+```typescript
+// next.config.js
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development',
+});
+
+module.exports = withPWA({
+  // ... 其他 Next.js 配置
+});
+
+// public/manifest.json
+{
+  "name": "PathOS",
+  "short_name": "PathOS",
+  "description": "信息集合与展示平台",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f3ed",
+  "theme_color": "#1f4e96",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
+```
+
+---
+
+**学习资源**（v1）：
+- `frontend/tailwind.config.ts`（v1 实际配置）
+- `frontend/src/app/globals.css`（v1 17 个 CSS vars）
+- `frontend/src/components/home/FlipModuleCard.tsx`
+- `frontend/review-shots/`（视觉参考）
+- `frontend/src/components/university/ProvenanceBadge.tsx`（关键 v1 资产）

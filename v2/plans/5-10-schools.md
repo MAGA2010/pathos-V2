@@ -1,23 +1,41 @@
-# 5-10 所热门学校候选清单
+# 5-10 所热门学校候选清单 v2.1
 
 **说明**：v2 启动版 5-10 所学校的候选名单。每所学校分配内容选题 + 数据采集任务。
+**v2.1 修订**：加入 v1 已有 97 所学校的验证步骤。
 
 ---
 
-## 候选 Top 10（按用户关注度 + 数据可得性）
+## v1 数据基础（验证起点）
 
-| # | 学校 | 排名（US News 2026） | IECG 覆盖 | 内容成熟度 | 选校帝覆盖 |
-|---|---|---|---|---|---|
-| 1 | **普林斯顿大学** | 1 | ✅ 88 所之一 | 高 | ✅ |
-| 2 | **哈佛大学** | 3 | ✅ | 高 | ✅ |
-| 3 | **耶鲁大学** | 5 | ✅ | 高 | ✅ |
-| 4 | **MIT** | 2 | ✅ | 高 | ✅ |
-| 5 | **斯坦福大学** | 4 | ✅ | 高 | ✅ |
-| 6 | **哥伦比亚大学** | 12 | ✅ | 中 | ✅ |
-| 7 | **宾夕法尼亚大学** | 6 | ✅ | 中 | ✅ |
-| 8 | **布朗大学** | 9 | ✅ | 中 | ✅ |
-| 9 | **康奈尔大学** | 11 | ✅ | 中 | ✅ |
-| 10 | **达特茅斯学院** | 13 | ✅ | 中 | ✅ |
+```bash
+cd frontend
+node -e "const u = require('./data/preview/universities.json'); console.log('Schools:', u.length);"
+# 期望输出：Schools: 97（v1 commit dcbd287 已完成 35 POI backfill）
+```
+
+**v2 不需要补 35 POI**——v1 已经 97 所。v2 只需要在 v1 基础上做字段扩展和时序数据补齐。
+
+**35 POI 名单**（已由 v1 commit dcbd287 完成）：
+- 北卡教堂山 / 德州奥斯汀 / 伊利诺伊香槟 / 维克森林 / 凯斯西储 / 弗吉尼亚理工 / 佛州州立 / 威廉玛丽 / UC Merced / 北卡州立 / Stony Brook / 维拉诺瓦 / UMass Amherst / 乔治华盛顿 / Penn State / 密歇根州立 / Brandeis / 杜兰 / 迈阿密 / RPI / 匹兹堡 / 康涅狄格 / Syracuse / UC Riverside / Stevens / 科罗拉多矿业 / UB / 伊利诺伊芝加哥 / 克莱姆森 / UC Santa Cruz / 伍斯特 / 特拉华 / Fordham / SMU / Marquette
+
+---
+
+## 候选 Top 10（5-10 所由你拍板）
+
+| # | 学校 | 排名（US News 2026） | slug（用于路由） | IECG 覆盖 |
+|---|---|---|---|---|
+| 1 | **普林斯顿大学** | 1 | `princeton-university` | ✅ |
+| 2 | **哈佛大学** | 3 | `harvard-university` | ✅ |
+| 3 | **耶鲁大学** | 5 | `yale-university` | ✅ |
+| 4 | **MIT** | 2 | `mit` | ✅ |
+| 5 | **斯坦福大学** | 4 | `stanford-university` | ✅ |
+| 6 | **哥伦比亚大学** | 12 | `columbia-university` | ✅ |
+| 7 | **宾夕法尼亚大学** | 6 | `upenn` | ✅ |
+| 8 | **布朗大学** | 9 | `brown-university` | ✅ |
+| 9 | **康奈尔大学** | 11 | `cornell-university` | ✅ |
+| 10 | **达特茅斯学院** | 13 | `dartmouth-college` | ✅ |
+
+**注**：v1 detail JSON 文件名格式是 `candidate-v2:<slug>.json`（如 `candidate-v2:princeton-university.json`），与上表 slug 对应。
 
 ---
 
@@ -37,23 +55,34 @@
 
 每所学校需要：
 
-### A1 学校字段补齐（30+ 字段）
-- 基础信息（中英文名 / 国家 / 类型 / 建校 / 排名）
-- 财务信息（学费 / 住宿费 / 生活费 / 申请费，不同学位）
-- 录取要求（语言 / 标化）
-- 学术（强势专业 / 简介 / 校友 / 设施）
-- 时序（5-10 年）
+### v1 已有字段（保留）
+- rankingBand / rankingTier / annualCostRmb / safetyScore / recognitionScore
+- chineseCommunity / directFlight / postStudyVisa
+- programs / parentHighlights / studentHighlights / nearby
+- 详细字段定义见 `frontend/src/domain/dataset.ts`
 
-### A5 第三方接入
-- US News / IPEDS / College Scorecard 数据拉取
-- 每所学校 5 年时序
+### v2 增量字段（必须扩展）
+- 各 ranking（US News / QS / THE 单独字段）
+- 学费明细（学位 × 类型 × 最高/最低）
+- 录取要求（语言 / 标化）
+- 学校历史（结构化时间轴）
+- 校友（分类：总统/诺奖/普利策/商业/其他）
+- 设施（结构化：图书馆/校园/实验室/体育）
+- 时序数据（SAT/GPA/录取率/学费 5-10 年）
+- verified 元数据（source + asOf + verifiedBy + confidence）
 
 ### 数据源
-- IECG docx（已有）
+- IECG docx（v1 已有）
 - 学校官网（招生办 / About / Academics / Admissions）
 - US News 排名（订阅）
 - IPEDS 数据库（免费）
 - College Scorecard（免费）
+
+### 路由说明
+
+v2 启动版使用：
+- 学校端：`/s/[slug]`（如 `/s/princeton-university`）
+- 家庭端：`/f/school/[slug]`（如 `/f/school/princeton-university`）
 
 ---
 
