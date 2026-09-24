@@ -150,8 +150,8 @@ CREATE TABLE IF NOT EXISTS api_keys (
   scopes          TEXT NOT NULL DEFAULT 'universities.read',
   rate_limit      INTEGER NOT NULL DEFAULT 60,
   monthly_quota   INTEGER NOT NULL DEFAULT 10000,
-  calls_this_month INTEGER NOT NULL DEFAULT 0
-  quota_reset_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  calls_this_month INTEGER NOT NULL DEFAULT 0,
+  quota_reset_at  TIMESTAMPTZ NOT NULL DEFAULT date_trunc('month', NOW()) + INTERVAL '1 month',
   status          TEXT NOT NULL DEFAULT 'active',
   last_used_at    TIMESTAMPTZ,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -169,11 +169,35 @@ CREATE TABLE IF NOT EXISTS reports (
   payload         JSONB NOT NULL DEFAULT '{}'::jsonb,
   status          TEXT NOT NULL DEFAULT 'pending',
   error           TEXT,
+  -- Access control. The plaintext share token is returned to the
+  -- creator exactly once; only its SHA-256 hash is persisted so a DB
+  -- leak cannot be replayed into report access.
+  access_token_hash TEXT,
+  token_expires_at  TIMESTAMPTZ,
+  revoked_at        TIMESTAMPTZ,
+  idempotency_key   TEXT,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS idx_reports_lead ON reports(lead_id);
 CREATE INDEX IF NOT EXISTS idx_reports_status ON reports(status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_reports_token_hash ON reports(access_token_hash);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_reports_idempotency ON reports(idempotency_key)
+  WHERE idempotency_key IS NOT NULL;
+
+-- report_access_log: who opened which report, and whether we allowed it.
+-- Reports carry student grades and target schools, so every read attempt
+-- is auditable.
+CREATE TABLE IF NOT EXISTS report_access_log (
+  id              BIGSERIAL PRIMARY KEY,
+  report_id       TEXT NOT NULL,
+  outcome         TEXT NOT NULL,
+  ip_hash         TEXT,
+  user_agent      TEXT,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_report_access_log_report ON report_access_log(report_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_report_access_log_outcome ON report_access_log(outcome, created_at DESC);
 
 -- rate_limit_buckets: minute-window counter for /api/v1/*.
 CREATE TABLE IF NOT EXISTS rate_limit_buckets (
@@ -181,3 +205,13 @@ CREATE TABLE IF NOT EXISTS rate_limit_buckets (
   hits            INTEGER NOT NULL DEFAULT 1,
   window_start    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+CREATE INDEX IF NOT EXISTS idx_rate_limit_buckets_window ON rate_limit_buckets(window_start);
+
+-- schema_migrations: applied migration ledger. `db/schema.sql` builds a
+-- fresh database; `db/migrations/*.sql` upgrades an existing one.
+CREATE TABLE IF NOT EXISTS schema_migrations (
+  version         TEXT PRIMARY KEY,
+  applied_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+INSERT INTO schema_migrations (version) VALUES ('001-commercial')
+  ON CONFLICT (version) DO NOTHING;

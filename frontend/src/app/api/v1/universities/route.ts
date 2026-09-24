@@ -12,7 +12,7 @@ import { NextResponse } from "next/server";
 import { DatabaseNotConfiguredError, getPool } from "@/server/db";
 import {
   authenticate, bumpMonthlyUsage, checkRateLimit, requireScope,
-  handleOptions, ok, fail,
+  handleOptions, ok, fail, retryAfterSeconds,
 } from "@/lib/api-v1";
 
 export const dynamic = "force-dynamic";
@@ -57,7 +57,17 @@ export async function GET(req: Request): Promise<NextResponse> {
   if (scopeErr) return scopeErr;
 
   const rl = await checkRateLimit(auth.key.id, auth.key.rate_limit);
-  if (!rl.allowed) return fail("RATE_LIMITED", `Too many requests. Try again in a minute.`, 429);
+  if (!rl.allowed) {
+    return fail(
+      rl.degraded ? "RATE_LIMIT_UNAVAILABLE" : "RATE_LIMITED",
+      rl.degraded
+        ? "Rate limit store is unavailable; requests are temporarily rejected."
+        : "Too many requests. Try again in a minute.",
+      rl.degraded ? 503 : 429,
+      { "Retry-After": String(retryAfterSeconds(rl.resetsAt)) },
+      req,
+    );
+  }
 
   const url = new URL(req.url);
   const state = asString(url.searchParams.get("state"));
@@ -66,7 +76,7 @@ export async function GET(req: Request): Promise<NextResponse> {
   const limit = asInt(url.searchParams.get("limit"), 1, 200, 50);
 
   if (tier && !VALID_TIERS.has(tier)) {
-    return fail("INVALID_TIER", "tier must be one of top20 | top50 | top100 | other", 400);
+    return fail("INVALID_TIER", "tier must be one of top20 | top50 | top100 | other", 400, undefined, req);
   }
 
   const params: unknown[] = [];
@@ -117,18 +127,20 @@ export async function GET(req: Request): Promise<NextResponse> {
         nextCursor,
         hasMore,
       },
-      rateLimit: { remaining: rl.remaining, perMinute: auth.key.rate_limit },
+      rateLimit: { remaining: rl.remaining, perMinute: auth.key.rate_limit, resetsAt: rl.resetsAt },
       quota: {
         used: auth.key.calls_this_month,
         limit: auth.key.monthly_quota,
-        resetsAt: null,
+        resetsAt: auth.key.quota_reset_at instanceof Date
+          ? auth.key.quota_reset_at.toISOString()
+          : String(auth.key.quota_reset_at),
       },
-    });
+    }, {}, req);
   } catch (e) {
     if (e instanceof DatabaseNotConfiguredError) {
-      return fail(e.code, e.message, e.status);
+      return fail(e.code, e.message, e.status, undefined, req);
     }
     console.error("[v1/universities] error:", e);
-    return fail("DB_UNREACHABLE", e instanceof Error ? e.message : String(e), 503);
+    return fail("DB_UNREACHABLE", e instanceof Error ? e.message : String(e), 503, undefined, req);
   }
 }

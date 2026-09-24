@@ -76,11 +76,11 @@ export function PricingForm({ plan, planName, featured }: PricingFormProps) {
       <div className="mt-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 text-sm text-emerald-700 dark:text-emerald-300">
         <div className="flex items-center gap-2">
           <CheckCircle2 size={18} className="shrink-0" aria-hidden="true" />
-          <p className="font-medium">收到啦，我们会在 24 小时内联系您。</p>
+          <p className="font-medium">申请已收到，我们会尽快与您联系。</p>
         </div>
         <p className="mt-1 pl-7 text-[13px] text-text-secondary">
-          申请编号：<code className="font-mono text-[12px]">{submittedId}</code>。
-          如果 24 小时内未收到顾问消息，可以直接
+          申请编号：<code className="font-mono text-[12px]">{submittedId}</code>，
+          请留存以便后续查询。也可以
           <button
             type="button"
             onClick={() => router.push("/")}
@@ -180,7 +180,7 @@ export function PricingForm({ plan, planName, featured }: PricingFormProps) {
         {pending ? "提交中…" : "留下联系方式，顾问联系您"}
       </button>
       <p className="text-[11px] leading-relaxed text-text-tertiary">
-        点击提交即表示您同意 PathOS 在 24 小时内通过您填写的联系方式与您沟通。
+        点击提交即表示您同意 PathOS 通过您填写的联系方式与您沟通本次申请。
         我们不会用于其它营销用途，也不会分享给第三方。
       </p>
     </form>

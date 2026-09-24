@@ -2,58 +2,61 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Check, MessageCircle } from "lucide-react";
 import { PricingForm } from "@/components/PricingForm";
+import { getCommercialCapabilities, getContactChannels } from "@/lib/contact";
 
 export const metadata: Metadata = {
   title: "付费方案",
-  description: "PathOS 顾问年付 / 单次 AI 解读报告 / 数据 API 三种付费路径。所有方案均接受微信、银行转账和企业开票。",
+  description: "PathOS 顾问工作台试用、单次 AI 解读报告、数据 API 内测三条路径。留下联系方式即可申请，商务与结算细节在沟通阶段确认。",
 };
 
 const PLANS = [
   {
     id: "single_report" as const,
     name: "单次 AI 解读报告",
-    price: "¥500 - 2,000",
+    price: "按需报价",
     unit: "/ 份",
-    summary: "适合已经初步定校的家庭。一份 PDF + 一位顾问 30 分钟电话沟通。",
+    summary: "适合已经初步定校的家庭。基于平台数据生成一份可分享的在线解读报告。",
     bullets: [
-      "1 份定制 PDF：选校定位 + 风险点 + 文书建议",
-      "30 分钟顾问 1v1 电话",
-      "5 个工作日内交付",
+      "AI 选校定位 + 风险提示，逐条标注数据来源",
+      "在线报告链接，分享可设有效期、可随时撤销",
       "可指定 1-3 所目标学校",
+      "报价与交付时间在需求沟通后确认",
     ],
   },
   {
     id: "advisor_annual" as const,
-    name: "顾问年付",
-    price: "¥3,000 - 5,000",
-    unit: "/ 年",
-    summary: "整个申请季持续跟进。PathOS 主推方案，月活顾问随时响应。",
+    name: "顾问工作台",
+    price: "试用免费",
+    unit: "/ 14 天",
+    summary: "面向独立顾问与国际学校升学老师的选校工作台，当前开放试用名额。",
     bullets: [
-      "PathOS 平台全功能（含地图、AI 评估、清单分析）",
-      "1 名固定顾问 + 微信群即时响应",
-      "每月 1 次 30 分钟复盘通话",
-      "选校 / 文书 / 面试 / 签证四个阶段全覆盖",
-      "10 个家庭以内名额，按报名顺序分配",
+      "平台全功能：留学地图、AI 学校评估、清单分析、数据工作台",
+      "选校清单与报告版本留存在账号内，可重复调用",
+      "试用期 14 天，期间不收费、不需要绑定支付方式",
+      "试用名额有限，按申请顺序开通",
+      "试用结束后的订阅价格与账期单独沟通",
     ],
     featured: true,
   },
   {
     id: "data_api" as const,
-    name: "数据 API（企业）",
-    price: "¥10,000 - 50,000",
-    unit: "/ 年",
-    summary: "面向留学机构、国际学校、教辅平台的批量数据接入。",
+    name: "数据 API（内测）",
+    price: "内测申请",
+    unit: "/ 需评估",
+    summary: "面向留学机构、国际学校、教辅平台的只读数据接入，目前处于内测阶段。",
     bullets: [
-      "/api/v1/universities 全量接入",
-      "按月配额（10k - 100k 次调用）",
-      "可定制字段过滤 / webhook 回调",
-      "签署 NDA + 数据使用协议",
-      "7×12 工单支持",
+      "/api/v1/universities 只读接入，返回字段含来源与更新时间",
+      "按月配额与限流，响应头返回剩余额度与 Retry-After",
+      "需签署数据使用协议后开通密钥",
+      "字段过滤与 Webhook 回调在规划中，尚未上线",
+      "内测期间按需评估用量与报价",
     ],
   },
 ];
 
 export default function PricingPage() {
+  const contact = getContactChannels();
+  const capabilities = getCommercialCapabilities();
   return (
     <main className="mx-auto max-w-page px-4 py-12 sm:px-6 lg:py-16">
       <header className="mx-auto max-w-2xl text-center">
@@ -61,12 +64,12 @@ export default function PricingPage() {
           选校不再靠感觉，决策有据可依
         </h1>
         <p className="mt-4 text-base text-text-secondary sm:text-lg">
-          三种付费路径：单次报告轻量起步、顾问年付全程陪伴、数据 API 服务机构与企业。
-          所有方案均在 PathOS 平台数据基础上，由 PathOS 顾问团队直接交付。
+          三条路径：单次报告轻量起步、顾问工作台开放试用、数据 API 内测接入。
+          留下联系方式即可申请，具体范围与报价在沟通阶段一起确认。
         </p>
       </header>
 
-      <section className="mt-12 grid gap-6 lg:grid-cols-3">
+      <section id="plans" className="mt-12 grid gap-6 lg:grid-cols-3">
         {PLANS.map((plan) => (
           <article
             key={plan.id}
@@ -107,31 +110,34 @@ export default function PricingPage() {
           <div>
             <dt className="text-sm font-medium text-text-primary">付款方式？</dt>
             <dd className="mt-1 text-sm text-text-secondary">
-              微信、银行转账、企业开票均可。Stripe / 微信支付正在接入，
-              接入完成后可直接线上付款。
+              {capabilities.onlinePayment
+                ? "支持线上付款，也可走银行转账。"
+                : "平台暂未接入线上支付。当前阶段先提交申请，付款方式在商务沟通时确认。"}
             </dd>
           </div>
           <div>
             <dt className="text-sm font-medium text-text-primary">顾问是谁？</dt>
             <dd className="mt-1 text-sm text-text-secondary">
-              PathOS 团队成员，全部拥有美本 / 美研申请经验，平台数据由我们维护。
-              我们不做「分销给兼职学生」的模式。
+              平台数据与算法由 PathOS 团队维护。顾问侧服务由我们对接的独立顾问提供，
+              具体人员与经历会在沟通时说明，不做匿名分配。
             </dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-text-primary">能开发票吗？</dt>
+            <dt className="text-sm font-medium text-text-primary">数据从哪来？</dt>
             <dd className="mt-1 text-sm text-text-secondary">
-              支持。顾问年付与数据 API 默认开「咨询服务费」增值税普通发票；
-              加 6 个点可开增值税专用发票。
+              以院校官方披露、IPEDS 等公开数据源为主。平台内的关键字段会标注来源、
+              抓取时间与核验状态，未核验的字段会明确标记，不做无出处的结论。
             </dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-text-primary">可以退款吗？</dt>
+            <dt className="text-sm font-medium text-text-primary">开票与退款？</dt>
             <dd className="mt-1 text-sm text-text-secondary">
-              顾问年付 7 天内未与顾问沟通可全额退款；单次报告在交付前可退 80%
-              详细条款见
+              {capabilities.invoices
+                ? "可开具咨询服务费发票，票种与税率在合同阶段确认。"
+                : "开票与退款条款随合同一并确认，平台页面不单独承诺。顾问工作台试用期不收费，因此不涉及退款。"}
+              {" 更多背景见"}
               <Link href="/about" className="ml-1 underline decoration-text-tertiary underline-offset-2 hover:text-text-primary">
-                服务条款
+                关于 PathOS
               </Link>
               。
             </dd>
@@ -141,14 +147,29 @@ export default function PricingPage() {
 
       <aside className="mt-12 flex flex-col items-center gap-3 text-center">
         <p className="text-sm text-text-secondary">没有看到合适的方案？</p>
-        <a
-          href="weixin://"
-          className="inline-flex items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-4 py-2 text-[13px] font-medium text-text-primary transition hover:border-cobalt/40 hover:text-cobalt"
-        >
-          <MessageCircle size={14} aria-hidden="true" />
-          加 PathOS 顾问微信详聊
-        </a>
-        <p className="text-xs text-text-tertiary">顾问会在 24 小时内回复</p>
+        {contact.email ? (
+          <a
+            href={`mailto:${contact.email}?subject=${encodeURIComponent("PathOS 商务咨询")}`}
+            className="inline-flex items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-4 py-2 text-[13px] font-medium text-text-primary transition hover:border-cobalt/40 hover:text-cobalt"
+          >
+            <MessageCircle size={14} aria-hidden="true" />
+            邮件联系 {contact.email}
+          </a>
+        ) : (
+          <a
+            href="#plans"
+            className="inline-flex items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-4 py-2 text-[13px] font-medium text-text-primary transition hover:border-cobalt/40 hover:text-cobalt"
+          >
+            <MessageCircle size={14} aria-hidden="true" />
+            在上方表单留下联系方式
+          </a>
+        )}
+        {contact.wechatId && (
+          <p className="text-xs text-text-tertiary">微信 {contact.wechatId}</p>
+        )}
+        <p className="text-xs text-text-tertiary">
+          {contact.hours ? `我们会在工作时间（${contact.hours}）内回复。` : "我们会尽快与您联系。"}
+        </p>
       </aside>
     </main>
   );

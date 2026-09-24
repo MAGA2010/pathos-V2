@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, Clock, FileSignature, Receipt } from "lucide-react";
+import { getCommercialCapabilities, getContactChannels } from "@/lib/contact";
 
 export const metadata: Metadata = {
   title: "我的订阅",
-  description: "查看您在 PathOS 的订阅记录、付款状态和服务进度。",
+  description: "查看 PathOS 订阅申请的状态含义与推进流程。",
 };
 
 const STATUS_BADGES: Record<string, { label: string; tone: string; icon: React.ReactNode }> = {
@@ -15,21 +16,23 @@ const STATUS_BADGES: Record<string, { label: string; tone: string; icon: React.R
 };
 
 const STEPS = [
-  { key: "afterFormat", title: "1. 提交申请", desc: "在 /pricing 选择方案并留下联系方式。我们会立即收到通知。" },
-  { key: "afterContact", title: "2. 顾问沟通", desc: "24 小时内会有顾问通过您填写的渠道主动联系，确认需求细节。" },
-  { key: "afterSign", title: "3. 签署协议 / 付款", desc: "确认方案后，我们会发送电子协议并开具发票。可微信、银行转账、企业开票。" },
-  { key: "afterService", title: "4. 服务启动", desc: "签约次日即开通平台账户，进入顾问年付群组；单次报告进入撰写队列。" },
+  { key: "afterFormat", title: "1. 提交申请", desc: "在 /pricing 选择方案并留下联系方式，系统会记录申请编号。" },
+  { key: "afterContact", title: "2. 需求沟通", desc: "我们通过您填写的渠道联系，确认需求范围与适用方案。" },
+  { key: "afterSign", title: "3. 确认商务条款", desc: "范围确定后再谈价格、账期与协议，结算方式在这一步书面确认。" },
+  { key: "afterService", title: "4. 开通账户", desc: "条款确认后开通平台账户；试用申请会直接开通试用期限。" },
 ];
 
 export default function AccountSubscriptionPage() {
+  const contact = getContactChannels();
+  const capabilities = getCommercialCapabilities();
   return (
     <main className="mx-auto max-w-page px-4 py-12 sm:px-6 lg:py-16">
       <header>
         <h1 className="text-3xl font-bold tracking-tight text-text-primary">我的订阅</h1>
         <p className="mt-2 max-w-2xl text-base text-text-secondary">
-          在这里查看您当前的订阅状态、服务协议和发票。还没有订阅？
+          这里说明订阅申请的各个状态与推进流程。还没有提交申请？
           <Link href="/pricing" className="ml-1 underline decoration-text-tertiary underline-offset-2 hover:text-text-primary">
-            看看三种付费方案
+            看看三条付费路径
           </Link>
           。
         </p>
@@ -69,10 +72,28 @@ export default function AccountSubscriptionPage() {
 
       <section className="mt-8 rounded-3xl border border-border-soft bg-surface-1 p-6">
         <h2 className="text-base font-semibold text-text-primary">查询已有订阅</h2>
-        <p className="mt-2 text-sm text-text-secondary">
-          目前您提交订阅时填写的手机号 / 微信即为您在该订阅下的识别凭证如需查询订阅详情，
-          请把您的姓名 + 联系方式发到 <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px]">support@pathos.example</code>，
-          或直接联系当时和您沟通的顾问。后续我们将上线「绑定手机号」自助查询。
+        <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+          自助查询尚未上线。目前提交申请时填写的手机号 / 微信 / 邮箱，加上申请编号，
+          就是这条申请的识别信息。
+          {contact.email ? (
+            <>
+              需要查询进度时，请把申请编号与联系方式发到{" "}
+              <a
+                href={`mailto:${contact.email}?subject=${encodeURIComponent("PathOS 订阅申请查询")}`}
+                className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] underline decoration-text-tertiary underline-offset-2 hover:text-text-primary"
+              >
+                {contact.email}
+              </a>
+              ，或直接回复与您沟通的同事。
+            </>
+          ) : (
+            <>需要查询进度时，请直接回复与您沟通的同事；我们也在准备公开的支持邮箱。</>
+          )}
+        </p>
+        <p className="mt-3 text-[13px] leading-relaxed text-text-tertiary">
+          {capabilities.invoices
+            ? "开票请求可在同一封邮件中提出，票种以合同约定为准。"
+            : "开票、退款等结算事项以双方书面约定为准，本页不单独承诺。"}
         </p>
       </section>
     </main>

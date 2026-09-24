@@ -11,6 +11,7 @@
 import { NextResponse } from "next/server";
 import { createHash } from "node:crypto";
 import { DatabaseNotConfiguredError, getPool } from "@/server/db";
+import { consumeRateLimit, retryAfterSeconds } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -40,39 +41,71 @@ function sha256(input: string): string {
   return createHash("sha256").update(input).digest("hex");
 }
 
-export function applyCors(response: NextResponse): NextResponse {
-  // Public data API — allow any origin but keep responses cacheable.
-  response.headers.set("Access-Control-Allow-Origin", "*");
-  response.headers.set("Access-Control-Allow-Methods", "GET, OPTIONS");
-  response.headers.set("Access-Control-Allow-Headers", "Authorization, Content-Type");
-  response.headers.set("Access-Control-Max-Age", "86400");
+// Allowed browser origins for the data API. Keys are secrets, so a
+// wildcard ACAO would invite customers to embed them in front-end code.
+// Server-to-server callers are unaffected by CORS.
+function allowedOrigins(): string[] {
+  const raw = process.env.PATHOS_API_ALLOWED_ORIGINS ?? "";
+  return raw.split(",").map((s) => s.trim()).filter(Boolean);
+}
+
+export function applyCors(response: NextResponse, req?: Request): NextResponse {
+  const origin = req?.headers.get("origin");
+  const allowed = allowedOrigins();
+  if (origin && allowed.includes(origin)) {
+    response.headers.set("Access-Control-Allow-Origin", origin);
+    response.headers.set("Vary", "Origin");
+    response.headers.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+    response.headers.set("Access-Control-Allow-Headers", "Authorization, Content-Type, X-Api-Key");
+    response.headers.set("Access-Control-Max-Age", "86400");
+  }
   return response;
 }
 
-export function ok<T>(data: T, init: ResponseInit = {}): NextResponse {
-  return applyCors(
+export function ok<T>(data: T, init: ResponseInit = {}, req?: Request): NextResponse {
+  const response = applyCors(
     NextResponse.json({ ok: true, data }, { status: 200, ...init }),
+    req,
   );
+  // Responses are keyed to a private API key; never store them in a
+  // shared cache.
+  response.headers.set("Cache-Control", "no-store, private");
+  return response;
 }
 
-export function fail(code: string, message: string, status: number): NextResponse {
-  return applyCors(
+export function fail(
+  code: string,
+  message: string,
+  status: number,
+  extraHeaders?: Record<string, string>,
+  req?: Request,
+): NextResponse {
+  const response = applyCors(
     NextResponse.json({ ok: false, error: { code, message } }, { status }),
+    req,
   );
+  for (const [k, v] of Object.entries(extraHeaders ?? {})) {
+    response.headers.set(k, v);
+  }
+  return response;
 }
 
-export async function handleOptions(): Promise<NextResponse> {
-  return applyCors(new NextResponse(null, { status: 204 }));
+export async function handleOptions(req: Request): Promise<NextResponse> {
+  return applyCors(new NextResponse(null, { status: 204 }), req);
 }
 
 function extractBearer(req: Request): string | null {
-  const header = req.headers.get("authorization") ?? req.headers.get("Authorization");
-  if (!header) return null;
-  const trimmed = header.trim();
-  if (trimmed.toLowerCase().startsWith("bearer ")) return trimmed.slice(7).trim();
-  // Allow X-API-Key header as a friendlier alternative.
-  const alt = req.headers.get("x-api-key") ?? req.headers.get("X-Api-Key");
-  return alt ? alt.trim() : null;
+  const header = req.headers.get("authorization");
+  if (header) {
+    const trimmed = header.trim();
+    if (trimmed.toLowerCase().startsWith("bearer ")) {
+      const secret = trimmed.slice(7).trim();
+      if (secret) return secret;
+    }
+  }
+  // X-API-Key is a friendlier alternative for simple HTTP clients.
+  const alt = req.headers.get("x-api-key");
+  return alt && alt.trim() ? alt.trim() : null;
 }
 
 export async function authenticate(req: Request): Promise<AuthSuccess | AuthFailure> {
@@ -118,7 +151,10 @@ export async function authenticate(req: Request): Promise<AuthSuccess | AuthFail
       }
     }
     if (row.calls_this_month >= row.monthly_quota) {
-      return { ok: false, response: fail("QUOTA_EXHAUSTED", "Monthly quota exhausted.", 429) };
+      return {
+        ok: false,
+        response: fail("QUOTA_EXHAUSTED", "Monthly quota exhausted.", 429, undefined, req),
+      };
     }
     return { ok: true, key: row };
   } catch (e) {
@@ -130,32 +166,13 @@ export async function authenticate(req: Request): Promise<AuthSuccess | AuthFail
   }
 }
 
-// Coarse minute-window rate limit. Per-key, in-memory + DB-backed.
-// Returns true if the request is allowed; false if rate-limited.
-export async function checkRateLimit(keyId: string, perMinute: number): Promise<{ allowed: boolean; remaining: number }> {
-  // In-memory fast path.
-  const now = new Date();
-  const minute = `${now.getUTCFullYear()}${String(now.getUTCMonth() + 1).padStart(2, "0")}${String(now.getUTCDate()).padStart(2, "0")}${String(now.getUTCHours()).padStart(2, "0")}${String(now.getUTCMinutes()).padStart(2, "0")}`;
-  const bucketKey = `apikey:${keyId}:${minute}`;
-
-  try {
-    const result = await getPool().query<{ hits: number; window_start: Date | string }>(
-      `INSERT INTO rate_limit_buckets (bucket_key, hits, window_start)
-       VALUES ($1, 1, NOW())
-       ON CONFLICT (bucket_key) DO UPDATE
-         SET hits = rate_limit_buckets.hits + 1
-       RETURNING hits, window_start`,
-      [bucketKey],
-    );
-    const hits = result.rows[0]?.hits ?? 0;
-    const remaining = Math.max(0, perMinute - hits);
-    return { allowed: hits <= perMinute, remaining };
-  } catch (e) {
-    // Never block traffic because the rate limit store is down.
-    console.error("[v1] rate-limit error:", e);
-    return { allowed: true, remaining: perMinute };
-  }
+// Per-key minute-window rate limit. Delegates to the shared limiter,
+// which fails closed when the counter store is unreachable.
+export async function checkRateLimit(keyId: string, perMinute: number) {
+  return consumeRateLimit("apikey", keyId, perMinute);
 }
+
+export { retryAfterSeconds };
 
 // Increment the persistent monthly counter. Fire-and-forget — never
 // throw to the caller.

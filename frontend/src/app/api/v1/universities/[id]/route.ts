@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 import { DatabaseNotConfiguredError, getPool } from "@/server/db";
 import {
   authenticate, bumpMonthlyUsage, checkRateLimit, requireScope,
-  handleOptions, ok, fail,
+  handleOptions, ok, fail, retryAfterSeconds,
 } from "@/lib/api-v1";
 
 export const dynamic = "force-dynamic";
@@ -40,14 +40,24 @@ export async function GET(
   if (scopeErr) return scopeErr;
 
   const rl = await checkRateLimit(auth.key.id, auth.key.rate_limit);
-  if (!rl.allowed) return fail("RATE_LIMITED", "Too many requests. Try again in a minute.", 429);
+  if (!rl.allowed) {
+    return fail(
+      rl.degraded ? "RATE_LIMIT_UNAVAILABLE" : "RATE_LIMITED",
+      rl.degraded
+        ? "Rate limit store is unavailable; requests are temporarily rejected."
+        : "Too many requests. Try again in a minute.",
+      rl.degraded ? 503 : 429,
+      { "Retry-After": String(retryAfterSeconds(rl.resetsAt)) },
+      req,
+    );
+  }
 
   const rawId = (params.id ?? "").trim();
-  if (!rawId) return fail("INVALID_ID", "University id is required", 400);
+  if (!rawId) return fail("INVALID_ID", "University id is required", 400, undefined, req);
   let id: string;
   try { id = decodeURIComponent(rawId); }
-  catch { return fail("INVALID_ID", "University id has invalid percent-encoding", 400); }
-  if (id.length > 256) return fail("INVALID_ID", "University id is too long", 400);
+  catch { return fail("INVALID_ID", "University id has invalid percent-encoding", 400, undefined, req); }
+  if (id.length > 256) return fail("INVALID_ID", "University id is too long", 400, undefined, req);
 
   try {
     const r = await getPool().query<UniversityRow>(
@@ -62,7 +72,7 @@ export async function GET(
       [id],
     );
     const row = r.rows[0];
-    if (!row) return fail("NOT_FOUND", `University not found: ${id}`, 404);
+    if (!row) return fail("NOT_FOUND", `University not found: ${id}`, 404, undefined, req);
 
     void bumpMonthlyUsage(auth.key.id);
 
@@ -82,14 +92,20 @@ export async function GET(
       previewOnly: row.preview_only,
       updatedAt: row.updated_at instanceof Date ? row.updated_at.toISOString() : String(row.updated_at),
       detail: row.payload ?? null,
-      rateLimit: { remaining: rl.remaining, perMinute: auth.key.rate_limit },
-      quota: { used: auth.key.calls_this_month, limit: auth.key.monthly_quota },
-    });
+      rateLimit: { remaining: rl.remaining, perMinute: auth.key.rate_limit, resetsAt: rl.resetsAt },
+      quota: {
+        used: auth.key.calls_this_month,
+        limit: auth.key.monthly_quota,
+        resetsAt: auth.key.quota_reset_at instanceof Date
+          ? auth.key.quota_reset_at.toISOString()
+          : String(auth.key.quota_reset_at),
+      },
+    }, {}, req);
   } catch (e) {
     if (e instanceof DatabaseNotConfiguredError) {
-      return fail(e.code, e.message, e.status);
+      return fail(e.code, e.message, e.status, undefined, req);
     }
     console.error("[v1/universities/:id] error:", e);
-    return fail("DB_UNREACHABLE", e instanceof Error ? e.message : String(e), 503);
+    return fail("DB_UNREACHABLE", e instanceof Error ? e.message : String(e), 503, undefined, req);
   }
 }

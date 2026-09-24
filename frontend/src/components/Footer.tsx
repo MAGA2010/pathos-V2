@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Compass, Github, KeyRound, MessageCircle, Receipt } from "lucide-react";
+import { getContactChannels } from "@/lib/contact";
 
 export default function Footer() {
+  const contact = getContactChannels();
   return (
     <footer className="border-t border-line/50 bg-ink/95 text-panel/70">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
@@ -59,15 +61,31 @@ export default function Footer() {
           <div>
             <h3 className="mb-3 text-sm font-semibold text-panel/85">联系顾问</h3>
             <div className="flex flex-col gap-2 text-sm">
-              <a
-                href="weixin://"
-                className="inline-flex items-center gap-1.5 transition-colors hover:text-panel"
-              >
-                <MessageCircle size={14} aria-hidden="true" />
-                微信 PathOS 顾问
-              </a>
-              <span className="text-panel/60">support@pathos.example</span>
-              <span className="text-panel/60">工作时间 9:00 - 21:00</span>
+              {contact.wechatId && (
+                <span className="inline-flex items-center gap-1.5 text-panel/60">
+                  <MessageCircle size={14} aria-hidden="true" />
+                  微信 {contact.wechatId}
+                </span>
+              )}
+              {contact.email && (
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="transition-colors hover:text-panel"
+                >
+                  {contact.email}
+                </a>
+              )}
+              {contact.phone && (
+                <a href={`tel:${contact.phone}`} className="transition-colors hover:text-panel">
+                  {contact.phone}
+                </a>
+              )}
+              {contact.hours && <span className="text-panel/60">工作时间 {contact.hours}</span>}
+              {!contact.hasAnyChannel && (
+                <Link href="/pricing" className="transition-colors hover:text-panel">
+                  在线提交咨询表单
+                </Link>
+              )}
               <a
                 href="https://github.com/MAGA2010/personal-OS"
                 target="_blank"

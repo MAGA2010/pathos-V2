@@ -17,6 +17,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
 export default function ReportPage({ params, searchParams }: PageProps) {
   const id = params.id ?? "";
-  const token = searchParams.token ?? id;
+  // No fallback to the report id: the id is not a credential.
+  const token = searchParams.token ?? "";
   return <ReportViewer id={id} token={token} />;
 }

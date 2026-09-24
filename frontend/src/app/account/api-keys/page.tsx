@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Code2, KeyRound, ShieldCheck, Webhook } from "lucide-react";
+import { Code2, Construction, KeyRound, ShieldCheck } from "lucide-react";
+import { getCommercialCapabilities } from "@/lib/contact";
 
 export const metadata: Metadata = {
   title: "数据 API 文档",
-  description: "PathOS 数据 API 鉴权、速率限制、字段说明与示例代码。",
+  description: "PathOS 数据 API（v1，内测）鉴权、速率限制、字段说明与示例代码。",
 };
 
 const ENDPOINTS = [
@@ -48,19 +49,24 @@ const ENDPOINTS = [
 ];
 
 const SCOPES = [
-  { id: "universities.read", desc: "读取学校列表与详情（默认）" },
-  { id: "reports.write", desc: "生成 AI 解读报告（计划中）" },
-  { id: "*", desc: "所有权限（仅供内部测试）" },
+  { id: "universities.read", desc: "读取学校列表与详情（默认，已上线）", planned: false },
+  { id: "reports.write", desc: "通过 API 生成 AI 解读报告", planned: true },
+  { id: "*", desc: "所有权限，仅供内部测试使用", planned: false },
 ];
 
 export default function AccountApiKeysPage() {
+  const capabilities = getCommercialCapabilities();
   return (
     <main className="mx-auto max-w-page px-4 py-12 sm:px-6 lg:py-16">
       <header>
         <h1 className="text-3xl font-bold tracking-tight text-text-primary">数据 API 文档</h1>
         <p className="mt-2 max-w-2xl text-base text-text-secondary">
-          PathOS 数据 API（v1）面向留学机构、国际学校、教辅平台开放。基于学校基础字段 +
-          IPEDS 评级详情，提供 JSON / 简单鉴权 + 速率限制。
+          PathOS 数据 API（v1）目前处于内测阶段，面向留学机构、国际学校、教辅平台定向开放。
+          基于学校基础字段与 IPEDS 评级详情，提供 JSON 只读接口、Bearer 鉴权与速率限制。
+        </p>
+        <p className="mt-3 inline-flex items-center gap-1.5 rounded-control border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-[13px] font-medium text-amber-700 dark:text-amber-300">
+          <Construction size={14} aria-hidden="true" />
+          内测中：接口与字段可能调整，变更会提前通知已开通的机构。
         </p>
       </header>
 
@@ -77,16 +83,25 @@ export default function AccountApiKeysPage() {
           <ShieldCheck size={20} className="text-cobalt" aria-hidden="true" />
           <h2 className="mt-3 text-base font-semibold text-text-primary">速率限制 + 配额</h2>
           <p className="mt-2 text-sm text-text-secondary">
-            默认每分钟 60 次调用、每月 10000 次配额。超出后会返回 429 并附带
+            每个 key 单独配置每分钟调用数与每月配额，默认每分钟 60 次、每月 10000 次。
+            超出后返回 429 并附带
             <code className="ml-1 rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px]">Retry-After</code> 头。
           </p>
         </article>
         <article className="rounded-2xl border border-border-soft bg-surface-1 p-5">
-          <Webhook size={20} className="text-cobalt" aria-hidden="true" />
-          <h2 className="mt-3 text-base font-semibold text-text-primary">Webhook + 实时变更</h2>
+          <Construction size={20} className="text-text-tertiary" aria-hidden="true" />
+          <h2 className="mt-3 flex items-center gap-2 text-base font-semibold text-text-primary">
+            变更通知
+            {!capabilities.webhooks && (
+              <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[11px] font-semibold text-amber-700 dark:text-amber-300">
+                规划中
+              </span>
+            )}
+          </h2>
           <p className="mt-2 text-sm text-text-secondary">
-            数据集更新（每两周一次）会通过 webhook 推送到企业用户；目前仅支持 Slack /
-            飞书 / 邮件通知。
+            {capabilities.webhooks
+              ? "数据集更新后通过 Webhook 推送到已配置的回调地址。"
+              : "Webhook 与 Slack / 飞书 / 邮件通知尚未上线。内测期间数据集更新由我们直接通知对接人，接口侧可通过响应中的更新时间字段判断。"}
           </p>
         </article>
       </section>
@@ -129,6 +144,11 @@ export default function AccountApiKeysPage() {
             <li key={scope.id} className="flex items-start gap-3 rounded-control border border-border-soft bg-surface-1 px-3 py-2 text-sm">
               <code className="shrink-0 font-mono text-[12px] text-cobalt">{scope.id}</code>
               <span className="text-text-secondary">{scope.desc}</span>
+              {scope.planned && (
+                <span className="ml-auto shrink-0 rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[11px] font-semibold text-amber-700 dark:text-amber-300">
+                  规划中
+                </span>
+              )}
             </li>
           ))}
         </ul>
@@ -137,9 +157,12 @@ export default function AccountApiKeysPage() {
       <aside className="mt-12 rounded-3xl border border-border-soft bg-surface-1 p-6">
         <h2 className="text-base font-semibold text-text-primary">申请 API Key</h2>
         <p className="mt-2 text-sm text-text-secondary">
-          数据 API 方案默认包含 1 个生产 key + 1 个测试 key。如需申请，前往
-          <Link href="/pricing" className="ml-1 underline decoration-text-tertiary underline-offset-2 hover:text-text-primary">/pricing</Link>
-          选择「数据 API（企业）」方案，我们会在 3 个工作日内与您联系。
+          {capabilities.selfServeApiKeys
+            ? "可在账号内自助创建与轮换 key。"
+            : "内测期间 key 由我们手动开通，暂不支持自助创建与轮换；每家机构先开通 1 个 key。"}
+          {" 如需申请，前往"}
+          <Link href="/pricing" className="mx-1 underline decoration-text-tertiary underline-offset-2 hover:text-text-primary">/pricing</Link>
+          选择「数据 API（内测）」并留下联系方式，我们会与您确认用量后开通。
         </p>
       </aside>
     </main>

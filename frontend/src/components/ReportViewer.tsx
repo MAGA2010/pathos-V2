@@ -1,9 +1,13 @@
 "use client";
 
-// Fetches /api/reports/[id]?token=<id> and renders the stored payload
+// Fetches /api/reports/[id]?token=<share token> and renders the stored payload
 // (deterministic baseline + LLM enrichment + recommended next steps).
 // Polls every 2s while status=pending so the user sees the report
 // appear as soon as DeepSeek returns.
+//
+// The token comes from the share link issued at generation time. Without
+// it the API returns 401, and we show a "link invalid" state rather than
+// leaking whether the report id exists.
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -40,6 +44,7 @@ interface ReportRow {
   profile: Record<string, unknown>;
   schools: Array<{ id?: string; name?: string; chineseName?: string }>;
   payload: ReportPayload;
+  expiresAt?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -52,12 +57,13 @@ interface ApiResponse {
 }
 
 export function ReportViewer({ id, token }: { id: string; token: string }) {
-  const [state, setState] = useState<"loading" | "ready" | "pending" | "failed" | "not_found" | "error">("loading");
+  const [state, setState] = useState<"loading" | "ready" | "pending" | "failed" | "unauthorized" | "error">("loading");
   const [report, setReport] = useState<ReportRow | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    if (!token) { setState("unauthorized"); return; }
     let cancelled = false;
     async function fetchOnce() {
       try {
@@ -65,12 +71,12 @@ export function ReportViewer({ id, token }: { id: string; token: string }) {
         const data = (await resp.json()) as ApiResponse;
         if (cancelled) return;
         if (!resp.ok) {
-          if (resp.status === 404) { setState("not_found"); return; }
+          if (resp.status === 401 || resp.status === 404) { setState("unauthorized"); return; }
           setErrorMessage(data.message ?? data.code ?? "fetch failed");
           setState("error");
           return;
         }
-        if (!data.report) { setState("not_found"); return; }
+        if (!data.report) { setState("unauthorized"); return; }
         setReport(data.report);
         if (data.report.status === "pending") {
           setState("pending");
@@ -98,12 +104,14 @@ export function ReportViewer({ id, token }: { id: string; token: string }) {
     );
   }
 
-  if (state === "not_found") {
+  if (state === "unauthorized") {
     return (
       <main className="mx-auto max-w-page px-4 py-24 sm:px-6">
-        <h1 className="text-2xl font-semibold text-text-primary">报告不存在或链接已失效</h1>
+        <h1 className="text-2xl font-semibold text-text-primary">链接无效或已失效</h1>
         <p className="mt-3 text-sm text-text-secondary">
-          请检查链接中的 report id 是否完整；如确认无误但仍无法访问，请联系
+          报告分享链接可能不完整、已过期或已被撤销。请使用生成报告时收到的完整链接
+          （含 <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px]">?token=</code> 部分）；
+          如需重新获取，请联系
           <Link href="/pricing" className="ml-1 underline decoration-text-tertiary underline-offset-2 hover:text-text-primary">PathOS 顾问</Link>
           。
         </p>
@@ -160,6 +168,12 @@ export function ReportViewer({ id, token }: { id: string; token: string }) {
           报告编号 <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px]">{report.id}</code>，
           生成于 {new Date(report.createdAt).toLocaleString("zh-CN")}。
         </p>
+        {report.expiresAt && (
+          <p className="mt-1 text-[13px] text-text-tertiary">
+            此分享链接将于 {new Date(report.expiresAt).toLocaleDateString("zh-CN")} 失效。
+            报告含个人成绩与背景信息，请勿转发到公开渠道。
+          </p>
+        )}
       </header>
 
       {payload.summary && (

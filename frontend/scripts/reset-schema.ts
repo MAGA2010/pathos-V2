@@ -17,6 +17,12 @@ async function main() {
   const client = new Client({ connectionString: DATABASE_URL });
   await client.connect();
   await client.query(`
+    DROP TABLE IF EXISTS report_access_log CASCADE;
+    DROP TABLE IF EXISTS reports CASCADE;
+    DROP TABLE IF EXISTS subscription_leads CASCADE;
+    DROP TABLE IF EXISTS api_keys CASCADE;
+    DROP TABLE IF EXISTS rate_limit_buckets CASCADE;
+    DROP TABLE IF EXISTS schema_migrations CASCADE;
     DROP TABLE IF EXISTS college_guides CASCADE;
     DROP TABLE IF EXISTS university_details CASCADE;
     DROP TABLE IF EXISTS universities CASCADE;
