@@ -64,7 +64,7 @@
   position: relative;
   z-index: 3;
   max-width: 690px;
-  animation: copy-arrive 1s 220ms ease both;
+  animation: copy-arrive 480ms 160ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .copy > p {
@@ -98,7 +98,7 @@
   justify-self: center;
   width: min(46vw, 560px);
   aspect-ratio: 0.82;
-  animation: robot-arrive 1.6s 300ms cubic-bezier(0.2, 0.72, 0.2, 1) both;
+  animation: robot-arrive 560ms 300ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .shoulders {
@@ -268,7 +268,7 @@
 @keyframes robot-arrive {
   from {
     opacity: 0;
-    transform: translate3d(0, 30px, 0) scale3d(0.94, 0.94, 1);
+    transform: translate3d(0, 22px, 0) scale3d(0.94, 0.94, 1);
   }
   to {
     opacity: 1;

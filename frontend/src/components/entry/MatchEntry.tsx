@@ -37,7 +37,7 @@ export function MatchEntry() {
                   d={path}
                   pathLength={1}
                   className={styles.wave}
-                  style={{ animationDelay: `${index * 160}ms` }}
+                  style={{ animationDelay: `${index * 90}ms` }}
                 />
                 {[0.16, 0.38, 0.61, 0.82].map((offset) => (
                   <circle
@@ -46,7 +46,7 @@ export function MatchEntry() {
                     cy={118 + index * 62}
                     r={index % 2 === 0 ? 3 : 2.4}
                     className={styles.node}
-                    style={{ animationDelay: `${800 + (index + offset) * 220}ms` }}
+                    style={{ animationDelay: `${260 + (index + offset) * 44}ms` }}
                   />
                 ))}
               </g>
@@ -55,22 +55,22 @@ export function MatchEntry() {
         </svg>
       </div>
 
-      <section className={styles.stage} aria-labelledby="match-entry-title">
-        <p className={styles.kicker}>DEFINE YOUR DIMENSIONS</p>
-        <h1 id="match-entry-title">定义你的选校维度</h1>
-        <p className={styles.summary}>
+      <section className={styles.stage} aria-labelledby="match-entry-title" data-reveal="true">
+        <p className={styles.kicker} data-reveal="true" data-reveal-delay="80">DEFINE YOUR DIMENSIONS</p>
+        <h1 id="match-entry-title" data-heading-stagger="true">定义你的选校维度</h1>
+        <p className={styles.summary} data-reveal="true" data-reveal-delay="160">
           自主设定个人偏好权重，建立清晰、可解释的院校匹配参考。
         </p>
         <dl className={styles.metrics}>
-          <div>
+          <div data-reveal="true" data-reveal-delay="240">
             <dt>01</dt>
             <dd>预算适配</dd>
           </div>
-          <div>
+          <div data-reveal="true" data-reveal-delay="320">
             <dt>02</dt>
             <dd>排名目标</dd>
           </div>
-          <div>
+          <div data-reveal="true" data-reveal-delay="400">
             <dt>03</dt>
             <dd>录取友好</dd>
           </div>

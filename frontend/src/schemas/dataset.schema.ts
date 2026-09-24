@@ -27,6 +27,7 @@ import type {
   UniversitySearchResult,
   UniversitySummary,
 } from "@/domain/dataset";
+import type { TimeSeriesPoint } from "@/types/timeseries";
 
 const DISPLAY_TIER = ["live_verified", "cached", "preview", "quarantined"] as const;
 const PROVENANCE_STATUS = [
@@ -245,7 +246,25 @@ export function parseUniversitySummary(raw: unknown): UniversitySummary {
     datasetVersion: typeof o.datasetVersion === "string" ? o.datasetVersion : "unknown",
     sourceCommit: typeof o.sourceCommit === "string" ? o.sourceCommit : undefined,
     nullableFields,
+    // IECG fill (P1): preserve the CollegeGuide preview so detail consumers
+    // (e.g. /guides metric strip, /university overview) can render the
+    // parsed acceptanceRate / tuition / deadlines instead of the empty state.
+    guidePreview: parseGuidePreview(o.guidePreview),
   };
+}
+
+function parseGuidePreview(raw: unknown): UniversitySummary["guidePreview"] | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const o = raw as Record<string, unknown>;
+  const obj: Record<string, unknown> = { hasData: false };
+  for (const k of Object.keys(o)) obj[k] = o[k];
+  obj.hasData = Boolean(
+    o.officialWebsite || o.founded || o.undergraduateStudents ||
+    o.acceptanceRatePercent || o.applicationDeadlines || o.tuition ||
+    (Array.isArray(o.programs) && (o.programs as unknown[]).length > 0) ||
+    o.usNewsRanks || o.studentFacultyRatio
+  );
+  return obj as unknown as UniversitySummary["guidePreview"];
 }
 
 function parseRankingSummary(raw: unknown): UniversitySummary["rankingSummary"] {
@@ -275,8 +294,6 @@ function parseCostSummary(raw: unknown): UniversitySummary["costSummary"] {
     comparisonSafe: typeof o.comparisonSafe === "boolean" ? o.comparisonSafe : undefined,
   };
 }
-
-
 function parseEnrollmentSummary(raw: unknown): UniversitySummary["enrollmentSummary"] {
   if (!raw || typeof raw !== "object") return undefined;
   const o = raw as Record<string, unknown>;
@@ -296,6 +313,44 @@ function parseQualitySummary(raw: unknown): UniversitySummary["qualitySummary"] 
   const coveragePercent = typeof o.coveragePercent === "number" ? o.coveragePercent : undefined;
   const warningCodes = Array.isArray(o.warningCodes) ? (o.warningCodes as unknown[]).filter((v) => typeof v === "string") as string[] : undefined;
   return { coveragePercent, warningCodes };
+}
+
+function parseTimeSeries(raw: unknown): TimeSeriesPoint[] | undefined {
+  if (!Array.isArray(raw)) return undefined;
+  const allowedSources: TimeSeriesPoint["source"][] = [
+    "IECG",
+    "IPEDS",
+    "College Scorecard",
+    "US News",
+    "QS",
+    "THE",
+    "school_official",
+    "editorial",
+  ];
+  const rows = raw.flatMap((value): TimeSeriesPoint[] => {
+    if (!value || typeof value !== "object") return [];
+    const row = value as Record<string, unknown>;
+    if (typeof row.semester !== "string" || !row.semester.trim()) return [];
+    const source = allowedSources.includes(row.source as TimeSeriesPoint["source"])
+      ? row.source as TimeSeriesPoint["source"]
+      : "editorial";
+    const numberOrNull = (item: unknown): number | null =>
+      typeof item === "number" && Number.isFinite(item) ? item : null;
+    return [{
+      semester: row.semester,
+      schoolId: typeof row.schoolId === "string" ? row.schoolId : undefined,
+      schoolName: typeof row.schoolName === "string" ? row.schoolName : undefined,
+      sat: numberOrNull(row.sat),
+      gpa: numberOrNull(row.gpa),
+      acceptanceRate: numberOrNull(row.acceptanceRate),
+      tuitionUSD: numberOrNull(row.tuitionUSD),
+      source,
+      asOf: typeof row.asOf === "string" ? row.asOf : new Date(0).toISOString(),
+      verifiedBy: typeof row.verifiedBy === "string" ? row.verifiedBy : "待核验",
+      confidence: typeof row.confidence === "number" ? row.confidence : 0,
+    }];
+  });
+  return rows.length > 0 ? rows : undefined;
 }
 
 export function parseUniversitySummaryList(raw: unknown): UniversitySummary[] {
@@ -442,6 +497,7 @@ export function parseUniversityDetail(raw: unknown): UniversityDetail {
     sources: sourcesRaw.map((s, i) => parseSourceReference(s, `sources[${i}]`)),
     warnings: Array.isArray(o.warnings) ? (o.warnings as unknown[]).filter((v) => typeof v === "string") as string[] : [],
     qualityBadges,
+    timeSeries: parseTimeSeries(o.timeSeries),
     previewMetadata:
       o.previewMetadata && typeof o.previewMetadata === "object"
         ? (o.previewMetadata as UniversityDetail["previewMetadata"])

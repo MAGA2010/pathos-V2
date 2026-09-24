@@ -105,13 +105,32 @@ export function UniversityCard({
    *  Gate-bloker repair #RG-P0-F: a missing `annualCostRmb` (null)
    *  used to render "¥NaN万/年" because `(null / 10000).toFixed(1)`
    *  is the string "NaN". Render the "数据补充中" empty state label
-   *  instead of fabricating 0.0万. */
+   *  instead of fabricating 0.0万.
+   *
+   *  IECG fill (P1): when the upstream CollegeGuide carries an
+   *  explicit tuition band, prefer it over the legacy `annualCostRmb`
+   *  (which is USD-derived and may be missing for fixture-only
+   *  schools). This makes the marker card show real numbers like
+   *  "$65,800/年" instead of "学费数据补充中" for the 43 of 62
+   *  fixture schools whose CollegeGuide parses successfully. */
   const costLabel = (() => {
-    if (typeof poi.annualCostRmb !== "number" || !Number.isFinite(poi.annualCostRmb) || poi.annualCostRmb <= 0) {
-      return "学费数据补充中";
+    const gp = poi.guidePreview;
+    if (gp?.tuition?.total) return `${gp.tuition.total}/年`;
+    if (typeof poi.annualCostRmb === "number" && Number.isFinite(poi.annualCostRmb) && poi.annualCostRmb > 0) {
+      return `¥${(poi.annualCostRmb / 10000).toFixed(1)}万/年`;
     }
-    return `¥${(poi.annualCostRmb / 10000).toFixed(1)}万/年`;
+    return "学费数据补充中";
   })();
+
+  /** IECG fill (P1): derive the secondary quick-stats (师生比 / 毕业率 /
+   *  保留率 / 申请截止日 / 学制) from the same guide preview. Missing
+   *  fields fall through to the existing "数据补充中" placeholder so
+   *  the card never fabricates either face value. */
+  const sfrLabel = poi.guidePreview?.studentFacultyRatio ?? "数据补充中";
+  const grad4Label = poi.guidePreview?.graduationRate4Yr ?? "数据补充中";
+  const retentionLabel = poi.guidePreview?.freshmanRetentionRate ?? "数据补充中";
+  const deadlineLabel = poi.guidePreview?.applicationDeadlines ?? "数据补充中";
+  const systemLabel = poi.guidePreview?.academicSystem ?? "数据补充中";
 
   /** Safety / recognition scoring. The previous default-to-0 made
    *  the card render "0/100" for every school missing safety data. */
@@ -233,6 +252,53 @@ export function UniversityCard({
           // TODO: Replace with real Chinese population data
         />
       </div>
+
+      {/* ── IECG quick stats: 师生比 / 4 年毕业率 / 大一保留率 ── */}
+      {poi.guidePreview?.hasData && (
+        <div className="grid grid-cols-3 gap-px border-b border-line/60 bg-line/30">
+          <MetricCell
+            icon={<Users size={12} aria-hidden="true" />}
+            label="师生比"
+            labelEn="Student : Faculty"
+            value={sfrLabel}
+          />
+          <MetricCell
+            icon={<GraduationCap size={12} aria-hidden="true" />}
+            label="4 年毕业率"
+            labelEn="4-Yr Grad"
+            value={grad4Label}
+          />
+          <MetricCell
+            icon={<Shield size={12} aria-hidden="true" />}
+            label="大一保留率"
+            labelEn="Retention"
+            value={retentionLabel}
+          />
+        </div>
+      )}
+
+      {/* ── 申请要点 (deadlines + academic system) ── */}
+      {poi.guidePreview?.hasData && (deadlineLabel !== "数据补充中" || systemLabel !== "数据补充中") && (
+        <div className="border-b border-line/60 px-4 py-2.5 text-[11px] text-ink/68">
+          <div className="flex items-start gap-1.5">
+            <Clock size={12} className="mt-0.5 shrink-0 text-ink/40" aria-hidden="true" />
+            <div className="min-w-0 flex-1 space-y-0.5">
+              {deadlineLabel !== "数据补充中" && (
+                <p>
+                  <span className="text-ink/44">申请截止 </span>
+                  <span className="font-medium text-ink/72">{deadlineLabel}</span>
+                </p>
+              )}
+              {systemLabel !== "数据补充中" && (
+                <p>
+                  <span className="text-ink/44">学制 </span>
+                  <span className="font-medium text-ink/72">{systemLabel}</span>
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Programs section ── */}
       <div className="border-b border-line/60 px-4 py-3">

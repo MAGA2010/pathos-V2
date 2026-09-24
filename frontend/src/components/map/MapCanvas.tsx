@@ -12,7 +12,7 @@ import {
 } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { Loader2 } from "lucide-react";
+import { Loader2, TriangleAlert } from "lucide-react";
 import type { MapViewState, Granularity, MetricId } from "@/lib/types";
 
 // PathOS Stage 7B-A.1 Closing Patch v2: MapCanvas no longer owns the
@@ -223,12 +223,12 @@ export interface MapCanvasProps {
   /** Content shown while the map and basemap tiles are still loading. */
   loadingFallback?: ReactNode;
 
-  /** Boundary GeoJSON features (for hover tooltip — optional). */
-  // TODO: Replace with real {featureCollection} from useBoundaries
-  interactiveLayerIds?: string[];
-
-  /** Active metric for tooltip display formatting. */
-  // TODO: Replace with real {metricId} from parent state
+  /**
+   * Currently selected metric id (e.g. "income", "safety", "tuition").
+   * Drives the regional / city choropleth palette, the AI context panel,
+   * and the URL `?metric=` query string via `useViewStateBridge`.
+   * Source of truth lives in the parent (`MapShell` → `useViewStateBridge`).
+   */
   activeMetricId?: MetricId;
 
   /**
@@ -261,7 +261,6 @@ export function MapCanvas({
   onMapInit,
   children,
   loadingFallback,
-  interactiveLayerIds,
   activeMetricId,
   regionMetricSet,
 }: MapCanvasProps) {
@@ -275,6 +274,7 @@ export function MapCanvas({
   // ── State ──
  const [mapReady, setMapReady] = useState(false);
   const [granularity, setGranularity] = useState<Granularity>("state");
+  const [mapError, setMapError] = useState<string | null>(null);
   const [viewState, setViewState] = useState<MapViewState>({
     longitude: initialCenter[0],
     latitude: initialCenter[1],
@@ -462,6 +462,7 @@ export function MapCanvas({
       if (!isTransientStyleSwapNoise) {
         // eslint-disable-next-line no-console
         console.error("[MapCanvas] MapLibre error:", e.error);
+        setMapError(msg || "MapLibre 报告了一个未分类的错误");
       }
     });
 
@@ -601,13 +602,49 @@ export function MapCanvas({
         )}
 
         {/* ── Error banner (map initialised but errored) ──────────────────
-             Shown when the map object exists but encountered a fatal load
-             error.  Currently a placeholder — MapLibre itself shows a
-             degraded state; we add an unobtrusive banner.
-
-             TODO: Replace with a real error boundary / retry button when
-                   we have a proper error event pipeline.
-        */}
+             Shown when the MapLibre instance exists but encountered a
+             non-transient runtime error (tile 4xx/5xx, style failure,
+             AbortError, …).  Captured by the `error` handler above;
+             dismissed / retried by the user. */}
+        {mapError && (
+          <div
+            role="alert"
+            aria-live="assertive"
+            className="pointer-events-auto absolute left-1/2 top-3 z-map-modal flex w-[min(420px,calc(100%-24px))] -translate-x-1/2 items-start gap-2.5 rounded-lg border border-persimmon/40 bg-white/96 px-3.5 py-2.5 text-sm shadow-panel backdrop-blur"
+          >
+            <TriangleAlert
+              size={15}
+              className="mt-0.5 shrink-0 text-persimmon"
+              aria-hidden="true"
+            />
+            <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+              <p className="font-medium text-ink">地图组件报错 / Map runtime error</p>
+              <p className="break-words text-[11px] leading-4 text-ink/64">
+                {mapError}
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-col gap-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setMapError(null);
+                  try { mapRef.current?.resize(); } catch { /* map destroyed */ }
+                }}
+                className="rounded-control border border-line bg-paper px-2.5 py-1 text-[11px] font-medium text-ink/72 transition hover:border-cobalt/40 hover:text-cobalt"
+              >
+                重试 / Retry
+              </button>
+              <button
+                type="button"
+                onClick={() => setMapError(null)}
+                aria-label="关闭提示"
+                className="text-[10px] text-ink/44 transition hover:text-ink/72"
+              >
+                忽略 / Dismiss
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* ── Overlay children (metric tabs, legend, tooltip, etc.) ────── */}
         {children}

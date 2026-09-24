@@ -6,9 +6,11 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, GraduationCap, MapPin } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, GraduationCap, MapPin, Scale } from "lucide-react";
 import { useDataSource } from "@/services/data-source-provider";
 import { useStatusDictionary, useUniversityDetail } from "@/hooks/use-data-source";
+import { useCompareStore } from "@/state/compare-store";
 import { UniversityProfilePanel } from "@/components/university/UniversityProfilePanel";
 import {
   DataLoadingState,
@@ -24,6 +26,8 @@ export function UniversityDetailView() {
   const detail = useUniversityDetail(source, id);
   const dict = useStatusDictionary(source);
   const router = useRouter();
+  const compare = useCompareStore();
+  const [compareAdded, setCompareAdded] = useState<string | null>(null);
 
   if (detail.state.status === "loading") {
     return (
@@ -125,6 +129,54 @@ export function UniversityDetailView() {
             <PreviewWarningBanner detail="当前展示字段来自约束预览集;后端生产接口上线后将自动切换为完整档案。" />
           </div>
         )}
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <Link
+            href={`/s/${d.name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`}
+            className="inline-flex items-center rounded-md border border-cobalt/30 bg-cobalt/8 px-3 py-1.5 text-xs font-medium text-cobalt hover:border-cobalt/50 hover:bg-cobalt/12"
+          >
+            打开专业数据工作台
+          </Link>
+          <Link
+            href="/s/timeseries"
+            className="inline-flex items-center rounded-md border border-line/60 px-3 py-1.5 text-xs font-medium text-ink/60 hover:border-cobalt/30 hover:text-cobalt"
+          >
+            查看时序与来源
+          </Link>
+          {(() => {
+            const inCompare = compare.has(d.id);
+            const isFull = !inCompare && compare.ids.length >= compare.maxItems;
+            const handleAdd = () => {
+              const ok = compare.add(d.id);
+              if (ok) {
+                setCompareAdded("added");
+                setTimeout(() => setCompareAdded(null), 1800);
+              } else {
+                setCompareAdded("full");
+                setTimeout(() => setCompareAdded(null), 1800);
+              }
+            };
+            return (
+              <button
+                type="button"
+                onClick={handleAdd}
+                disabled={isFull}
+                title={isFull ? `对比最多 ${compare.maxItems} 所学校` : inCompare ? "已加入对比" : "加入对比"}
+                className="inline-flex items-center gap-1 rounded-md border border-cobalt/30 bg-cobalt/8 px-3 py-1.5 text-xs font-medium text-cobalt hover:border-cobalt/50 hover:bg-cobalt/12 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Scale size={13} aria-hidden="true" />
+                {inCompare ? "已在对比" : isFull ? `对比已满 (${compare.maxItems})` : "加入对比"}
+              </button>
+            );
+          })()}
+          <Link
+            href="/s/compare"
+            className="inline-flex items-center rounded-md border border-line/60 px-3 py-1.5 text-xs font-medium text-ink/60 hover:border-cobalt/30 hover:text-cobalt"
+          >
+            打开对比 ({compare.ids.length}/{compare.maxItems})
+          </Link>
+          {compareAdded === "added" ? <span className="text-[11px] text-jade">已加入</span> : null}
+          {compareAdded === "full" ? <span className="text-[11px] text-persimmon">已达上限，先到对比页移除</span> : null}
+        </div>
       </header>
 
       <UniversityProfilePanel detail={d} statusDictionary={dictionary} />

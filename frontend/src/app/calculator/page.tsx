@@ -15,6 +15,7 @@ import {
 } from "@/lib/cost-format";
 import { tuitionRmbFromSummary } from "@/lib/legacy-mappers";
 import { SchoolPicker } from "@/components/calculator/SchoolPicker";
+import PageMotion from "@/components/shared/PageMotion";
 
 const EXCHANGE_RATE = 7.2;
 const STANDARD_COSTS = [
@@ -125,50 +126,52 @@ export default function CalculatorPage() {
   }, [selected, tier, standardTotal, totalsById]);
 
   return (
-    <div className="min-h-screen bg-surface-base">
-      <header className="border-b border-border-soft bg-surface-1/70 backdrop-blur">
+    <PageMotion>
+      <div className="min-h-screen bg-surface-base">
+      <header className="page-motion-compact-hero px-6 py-7 sm:px-8 sm:py-9" data-reveal>
         <div className="mx-auto flex max-w-page items-center gap-3 px-4 py-3 sm:px-6">
           <div className="grid h-8 w-8 shrink-0 place-items-center rounded-control bg-ink text-paper"><Calculator size={16} aria-hidden="true" /></div>
           <div className="min-w-0 flex-1">
             <p className="text-label uppercase tracking-[0.12em] text-cobalt">留学预算</p>
-            <h1 className="text-page text-text-primary">预算计算器</h1>
+            <h1 className="text-page text-text-primary" data-heading-stagger>预算计算器</h1>
           </div>
           <Link href="/map" className="ml-auto text-caption text-cobalt hover:underline">← 返回地图</Link>
         </div>
       </header>
 
-      <main className="mx-auto max-w-page px-4 py-5 sm:px-6">
+      <main className="mx-auto max-w-page px-4 py-5 sm:px-6" data-section>
         {/* Controls */}
-        <div className="flex flex-wrap items-center gap-4 mb-5">
+        <div className="flex flex-wrap items-center gap-4 mb-5" data-reveal data-reveal-delay="80">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-ink/60 whitespace-nowrap">生活费档次</span>
-            <div className="flex rounded-lg border border-line/60 overflow-hidden">
+            <span className="text-caption font-medium text-text-secondary whitespace-nowrap">生活费档次</span>
+            <div className="flex overflow-hidden rounded-control border border-border-soft">
               {LIVING_TIERS.map((t) => (
                 <button key={t.id} onClick={() => setTierId(t.id)}
-                  className={"px-3 py-1.5 text-xs font-medium transition-colors " + (tierId === t.id ? "bg-ink text-panel" : "bg-white text-ink/50 hover:bg-ink/5")}>{t.label}</button>
+                  aria-pressed={tierId === t.id}
+                  className={"px-3 py-1.5 text-caption font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring " + (tierId === t.id ? "bg-ink text-paper" : "bg-surface-1 text-text-secondary hover:bg-surface-2 hover:text-text-primary")}>{t.label}</button>
               ))}
             </div>
-            <span className="text-[10px] text-ink/40">{tier.desc}</span>
+            <span className="text-[10px] text-text-muted">{tier.desc}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-xs text-ink/40">
-            <DollarSign size={12} /><span>汇率 {EXCHANGE_RATE}</span>
+          <div className="flex items-center gap-1.5 text-caption text-text-muted">
+            <DollarSign size={12} aria-hidden="true" /><span>汇率 {EXCHANGE_RATE}</span>
           </div>
         </div>
 
         {/* University Selector */}
-        <div className="flex flex-wrap items-center gap-2 mb-5">
+        <div className="flex flex-wrap items-center gap-2 mb-5" data-reveal data-reveal-delay="160">
           {selected.map((u, i) => {
             const total = totalsById.get(u.id) ?? null;
-            const bar = total !== null ? BAR_COLORS[i % 3] : "bg-line/60";
+            const bar = total !== null ? BAR_COLORS[i % 3] : "bg-border-soft";
             return (
-              <span key={u.id} className={"inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-panel " + bar}>
+              <span key={u.id} className={"inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-caption font-medium text-paper " + bar}>
                 {u.chineseName}
                 {total === null && (
-                  <span className="ml-1 rounded-full bg-panel/30 px-1.5 py-0.5 text-[9px] font-normal">
+                  <span className="ml-1 rounded-full bg-paper/25 px-1.5 py-0.5 text-[9px] font-normal" title="学费尚未收录到该校的可用数据源">
                     数据补充中
                   </span>
                 )}
-                <button onClick={() => removeUni(u.id)} className="opacity-60 hover:opacity-100"><X size={12} /></button>
+                <button type="button" onClick={() => removeUni(u.id)} aria-label={"移除 " + u.chineseName} className="opacity-70 transition-opacity hover:opacity-100"><X size={12} aria-hidden="true" /></button>
               </span>
             );
           })}
@@ -186,13 +189,13 @@ export default function CalculatorPage() {
 
         {/* Empty */}
         {selectedIds.length === 0 && (
-          <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-line/40 bg-white/40 py-16 text-center">
-            <Calculator size={48} className="text-ink/10 mb-4" />
-            <p className="text-sm text-ink/55">请添加大学开始预算计算</p>
+          <div className="flex flex-col items-center justify-center rounded-overlay border-2 border-dashed border-border-soft bg-surface-1 py-16 text-center" data-reveal data-reveal-delay="240">
+            <Calculator size={48} className="mb-4 text-border-soft" aria-hidden="true" />
+            <p className="text-body text-text-secondary">请添加大学开始预算计算</p>
             <button
               type="button"
               onClick={() => setPickerOpen(true)}
-              className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-cobalt/40 bg-cobalt px-4 py-2 text-xs font-semibold text-panel transition hover:bg-cobalt/90 focus-visible:ring-2 focus-visible:ring-cobalt/50"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-control border border-cobalt/40 bg-cobalt px-4 py-2 text-caption font-semibold text-paper transition hover:bg-cobalt/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
             >
               <Plus size={14} aria-hidden="true" />
               选择第一所大学
@@ -215,53 +218,63 @@ export default function CalculatorPage() {
                 const adjT = Math.round(tier.transport * costMult);
                 const living = adjH + adjF + adjT;
                 return (
-                  <div key={u.id} className="rounded-xl border border-line/50 bg-white/90 shadow-sm overflow-hidden">
-                    <div className={"px-4 py-2.5 text-panel text-sm font-medium flex items-center justify-between " + BAR_COLORS[i % 3]}>
+                  <div
+                    key={u.id}
+                    className="page-motion-card overflow-hidden rounded-card border border-border-soft bg-surface-1 shadow-sm"
+                    data-reveal
+                    data-reveal-delay={i === 0 ? undefined : i === 1 ? "80" : "160"}
+                  >
+                    <div className={"flex items-center justify-between px-4 py-2.5 text-body font-medium text-paper " + BAR_COLORS[i % 3]}>
                       <span>{u.chineseName}</span>
-                      <button onClick={() => removeUni(u.id)} className="opacity-60 hover:opacity-100"><X size={14} /></button>
+                      <button type="button" onClick={() => removeUni(u.id)} aria-label={"移除 " + u.chineseName} className="opacity-70 transition-opacity hover:opacity-100"><X size={14} aria-hidden="true" /></button>
                     </div>
-                    <div className="text-[10px] px-4 pb-2 -mt-1 opacity-70 text-panel/80 font-normal">{u.name} · {u.city ?? "—"}, {u.state ?? "—"}</div>
+                    <div className={"-mt-1 px-4 pb-2 text-[10px] font-normal text-paper/80 " + BAR_COLORS[i % 3]}>{u.name} · {u.city ?? "—"}, {u.state ?? "—"}</div>
                     <div className="p-4 space-y-2">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-ink/60">学费</span>
-                        <span className={"font-medium tabular-nums " + (tuitionLabel.kind === "empty" ? "text-ink/40" : "text-ink")}>
+                      <div className="flex justify-between text-caption">
+                        <span className="text-text-secondary">学费</span>
+                        <span className={"font-medium tabular-nums " + (tuitionLabel.kind === "empty" ? "text-text-muted" : "text-text-primary")}>
                           {tuitionLabel.label}
                         </span>
                       </div>
-                      <div className="h-px bg-line/30" />
-                      <div className="text-[10px] font-medium text-ink/40 uppercase tracking-wide">生活费 · {TIER_LIVING_LABELS[tierId].label}</div>
+                      <div className="h-px bg-border-soft" />
+                      <div className="text-[10px] font-medium uppercase tracking-wide text-text-muted">生活费 · {TIER_LIVING_LABELS[tierId].label}</div>
                       {TIER_LIVING_LABELS[tierId].items.map((item) => (
-                        <div key={item.key} className="flex justify-between text-xs">
-                          <span className="text-ink/60">{item.label}</span>
+                        <div key={item.key} className="flex justify-between text-caption">
+                          <span className="text-text-secondary">{item.label}</span>
                           <span className="tabular-nums">¥{Math.round((tier as unknown as Record<string, number>)[item.key] * costMult).toLocaleString()}</span>
                         </div>
                       ))}
-                      <div className="flex justify-between text-xs bg-ink/3 -mx-4 px-4 py-1">
-                        <span className="font-medium text-ink/60">小计</span>
+                      <div className="-mx-4 flex justify-between bg-surface-2 px-4 py-1 text-caption">
+                        <span className="font-medium text-text-secondary">小计</span>
                         <span className="font-medium tabular-nums">¥{living.toLocaleString()}</span>
-                        <span className="text-[9px] text-ink/40 ml-2">cost: {COST_LEVEL(costMult)}</span>
+                        <span className="ml-2 text-[9px] text-text-muted">cost: {COST_LEVEL(costMult)}</span>
                       </div>
-                      <div className="h-px bg-line/30" />
-                      <div className="text-[10px] font-medium text-ink/40 uppercase tracking-wide">其他固定费用</div>
+                      <div className="h-px bg-border-soft" />
+                      <div className="text-[10px] font-medium uppercase tracking-wide text-text-muted">其他固定费用</div>
                       {STANDARD_COSTS.map((c) => (
-                        <div key={c.label} className="flex justify-between text-xs">
-                          <span className="flex items-center gap-1 text-ink/60"><c.icon size={10} />{c.label}</span>
+                        <div key={c.label} className="flex justify-between text-caption">
+                          <span className="flex items-center gap-1 text-text-secondary"><c.icon size={10} aria-hidden="true" />{c.label}</span>
                           <span className="tabular-nums">¥{c.amount.toLocaleString()}</span>
                         </div>
                       ))}
-                      <div className="h-px bg-line/30" />
+                      <div className="h-px bg-border-soft" />
                       <div className="flex items-center justify-between pt-1">
-                        <span className="text-sm font-bold text-ink">年度总费用</span>
+                        <span className="text-body font-bold text-text-primary">年度总费用</span>
                         <div className="text-right">
                           {hasCost ? (
                             <>
-                              <div className="text-base font-bold tabular-nums">¥{(total as number).toLocaleString()}</div>
-                              <div className="text-[10px] text-ink/40 tabular-nums">${Math.round((total as number) / EXCHANGE_RATE).toLocaleString()} USD</div>
+                              <div className="text-base font-bold tabular-nums text-text-primary">
+                                ¥
+                                <span data-counter={String(total as number)} data-counter-format="locale">
+                                  {(total as number).toLocaleString()}
+                                </span>
+                              </div>
+                              <div className="text-[10px] tabular-nums text-text-muted">${Math.round((total as number) / EXCHANGE_RATE).toLocaleString()} USD</div>
                             </>
                           ) : (
                             <>
-                              <div className="text-sm font-medium text-ink/40">{TUITION_EMPTY_LABEL}</div>
-                              <div className="text-[10px] text-ink/30">该学校未参与费用对比</div>
+                              <div className="text-body font-medium text-text-muted">{TUITION_EMPTY_LABEL}</div>
+                              <div className="text-[10px] text-text-muted">该学校未参与费用对比</div>
                             </>
                           )}
                         </div>
@@ -269,10 +282,10 @@ export default function CalculatorPage() {
 
                       {/* Calculation breakdown */}
                       <details className="group mt-2">
-                        <summary className="cursor-pointer text-[10px] text-ink/30 hover:text-ink/60 transition-colors select-none">
+                        <summary className="cursor-pointer select-none text-[10px] text-text-muted transition-colors hover:text-text-secondary">
                           查看计算过程
                         </summary>
-                        <div className="mt-2 pt-2 border-t border-dashed border-line/30 space-y-1 text-[10px] text-ink/40">
+                        <div className="mt-2 space-y-1 border-t border-dashed border-border-soft pt-2 text-[10px] text-text-muted">
                           <div className="flex justify-between">
                             <span>学费（固定）</span>
                             <span>{tuitionLabel.label}</span>
@@ -281,12 +294,12 @@ export default function CalculatorPage() {
                             <span>生活费基数 × {costMult.toFixed(2)}</span>
                             <span>¥{(adjH + adjF + adjT).toLocaleString()}</span>
                           </div>
-                          <div className="text-[9px] pl-2 text-ink/20">住宿 ¥{adjH.toLocaleString()} + 餐饮 ¥{adjF.toLocaleString()} + 交通 ¥{adjT.toLocaleString()}</div>
-                          <div className="text-[9px] pl-2 text-ink/20">系数来源: 州收入水平 → {COST_LEVEL(costMult)} = {costMult.toFixed(2)}</div>
+                          <div className="pl-2 text-[9px] text-text-muted">住宿 ¥{adjH.toLocaleString()} + 餐饮 ¥{adjF.toLocaleString()} + 交通 ¥{adjT.toLocaleString()}</div>
+                          <div className="pl-2 text-[9px] text-text-muted">系数来源: 州收入水平 → {COST_LEVEL(costMult)} = {costMult.toFixed(2)}</div>
                           <div className="flex justify-between"><span>医疗保险（固定）</span><span>¥{STANDARD_COSTS[0].amount.toLocaleString()}</span></div>
                           <div className="flex justify-between"><span>往返机票（固定）</span><span>¥{STANDARD_COSTS[1].amount.toLocaleString()}</span></div>
                           <div className="flex justify-between"><span>签证费用（固定）</span><span>¥{STANDARD_COSTS[2].amount.toLocaleString()}</span></div>
-                          <div className="border-t border-dotted border-line/20 pt-1 flex justify-between font-medium text-ink/60">
+                          <div className="flex justify-between border-t border-dotted border-border-soft pt-1 font-medium text-text-secondary">
                             <span>总计</span>
                             <span>{hasCost ? `¥${(total as number).toLocaleString()}` : TUITION_EMPTY_LABEL}</span>
                           </div>
@@ -311,8 +324,8 @@ export default function CalculatorPage() {
 
             {/* Comparison bars */}
             {selected.length >= 2 && (
-              <div className="mt-6 rounded-xl border border-line/50 bg-white/90 shadow-sm p-5">
-                <h3 className="text-sm font-semibold text-ink mb-4">总费用对比</h3>
+              <div className="mt-6 rounded-card border border-border-soft bg-surface-1 p-5 shadow-sm" data-reveal data-reveal-delay="160">
+                <h3 className="mb-4 text-body font-semibold text-text-primary">总费用对比</h3>
                 <div className="space-y-3">
                   {selected.map((u, i) => {
                     const total = totalsById.get(u.id) ?? null;
@@ -327,12 +340,15 @@ export default function CalculatorPage() {
                     const pct = (total / maxTotal) * 100;
                     return (
                       <div key={u.id}>
-                        <div className="flex items-center justify-between text-xs mb-1">
-                          <span className="font-medium text-ink/70">{u.chineseName}</span>
+                        <div className="mb-1 flex items-center justify-between text-caption">
+                          <span className="font-medium text-text-secondary">{u.chineseName}</span>
                           <span className="tabular-nums font-medium">¥{total.toLocaleString()}</span>
                         </div>
-                        <div className="h-3 bg-ink/5 rounded-full overflow-hidden">
-                          <div className={"h-full rounded-full transition-all " + BAR_COLORS[i % 3]} style={{ width: pct + "%" }} />
+                        <div className="h-3 overflow-hidden rounded-full bg-surface-2">
+                          <div
+                            className={"h-full rounded-full transition-[width] duration-[620ms] ease-out motion-reduce:transition-none " + BAR_COLORS[i % 3]}
+                            style={{ width: pct + "%" }}
+                          />
                         </div>
                       </div>
                     );
@@ -342,9 +358,9 @@ export default function CalculatorPage() {
             )}
 
             {/* Actions */}
-            <div className="mt-6 flex gap-3">
-              <button onClick={handleCopy} className="inline-flex items-center gap-2 rounded-lg border border-line/60 bg-white px-4 py-2 text-xs font-medium text-ink/60 hover:text-ink hover:border-ink/20 transition-colors">
-                {copied ? <Check size={14} className="text-jade" /> : <Copy size={14} />}
+            <div className="mt-6 flex gap-3" data-reveal data-reveal-delay="240">
+              <button type="button" onClick={handleCopy} className="inline-flex items-center gap-2 rounded-control border border-border-soft bg-surface-1 px-4 py-2 text-caption font-medium text-text-secondary transition-colors hover:border-cobalt/40 hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring">
+                {copied ? <Check size={14} className="text-jade" aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
                 {copied ? "已复制" : "复制结果"}
               </button>
             </div>
@@ -364,7 +380,8 @@ export default function CalculatorPage() {
         onPick={(id) => addUni(id)}
         storageKey="pathos:calculator:picker:query"
       />
-    </div>
+      </div>
+    </PageMotion>
   );
 }
 

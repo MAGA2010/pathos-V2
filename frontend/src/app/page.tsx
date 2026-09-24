@@ -7,11 +7,28 @@ import {
   BookOpen,
   Calculator,
   ClipboardCheck,
+  Database,
+  FileSearch,
+  Globe2,
+  Layers3,
   Map,
   SlidersHorizontal,
 } from "lucide-react";
 import { FlipModuleCard } from "@/components/home/FlipModuleCard";
+import { ChapterNav } from "@/components/home/ChapterNav";
+import HomeScrollFx from "@/components/home/HomeScrollFx";
+import HeroTilt from "@/components/home/HeroTilt";
+import { SourceReconciliationSection } from "@/components/home/SourceReconciliationSection";
+import { SchoolSpotlightSection } from "@/components/home/SchoolSpotlightSection";
+import { DataInsightsSection } from "@/components/home/DataInsightsSection";
+import { FeaturedSchoolsSection } from "@/components/home/FeaturedSchoolsSection";
+import { DataCoverageDashboard } from "@/components/home/DataCoverageDashboard";
+import { LatestUpdatesSection } from "@/components/home/LatestUpdatesSection";
+import { TopicTilesSection } from "@/components/home/TopicTilesSection";
+import { ValuePropositionSection } from "@/components/home/ValuePropositionSection";
+import { FAQSection } from "@/components/home/FAQSection";
 import styles from "./home.module.css";
+import "./home-fx.css";
 
 export const metadata: Metadata = {
   title: "PathOS — 面向中国家庭的留学选校数据平台",
@@ -92,6 +109,54 @@ const VERIFIED_BOUNDARY = [
   ["4", "项州级区域指标"],
 ] as const;
 
+const DATA_SOURCES = [
+  {
+    eyebrow: "PRIMARY",
+    title: "Common Data Set",
+    description: "院校每年发布的标准化数据集，是录取率、SAT 区间与费用的官方起点。",
+    icon: Database,
+  },
+  {
+    eyebrow: "OFFICIAL",
+    title: "学校官网 & 公告",
+    description: "项目、学费、政策变化以官网为准；我们逐条对齐发布日期与原文。",
+    icon: FileSearch,
+  },
+  {
+    eyebrow: "REGIONAL",
+    title: "IPEDS / 州级数据",
+    description: "美国教育统计中心 IPEDS 提供州级就业、安全、生活成本等区域指标。",
+    icon: Globe2,
+  },
+  {
+    eyebrow: "RANKINGS",
+    title: "US News / QS / THE",
+    description: "三大排名仅作为调和位次的输入，原始数据优先，调和方法透明可查。",
+    icon: Layers3,
+  },
+] as const;
+
+const HOWTO_STEPS = [
+  {
+    title: "从地图开始浏览",
+    description: "在真实 Preview 数据上查看 62 所院校与州级区域指标，建立第一印象。",
+    href: "/entry/map",
+    cta: "打开留学地图",
+  },
+  {
+    title: "用自主匹配收敛候选",
+    description: "把家庭关心的权重（学费、录取率、区域）调成可解释的数字，得到 3-6 所候选。",
+    href: "/entry/match",
+    cta: "开始自主匹配",
+  },
+  {
+    title: "用评估形成问题清单",
+    description: "对每所候选，让 AI 整理出还需要家庭讨论的问题，由人来做最终判断。",
+    href: "/entry/assessment",
+    cta: "查看 AI 评估",
+  },
+];
+
 function WaveField() {
   const paths = Array.from({ length: 15 }, (_, index) => {
     const y = 58 + index * 14;
@@ -117,8 +182,22 @@ function WaveField() {
 
 export default function HomePage() {
   return (
-    <main className={styles.root} data-integration-source="hybrid-visual-extraction">
-      <section className={styles.hero} aria-labelledby="home-title">
+    <main className={styles.root} data-integration-source="hybrid-visual-extraction" data-home-root="true">
+      <div className={styles.scrollProgress} aria-hidden="true" data-scroll-progress>
+        <span className={styles.scrollProgressBar} />
+      </div>
+
+      <ChapterNav />
+      <HomeScrollFx />
+      <HeroTilt />
+
+      {/* 01/14 — Hero */}
+      <section
+        className={styles.hero}
+        aria-labelledby="home-title"
+        data-section="hero"
+        data-chapter-target="hero"
+      >
         <div className={styles.heroEarth} aria-hidden="true" />
         <div className={styles.heroGrid} aria-hidden="true" />
         <WaveField />
@@ -129,7 +208,7 @@ export default function HomePage() {
             <span>PREVIEW / 2026</span>
           </div>
 
-          <div className={styles.heroBody}>
+          <div className={styles.heroBody} data-hero-tilt="true">
             <div className={styles.bracketLeft} aria-hidden="true" />
             <p className={styles.kicker}>PATHOS / 路径与选择</p>
             <h1 id="home-title" className={styles.wordmark}>
@@ -155,22 +234,40 @@ export default function HomePage() {
             数据不是答案，而是让每一次家庭讨论更接近事实。
           </p>
         </div>
+
+        <div className={styles.scrollHint} aria-hidden="true" data-reveal="true" data-reveal-delay="400">
+          <span className={styles.scrollHintLine} />
+          <span className={styles.scrollHintText}>SCROLL</span>
+        </div>
       </section>
 
-      <section className={styles.boundary} aria-labelledby="boundary-title">
-        <div className={styles.sectionHeading}>
+      {/* 02/14 — Verified Boundary */}
+      <section
+        className={styles.boundary}
+        aria-labelledby="boundary-title"
+        data-section="boundary"
+        data-chapter-target="boundary"
+      >
+        <div className={styles.sectionHeading} data-reveal="true">
           <p>VERIFIED PREVIEW</p>
-          <h2 id="boundary-title">从可信边界开始，而不是从承诺开始。</h2>
+          <h2 id="boundary-title" data-reveal="true" data-heading-stagger="true">
+            从可信边界开始，而不是从承诺开始。
+          </h2>
           <p className={styles.sectionLead}>
             PathOS 将已验证事实、待补充信息与暂未开放能力明确区分。
           </p>
         </div>
 
         <dl className={styles.statGrid}>
-          {VERIFIED_BOUNDARY.map(([value, label]) => (
-            <div key={label} className={styles.statItem}>
+          {VERIFIED_BOUNDARY.map(([value, label], idx) => (
+            <div
+              key={label}
+              className={styles.statItem}
+              data-reveal="true"
+              data-reveal-delay={String(80 + idx * 80)}
+            >
               <dt>{label}</dt>
-              <dd>{value}</dd>
+              <dd data-counter={value}>{value}</dd>
             </div>
           ))}
         </dl>
@@ -180,30 +277,157 @@ export default function HomePage() {
         </p>
       </section>
 
-      <section className={styles.modules} aria-labelledby="modules-title">
-        <div className={styles.sectionHeading}>
+      {/* 03/14 — Modules */}
+      <section
+        className={styles.modules}
+        aria-labelledby="modules-title"
+        data-section="modules"
+        data-chapter-target="modules"
+      >
+        <div className={styles.sectionHeading} data-reveal="true">
           <p>ONE SYSTEM / DISTINCT CHAPTERS</p>
-          <h2 id="modules-title">把复杂选择拆成可以行动的七个章节。</h2>
+          <h2 id="modules-title" data-reveal="true" data-heading-stagger="true">
+            把复杂选择拆成可以行动的七个章节。
+          </h2>
         </div>
 
         <div className={styles.moduleGrid}>
-          {CORE_MODULES.map((module) => {
+          {CORE_MODULES.map((module, idx) => {
             const Icon = module.icon;
             return (
-              <FlipModuleCard
+              <div
                 key={module.href}
-                index={module.index}
-                eyebrow={module.eyebrow}
-                title={module.title}
-                description={module.description}
-                reveal={module.reveal}
-                href={module.href}
-                icon={<Icon aria-hidden="true" size={24} />}
-              />
+                data-reveal="true"
+                data-reveal-delay={String(idx * 70)}
+              >
+                <FlipModuleCard
+                  index={module.index}
+                  eyebrow={module.eyebrow}
+                  title={module.title}
+                  description={module.description}
+                  reveal={module.reveal}
+                  href={module.href}
+                  icon={<Icon aria-hidden="true" size={24} />}
+                />
+              </div>
             );
           })}
         </div>
       </section>
+
+      {/* 04/14 — Sources */}
+      <section
+        className={styles.sources}
+        aria-labelledby="sources-title"
+        data-section="sources"
+        data-chapter-target="sources"
+      >
+        <span className={styles.chapterMarker} aria-hidden="true">04 / 14</span>
+        <div className={styles.sectionHeading} data-reveal="true">
+          <p>DATA SOURCES</p>
+          <h2 id="sources-title" data-reveal="true" data-heading-stagger="true">
+            四个数据来源，每一项都可点回原文。
+          </h2>
+          <p className={styles.sectionLead}>
+            录取率、SAT 区间、费用、区域指标——每一项都来自下方四个来源之一。
+          </p>
+        </div>
+
+        <ul className={styles.sourcesGrid}>
+          {DATA_SOURCES.map((srcItem, idx) => {
+            const Icon = srcItem.icon;
+            return (
+              <li
+                key={srcItem.title}
+                className={styles.sourceCard}
+                data-reveal="true"
+                data-reveal-delay={String(idx * 90)}
+              >
+                <span className={styles.sourceEyebrow}>{srcItem.eyebrow}</span>
+                <span className={styles.sourceIcon}>
+                  <Icon aria-hidden="true" size={26} />
+                </span>
+                <h3 className={styles.sourceTitle}>{srcItem.title}</h3>
+                <p className={styles.sourceDescription}>{srcItem.description}</p>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      {/* 05/14 — Source Reconciliation */}
+      <SourceReconciliationSection />
+
+      {/* 06/14 — School Spotlight */}
+      <SchoolSpotlightSection />
+
+      {/* 07/14 — Data Insights */}
+      <DataInsightsSection />
+
+      {/* 08/14 — Featured Schools */}
+      <FeaturedSchoolsSection />
+
+      {/* 09/14 — Coverage Dashboard */}
+      <DataCoverageDashboard />
+
+      {/* 10/14 — Latest Updates */}
+      <LatestUpdatesSection />
+
+      {/* 11/14 — Topic Tiles */}
+      <TopicTilesSection />
+
+      {/* 12/14 — Value Proposition */}
+      <ValuePropositionSection />
+
+      {/* 13/14 — How to start */}
+      <section
+        className={styles.howto}
+        aria-labelledby="howto-title"
+        data-section="howto"
+        data-chapter-target="howto"
+      >
+        <div className={styles.sectionHeading} data-reveal="true">
+          <p className={styles.chapterMarker}>13 / 14</p>
+          <h2 id="howto-title" data-reveal="true" data-heading-stagger="true">
+            从这里开始：3 步进入 PathOS。
+          </h2>
+          <p className={styles.sectionLead}>
+            不需要先做选择题。先用地图看，再用匹配收敛，最后让评估整理出家庭需要讨论的问题。
+          </p>
+        </div>
+
+        <ol className={styles.howtoList}>
+          {HOWTO_STEPS.map((step, idx) => (
+            <li
+              key={step.title}
+              className={styles.howtoItem}
+              data-reveal="true"
+              data-reveal-delay={String(idx * 110)}
+            >
+              <span className={styles.howtoIndex} aria-hidden="true">
+                0{idx + 1}
+              </span>
+              <h3 className={styles.howtoStepTitle}>{step.title}</h3>
+              <p className={styles.howtoDescription}>{step.description}</p>
+              <Link href={step.href} className={styles.howtoCta}>
+                {step.cta} <ArrowUpRight aria-hidden="true" size={14} />
+              </Link>
+            </li>
+          ))}
+        </ol>
+
+        <div className={styles.howtoFooter} data-reveal="true" data-reveal-delay="200">
+          <Link href="/entry/map" className={styles.howtoPrimaryCta}>
+            先打开留学地图
+          </Link>
+          <Link href="/about" className={styles.howtoSecondaryCta}>
+            了解 PathOS 的方法论
+          </Link>
+        </div>
+      </section>
+
+      {/* 14/14 — FAQ */}
+      <FAQSection />
     </main>
   );
 }

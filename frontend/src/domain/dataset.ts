@@ -1,3 +1,6 @@
+import type { GuidePreview } from "@/lib/guide-preview";
+import type { TimeSeriesPoint } from "@/types/timeseries";
+
 // PathOS — domain types for the data layer.
 // These describe records the backend data source is expected to provide.
 // The legacy `frontend/src/lib/types.ts` types (legacy UI shapes) are kept
@@ -144,6 +147,13 @@ export interface UniversitySummary {
   datasetVersion: string;
   sourceCommit?: string;
   nullableFields: string[];
+  /** Compact preview extracted from the IECG docx-driven CollegeGuide
+   *  for the same university, if the upstream bundle has a linked
+   *  profile. Surfaced by map markers, hover tooltips, calculator,
+   *  assessment and guide cards so parents/counselors see facts
+   *  instead of '数据补充中'. Optional — only present when the
+   *  upstream bundle contains a matching CollegeGuide. */
+  guidePreview?: GuidePreview;
 }
 
 export interface UniversityDetail extends UniversitySummary {
@@ -161,6 +171,8 @@ export interface UniversityDetail extends UniversitySummary {
   warnings: string[];
   qualityBadges: QualityBadge[];
   previewMetadata?: PreviewMetadata;
+  /** Optional v2 series. Missing means the source has not published a series yet. */
+  timeSeries?: TimeSeriesPoint[];
 }
 
 export interface PreviewField<T = unknown> {

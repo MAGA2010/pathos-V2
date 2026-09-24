@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import PageMotion from "@/components/shared/PageMotion";
 import Link from "next/link";
 import { AlertTriangle, Bookmark, Brain, Check, DollarSign, GraduationCap, Map, Percent, Shield, Sparkles, Target, TrendingUp, Users } from "lucide-react";
 import { useDataSource } from "@/services/data-source-provider";
@@ -35,6 +36,15 @@ const formatRmb = (value: number | null | undefined) => {
   if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) return "学费数据补充中";
   return "¥" + Math.round(value / 10000) + "万";
 };
+// IECG fill (P1): when the upstream CollegeGuide carries an explicit
+// tuition band (e.g. "$86,700"), surface it directly. The Match
+// screen's per-school card is the canonical place parents see the
+// figure, so we avoid "学费数据补充中" whenever we can.
+function formatRmbWithGuide(usd: number | null | undefined, gp?: { tuition?: { total?: string } } | null): string {
+  const total = gp?.tuition?.total;
+  if (total) return `${total}/年`;
+  return formatRmb(usd);
+}
 
 function getMetricMap(metricId: string, records: readonly any[]) {
   return records.reduce<Record<string, number>>((acc, item) => {
@@ -214,15 +224,16 @@ export default function SmartMatchPage() {
   const totalWeight = DIMENSIONS.reduce((sum, dim) => sum + weights[dim.key], 0);
 
   return (
+    <PageMotion>
     <div className="min-h-screen bg-surface-base">
-      <header className="border-b border-border-soft bg-surface-1/70 backdrop-blur">
+      <header data-reveal="true" className="border-b border-border-soft bg-surface-1/70 backdrop-blur">
         <div className="mx-auto flex max-w-page flex-wrap items-center gap-3 px-4 py-3 sm:gap-4 sm:px-6">
           <div className="grid h-9 w-9 shrink-0 place-items-center rounded-control bg-ink text-paper">
             <Sparkles size={18} aria-hidden="true" />
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-label uppercase tracking-[0.12em] text-cobalt/80">自主测验</p>
-            <h1 className="text-page text-text-primary">拉取你的百分比与权重</h1>
+            <h1 data-heading-stagger="true" className="text-page text-text-primary">拉取你的百分比与权重</h1>
             <p className="mt-0.5 text-caption text-text-secondary">
               学生先定义六维百分比，再与每所学校的数据百分比做匹配。
             </p>
@@ -237,8 +248,8 @@ export default function SmartMatchPage() {
       </header>
 
       <main className="mx-auto grid max-w-page gap-6 px-4 py-5 lg:grid-cols-[360px_1fr] sm:px-6">
-        <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
-          <section className="rounded-card border border-border-soft bg-surface-1 p-4 shadow-pop">
+        <aside data-reveal="true" data-reveal-delay="80" className="space-y-4 lg:sticky lg:top-20 lg:self-start">
+          <section data-reveal="true" data-reveal-delay="120" className="rounded-card border border-border-soft bg-surface-1 p-4 shadow-pop">
             <div className="mb-4 flex items-start justify-between gap-3">
               <div>
                 <p className="text-label uppercase tracking-[0.12em] text-jade">学生百分比</p>
@@ -306,6 +317,11 @@ export default function SmartMatchPage() {
           <div className="grid gap-3">
             {matches.map((university, index) => {
               const tone = university.match >= 86 ? "text-jade" : university.match >= 72 ? "text-cobalt" : "text-persimmon";
+              // IECG fill (P1): derive the per-school cost + quick-stats from the parsed CollegeGuide.
+              const gpTuit = university?.guidePreview?.tuition?.total;
+              const sfrM = university?.guidePreview?.studentFacultyRatio;
+              const grad4M = university?.guidePreview?.graduationRate4Yr;
+              const sysM = university?.guidePreview?.academicSystem;
               // Stage 7A — read `costSummary.minimumUsd` instead of
               // the legacy `annualCostRmb` field that no longer exists.
               const minUsd = typeof university?.costSummary?.minimumUsd === "number" ? university.costSummary.minimumUsd : null;
@@ -326,10 +342,20 @@ export default function SmartMatchPage() {
                       <div className="mt-1 flex flex-wrap items-center gap-2 text-caption text-text-secondary">
                         <span>{university.city}, {university.state}</span>
                         <span aria-hidden="true">·</span>
-                        <span>{formatRmb(costRmbForDisplay)}/年</span>
+
+<span>{formatRmbWithGuide(costRmbForDisplay, university?.guidePreview)}/年</span>
                         <span aria-hidden="true">·</span>
                         <span>安全 {safetyLabel}</span>
                       </div>
+                      {/* IECG fill (P1): surface 师生比 / 4 年毕业率 / 学制 as a secondary
+                          strip so counselors can read it without expanding. */}
+                      {(sfrM || grad4M || sysM) && (
+                        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-ink/55">
+                          {sfrM && <span>师生比 {sfrM}</span>}
+                          {grad4M && <span>4 年毕业率 {grad4M}</span>}
+                          {sysM && <span>学制 {sysM}</span>}
+                        </div>
+                      )}
                       <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
                         {DIMENSIONS.map((dim) => {
                           const schoolValue = university.school[dim.key];
@@ -361,5 +387,6 @@ export default function SmartMatchPage() {
         </section>
       </main>
     </div>
+    </PageMotion>
   );
 }

@@ -9,6 +9,15 @@ import {
   DataUnavailableState,
   DataEmptyState,
 } from "@/components/shared/data-states";
+import PageMotion from "@/components/shared/PageMotion";
+
+const POPULAR_FALLBACK: Uni[] = [
+  { id: "fb-princeton", slug: "princeton-university", name: "普林斯顿大学", nameEn: "Princeton University", country: "美国", countryCode: "US", rank: 1, logoUrl: "" },
+  { id: "fb-mit", slug: "massachusetts-institute-of-technology", name: "麻省理工学院", nameEn: "Massachusetts Institute of Technology", country: "美国", countryCode: "US", rank: 2, logoUrl: "" },
+  { id: "fb-stanford", slug: "stanford-university", name: "斯坦福大学", nameEn: "Stanford University", country: "美国", countryCode: "US", rank: 3, logoUrl: "" },
+  { id: "fb-harvard", slug: "harvard-university", name: "哈佛大学", nameEn: "Harvard University", country: "美国", countryCode: "US", rank: 4, logoUrl: "" },
+  { id: "fb-yale", slug: "yale-university", name: "耶鲁大学", nameEn: "Yale University", country: "美国", countryCode: "US", rank: 5, logoUrl: "" },
+];
 
 interface Uni { id: string; slug: string; name: string; nameEn: string; country: string; countryCode: string; rank: number; logoUrl: string; }
 
@@ -26,7 +35,9 @@ const COUNTRY_FLAGS: Record<string, string> = {
 };
 
 export default function XuanxiaoPage() {
-  const [unis, setUnis] = useState<Uni[]>([]);
+  // First-paint shows a curated short list so the grid never feels empty
+  // during the cold API request; real data replaces this list as soon as it lands.
+  const [unis, setUnis] = useState<Uni[]>(POPULAR_FALLBACK);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
@@ -59,19 +70,20 @@ export default function XuanxiaoPage() {
   });
 
   return (
+    <PageMotion>
     <div className="min-h-screen bg-surface-base">
-      <header className="border-b border-border-soft bg-surface-1/70 backdrop-blur">
+      <header className="border-b border-border-soft bg-surface-1/70 backdrop-blur" data-reveal="true">
         <div className="mx-auto flex max-w-page items-center gap-3 px-4 py-3 sm:px-6">
           <div className="grid h-8 w-8 shrink-0 place-items-center rounded-control bg-cobalt text-paper"><Globe size={16} aria-hidden="true" /></div>
           <div className="min-w-0 flex-1">
             <p className="text-label uppercase tracking-[0.12em] text-cobalt">全球大学库</p>
-            <h1 className="text-page text-text-primary">数据合作方 · 选校</h1>
+            <h1 className="text-page text-text-primary" data-heading-stagger="true">数据合作方 · 选校</h1>
           </div>
           <Link href="/match" className="ml-auto text-caption font-semibold text-cobalt hover:underline">← 返回自主测验</Link>
         </div>
       </header>
       <main className="mx-auto max-w-page px-4 py-5 sm:px-6">
-        <div className="mb-6 flex flex-wrap gap-3">
+        <div data-reveal="true" data-reveal-delay="60" className="mb-6 flex flex-wrap gap-3">
           <div className="relative flex-1 min-w-[200px]">
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink/30" />
             <input type="text" value={search} onChange={function(e) { setSearch(e.target.value); }}
@@ -90,8 +102,8 @@ export default function XuanxiaoPage() {
 
         {!loading && !error && (
           <>
-            <p className="mb-4 text-xs text-ink/40">共 {filtered.length} 所大学</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <p data-reveal="true" data-reveal-delay="120" className="mb-4 text-xs text-ink/40">共 <span data-counter={String(filtered.length)} data-counter-format="locale" className="page-motion-stat-value font-semibold text-cobalt">{filtered.length}</span> 所大学</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" data-reveal="true">
               {filtered.map(function(u) {
                 return (
                   <a key={u.id} href={"https://xuanxiao.org/universities/" + u.slug}
@@ -124,10 +136,11 @@ export default function XuanxiaoPage() {
           </>
         )}
 
-        <div className="mt-10 rounded-xl border border-line/40 bg-white/80 p-4 text-center text-xs text-ink/40">
+        <div data-reveal="true" data-reveal-delay="160" className="mt-10 rounded-xl border border-line/40 bg-white/80 p-4 text-center text-xs text-ink/40">
           数据由 <a href="https://xuanxiao.org" target="_blank" rel="noopener noreferrer" className="text-cobalt hover:underline">选校</a> 提供 · 点击卡片查看详细排名和信息
         </div>
       </main>
     </div>
+    </PageMotion>
   );
 }

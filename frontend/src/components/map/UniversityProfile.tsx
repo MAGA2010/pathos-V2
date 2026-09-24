@@ -56,7 +56,23 @@ export function UniversityProfile({
   }, [onClose]);
 
   const tuition = tuitionRmbFromSummary(summary);
-  const costLabel = tuition !== null ? `¥${Math.round(tuition / 10000)}万/年` : "未报告";
+  // IECG fill (P1): prefer the explicit tuition band from the parsed
+  // CollegeGuide when present (e.g. "$65,800") over the USD-derived
+  // `costSummary.minimumUsd * 7.2` value. Fall through to the legacy
+  // derived number; only render "未报告" when both are missing.
+  const gpTuition = summary.guidePreview?.tuition?.total;
+  const costLabel = gpTuition
+    ? `${gpTuition}/年`
+    : tuition !== null
+      ? `¥${Math.round(tuition / 10000)}万/年`
+      : "未报告";
+  // IECG fill (P1): quick-stats (师生比 / 4年毕业率 / 保留率 / 截止日 / 学制)
+  const sfrLabel = summary.guidePreview?.studentFacultyRatio ?? "数据补充中";
+  const grad4Label = summary.guidePreview?.graduationRate4Yr ?? "数据补充中";
+  const retentionLabel = summary.guidePreview?.freshmanRetentionRate ?? "数据补充中";
+  const deadlineLabel = summary.guidePreview?.applicationDeadlines ?? "数据补充中";
+  const systemLabel = summary.guidePreview?.academicSystem ?? "数据补充中";
+  const curriculumUrl = summary.guidePreview?.curriculumUrl;
   const rankingTier = summary.rankingSummary?.rankingTier ?? summary.rankingTier ?? null;
   const rankingLabel = summary.rankingSummary?.rankingLabel ?? "未在当前排名范围";
   const nationalRank = summary.rankingSummary?.nationalRank ?? null;
@@ -155,6 +171,16 @@ export function UniversityProfile({
           } />
         </section>
 
+        {/* IECG fill (P1): secondary quick-stats row — only renders when
+            the guidePreview has at least one of these facts. */}
+        {summary.guidePreview?.hasData && (
+          <section className="grid grid-cols-3 gap-px border-b border-line/50 bg-line/20 text-[11px]">
+            <Stat icon={<Users size={11} aria-hidden="true" />} label="师生比" labelEn="Student:Faculty" value={sfrLabel} />
+            <Stat icon={<GraduationCap size={11} aria-hidden="true" />} label="4 年毕业率" labelEn="4-Yr Grad" value={grad4Label} />
+            <Stat icon={<Shield size={11} aria-hidden="true" />} label="大一保留率" labelEn="Retention" value={retentionLabel} />
+          </section>
+        )}
+
         {/* Detail area */}
         <section className="space-y-3 px-4 py-3 text-[12px]">
           {warnings.length > 0 && (
@@ -189,6 +215,31 @@ export function UniversityProfile({
               </ul>
             )}
           </div>
+
+          {/* IECG fill (P1): 申请要点 + 课程链接 — parents & counselors can read
+              deadlines / academic system at a glance. */}
+          {(deadlineLabel !== "数据补充中" || systemLabel !== "数据补充中" || curriculumUrl) && (
+            <div className="rounded-lg border border-cobalt/20 bg-cobalt/5 p-2.5 text-[11px] leading-relaxed text-ink/72">
+              <p className="flex items-center gap-1 font-semibold text-cobalt">
+                <Sparkles size={11} aria-hidden="true" /> 申请要点
+              </p>
+              <div className="mt-1 space-y-0.5">
+                {deadlineLabel !== "数据补充中" && (
+                  <p><span className="text-ink/44">申请截止 </span><span className="font-medium">{deadlineLabel}</span></p>
+                )}
+                {systemLabel !== "数据补充中" && (
+                  <p><span className="text-ink/44">学制 </span><span className="font-medium">{systemLabel}</span></p>
+                )}
+                {curriculumUrl && (
+                  <p>
+                    <a href={curriculumUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-medium text-cobalt hover:underline">
+                      <ExternalLink size={10} aria-hidden="true" /> 课程体系原文
+                    </a>
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Prose block: ranking summary, plus a "what we report" footer. */}
           <div className="rounded-lg bg-paper/80 p-2.5 text-[11px] leading-relaxed text-ink/65">

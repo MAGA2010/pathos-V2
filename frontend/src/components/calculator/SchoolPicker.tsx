@@ -60,7 +60,13 @@ function Row({ s, isSelected, isFocused, disabled, onPick, onHover }: RowProps) 
           <p className="truncate text-[10px] text-ink/55" lang="en">{s.name}</p>
         )}
         <p className="truncate text-[10px] text-ink/45">
-          {(s.city ?? "未报告") + (s.state ? " · " + s.state : "")}
+          {/* IECG fill (P1): when the canonical city is missing but the
+              CollegeGuide has a location sentence, surface the first
+              city mention (before the first 。) as a usable label. */}
+          {(() => {
+            const city = s.city || (s.guidePreview?.location?.split("。")[0]?.split("，")[0] ?? "");
+            return (city || "未报告") + (s.state ? " · " + s.state : "");
+          })()}
         </p>
       </div>
       {isSelected ? (

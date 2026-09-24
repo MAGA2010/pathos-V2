@@ -53,7 +53,12 @@ function parseUsd(s: string | undefined): number | null {
 
 function parseRange(s: string | undefined): { min: number | null; max: number | null } {
   if (!s) return { min: null, max: null };
-  const matches = [...s.matchAll(/([\d,]+(?:\.\d+)?)/g)].map(m => parseFloat(m[0].replace(/,/g, "")));
+  const pattern = /([\d,]+(?:\.\d+)?)/g;
+  const matches: number[] = [];
+  let match: RegExpExecArray | null;
+  while ((match = pattern.exec(s)) !== null) {
+    matches.push(parseFloat(match[0].replace(/,/g, "")));
+  }
   if (matches.length === 0) return { min: null, max: null };
   if (matches.length === 1) return { min: matches[0], max: matches[0] };
   return { min: Math.min(...matches), max: Math.max(...matches) };

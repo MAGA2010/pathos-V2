@@ -55,9 +55,17 @@ function readCostRmb(school: any): number | null {
   const direct = school?.annualCostRmb;
   if (typeof direct === "number" && Number.isFinite(direct) && direct > 0) return direct;
   const usd = school?.costSummary?.maximumUsd ?? school?.costSummary?.minimumUsd;
-  return typeof usd === "number" && Number.isFinite(usd) && usd > 0
-    ? Math.round(usd * 7.2)
-    : null;
+  if (typeof usd === "number" && Number.isFinite(usd) && usd > 0) return Math.round(usd * 7.2);
+  // IECG fill (P1): fall back to the parsed CollegeGuide tuition band.
+  const gpTotal = school?.guidePreview?.tuition?.total;
+  if (typeof gpTotal === "string") {
+    const m = gpTotal.match(/\$([\d,]+)/);
+    if (m) {
+      const usdFromGp = Number(m[1].replace(/,/g, ""));
+      if (Number.isFinite(usdFromGp) && usdFromGp > 0) return Math.round(usdFromGp * 7.2);
+    }
+  }
+  return null;
 }
 
 const LOCAL_AI_PORTFOLIO_DEMO: AnalysisResult = {
@@ -209,7 +217,7 @@ export default function PortfolioPage() {
                 costCount > 0 && !hasIncompleteCost
                   ? "¥" + Math.round(costSummary.sum / costCount / 10000) + "万"
                   : hasIncompleteCost
-                    ? "数据补充中"
+                    ? "部分学费数据补充中"
                     : "—"
               } />
               <Stat label="冲刺" value={roughTiers.reach} />
@@ -234,9 +242,13 @@ export default function PortfolioPage() {
             <div className="flex flex-wrap items-end justify-between gap-4"><div><p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-persimmon/75">当前清单</p><h2 className="mt-1 text-xl font-semibold text-ink">当前选校清单</h2><p className="mt-1 text-sm text-ink/50">运行数据驱动的冲刺 / 匹配 / 保底检查；结果不等同于录取概率。</p></div><Link href="/match" className="inline-flex items-center gap-2 rounded-full border border-line/60 bg-panel px-4 py-2 text-xs font-semibold text-ink/60 transition hover:border-cobalt/35 hover:text-cobalt"><Sparkles size={14} /> 从自主测验添加</Link></div>
             {schools.length === 0 ? <div className="mt-8 rounded-[1.4rem] border border-dashed border-line/70 bg-panel/60 p-10 text-center"><Bookmark size={32} className="mx-auto text-ink/20" /><h3 className="mt-3 text-base font-semibold text-ink/62">清单还是空的</h3><p className="mt-1 text-sm text-ink/42">先添加学校，或从自主测验结果加入清单。</p><button onClick={() => setShowAdd(true)} className="mt-5 rounded-full bg-ink px-5 py-2 text-sm font-semibold text-panel">添加学校</button></div> : <div className="mt-5 grid gap-3">{schools.map((school: any, index: number) => <article key={school.id} className="rounded-[1.4rem] border border-line/45 bg-panel/70 p-4 transition hover:border-cobalt/30 hover:bg-white"><div className="flex items-start gap-3"><div className="grid h-9 w-9 place-items-center rounded-2xl bg-ink text-xs font-bold text-panel">{index + 1}</div><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-2"><h3 className="text-sm font-semibold text-ink">{school.chineseName}</h3><span className="text-xs text-ink/38">{school.name}</span><span className="rounded-full bg-cobalt/8 px-2 py-0.5 text-[11px] font-semibold text-cobalt">{school.rankingTier}</span></div><p className="mt-1 text-xs text-ink/45">
                   {school.city}, {school.state} ·{" "}
-                  {readCostRmb(school) !== null
-                    ? `¥${Math.round((readCostRmb(school) as number) / 10000)}万/年`
-                    : "学费数据补充中"}{" "}
+                  {(() => {
+                    const rmb = readCostRmb(school);
+                    if (rmb !== null) return `¥${Math.round(rmb / 10000)}万/年`;
+                    const gp = school?.guidePreview?.tuition?.total;
+                    if (gp) return `${gp}/年`;
+                    return "学费数据补充中";
+                  })()}{" "}
                   · 加入于 {school.addedAt}
                 </p>{school.programs?.length > 0 && <div className="mt-3 flex flex-wrap gap-1.5">{school.programs.slice(0, 5).map((program: string) => <span key={program} className="rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-ink/45">{program}</span>)}</div>}</div><button onClick={() => removeSchool(school.id)} className="rounded-full p-1.5 text-ink/30 transition hover:bg-red-50 hover:text-red-500"><X size={15} /></button></div></article>)}</div>}
           </div>

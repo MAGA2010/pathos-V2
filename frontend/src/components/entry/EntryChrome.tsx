@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Compass, Crosshair, Radio, ScanLine } from "lucide-react";
 import type { ReactNode } from "react";
+import PageMotion from "@/components/shared/PageMotion";
 import styles from "./EntryChrome.module.css";
 
 type EntryChromeProps = {
@@ -53,7 +54,11 @@ export function EntryChrome({
         </div>
       </header>
 
-      <div className={styles.content}>{children}</div>
+      {/* Entry stages are single-screen, so PageMotion runs without its
+          scroll progress bar and back-to-top affordance. */}
+      <PageMotion className={styles.content} chrome={false}>
+        {children}
+      </PageMotion>
 
       <footer className={styles.footer}>
         <div className={styles.footerStatus}>

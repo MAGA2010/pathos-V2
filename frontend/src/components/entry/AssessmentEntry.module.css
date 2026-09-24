@@ -9,7 +9,7 @@
 .copy {
   width: min(100%, 1320px);
   margin-inline: auto;
-  animation: copy-arrive 1s 180ms ease both;
+  animation: copy-arrive 480ms 140ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .kicker {
@@ -55,7 +55,7 @@
   border: 1px solid rgba(236, 242, 238, 0.12);
   background: #0d1b25;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.48);
-  animation: carousel-arrive 1.2s 360ms ease both;
+  animation: carousel-arrive 540ms 280ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .slide {
@@ -249,7 +249,7 @@
 @keyframes carousel-arrive {
   from {
     opacity: 0;
-    transform: translate3d(0, 30px, 0) scale3d(0.98, 0.98, 1);
+    transform: translate3d(0, 22px, 0) scale3d(0.98, 0.98, 1);
   }
   to {
     opacity: 1;

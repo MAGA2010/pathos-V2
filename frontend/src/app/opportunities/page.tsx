@@ -2,6 +2,7 @@
 
 import "./opportunities.css";
 
+import * as React from "react";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -30,9 +31,13 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { NewsArticle } from "@/domain/dataset";
 import { useNews } from "@/hooks/use-data-source";
 import { DataUnavailableState } from "@/components/shared/data-states";
+import PageMotion from "@/components/shared/PageMotion";
 import { useDataSource } from "@/services/data-source-provider";
 
 const STORAGE_KEY = "pathos_followed_universities";
+
+// page-motion.css only implements discrete delay steps; anything else is ignored.
+const REVEAL_STEPS = ["80", "160", "240", "320", "400", "480"];
 
 const LABELS: Record<string, string> = {
   new_program: "新项目",
@@ -310,15 +315,16 @@ export default function OpportunitiesPage() {
   }
 
   return (
-    <main className="opp-root min-h-screen">
-      <div className="opp-page">
-        <header className="opp-header">
+    <PageMotion>
+      <main className="opp-root min-h-screen">
+      <div className="opp-page" data-section>
+        <header className="opp-header" data-reveal>
           <div>
             <p className="opp-eyebrow">PathOS / Opportunity Radar</p>
-            <h1 className="opp-title">机会动态</h1>
+            <h1 className="opp-title" data-heading-stagger>机会动态</h1>
             <p className="opp-description">把学校的重要变化整理成可以理解、可以核验、也可以行动的信息。</p>
           </div>
-          <div className="opp-sync" aria-live="polite">
+          <div className="opp-sync" aria-live="polite" data-reveal data-reveal-delay="160">
             <span className={"opp-status-dot " + (isError ? "is-error" : isLoading ? "is-loading" : "")} />
             <span>{isLoading ? "正在同步" : isError ? "暂时不可用" : "已同步"}</span>
             <span>·</span>
@@ -328,12 +334,12 @@ export default function OpportunitiesPage() {
 
         <section className="opp-metrics" aria-label="动态概览">
           <SummaryMetric label="已收录动态" value={metrics.total} />
-          <SummaryMetric label="新项目" value={metrics.newPrograms} />
-          <SummaryMetric label="30天内截止" value={metrics.upcoming} />
-          <SummaryMetric label="奖学金" value={metrics.scholarships} />
+          <SummaryMetric label="新项目" value={metrics.newPrograms} delay="80" />
+          <SummaryMetric label="30天内截止" value={metrics.upcoming} delay="160" />
+          <SummaryMetric label="奖学金" value={metrics.scholarships} delay="240" />
         </section>
 
-        <section className="opp-toolbar" aria-label="筛选与排序">
+        <section className="opp-toolbar" aria-label="筛选与排序" data-reveal data-reveal-delay="160">
           <div className="opp-toolbar-row">
             <label className="opp-search">
               <Search className="opp-search-icon" size={15} aria-hidden="true" />
@@ -405,7 +411,7 @@ export default function OpportunitiesPage() {
 
         {isReady && filtered.length > 0 && (
           <div className="opp-workspace">
-            <section className="opp-panel opp-list-panel" aria-labelledby="opportunity-list-title">
+            <section className="opp-panel opp-list-panel" aria-labelledby="opportunity-list-title" data-reveal data-reveal-delay="80">
               <div className="opp-section-header">
                 <div>
                   <p id="opportunity-list-title" className="opp-section-title">动态列表</p>
@@ -417,19 +423,20 @@ export default function OpportunitiesPage() {
                 </span>
               </div>
               <div className="opp-list">
-                {filtered.map((item) => (
+                {filtered.map((item, index) => (
                   <OpportunityRow
                     key={item.id}
                     item={item}
                     selected={item.id === selectedId}
                     followed={!!item.universityId && following.includes(item.universityId)}
                     onSelect={() => selectOpportunity(item.id)}
+                    revealDelay={REVEAL_STEPS[index]}
                   />
                 ))}
               </div>
             </section>
 
-            <div className="opp-detail-column">
+            <div className="opp-detail-column" data-reveal data-reveal-delay="160">
               {selectedArticle ? (
                 <OpportunityDetail
                   item={selectedArticle}
@@ -459,15 +466,16 @@ export default function OpportunitiesPage() {
           </>
         )}
       </div>
-    </main>
+      </main>
+    </PageMotion>
   );
 }
 
-function SummaryMetric({ label, value }: { label: string; value: number }) {
+function SummaryMetric({ label, value, delay }: { label: string; value: number; delay?: string }) {
   return (
-    <div className="opp-metric">
+    <div className="opp-metric" data-reveal data-reveal-delay={delay}>
       <p className="opp-metric-label">{label}</p>
-      <p className="opp-metric-value">{value}</p>
+      <p className="opp-metric-value" data-counter={String(value)}>{value}</p>
     </div>
   );
 }
@@ -491,25 +499,43 @@ function OpportunityRow({
   selected,
   followed,
   onSelect,
+  revealDelay,
 }: {
   item: NewsArticle;
   selected: boolean;
   followed: boolean;
   onSelect: () => void;
+  revealDelay?: string;
 }) {
   const meta = categoryMeta(categoryFor(item));
   const Icon = meta.icon;
   const days = daysUntil(item.actionDeadline);
   const school = item.universityNameZh || item.universityName || "院校信息待补充";
   const urgent = days !== null && days >= 0 && days <= 30;
+  const schoolHref = item.universityId
+    ? "/university/" + encodeURIComponent(item.universityId)
+    : null;
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onSelect();
+    }
+  };
+  const stopRow = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.stopPropagation();
+  };
 
   return (
-    <button
+    <div
       className={"opp-row " + (selected ? "is-selected" : "")}
-      type="button"
+      role="button"
+      tabIndex={0}
       onClick={onSelect}
+      onKeyDown={handleKeyDown}
       aria-pressed={selected}
       aria-label={"查看" + school + "：" + item.title}
+      data-reveal
+      data-reveal-delay={revealDelay}
     >
       <span className={TONE_ICON_CLASS[meta.tone]}>
         <Icon size={17} aria-hidden="true" />
@@ -530,7 +556,17 @@ function OpportunityRow({
             </span>
           )}
         </span>
-        <span className="opp-row-school">{school}</span>
+        {schoolHref ? (
+          <Link
+            className="opp-row-school opp-row-school-link"
+            href={schoolHref}
+            onClick={stopRow}
+          >
+            {school}
+          </Link>
+        ) : (
+          <span className="opp-row-school">{school}</span>
+        )}
         <span className="opp-row-title">{item.title}</span>
         <span className="opp-row-summary">{item.whatChanged || item.summary || "这条动态正在补充解释。"}</span>
         <span className={"opp-row-time " + (urgent ? "is-urgent" : "")}>
@@ -543,7 +579,7 @@ function OpportunityRow({
         </span>
       </span>
       <ChevronRight className="opp-row-chevron" size={17} aria-hidden="true" />
-    </button>
+    </div>
   );
 }
 

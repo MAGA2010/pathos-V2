@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import PageMotion from "@/components/shared/PageMotion";
 import Link from "next/link";
 import { AlertTriangle, Brain, CheckCircle2, ClipboardCheck, Plus, Sparkles, Trash2 } from "lucide-react";
 import { SearchInput } from "@/components/shared/SearchInput";
@@ -73,9 +74,17 @@ function readCostRmb(school: any): number | null {
   const direct = school?.annualCostRmb;
   if (typeof direct === "number" && Number.isFinite(direct) && direct > 0) return direct;
   const usd = school?.costSummary?.maximumUsd ?? school?.costSummary?.minimumUsd;
-  return typeof usd === "number" && Number.isFinite(usd) && usd > 0
-    ? Math.round(usd * 7.2)
-    : null;
+  if (typeof usd === "number" && Number.isFinite(usd) && usd > 0) return Math.round(usd * 7.2);
+  // IECG fill (P1): fall back to the parsed CollegeGuide tuition band.
+  const gpTotal = school?.guidePreview?.tuition?.total;
+  if (typeof gpTotal === "string") {
+    const m = gpTotal.match(/\$([\d,]+)/);
+    if (m) {
+      const usdFromGp = Number(m[1].replace(/,/g, ""));
+      if (Number.isFinite(usdFromGp) && usdFromGp > 0) return Math.round(usdFromGp * 7.2);
+    }
+  }
+  return null;
 }
 
 const LOCAL_AI_ASSESSMENT_DEMO: AnalysisResult = {
@@ -119,7 +128,7 @@ export default function AssessmentPage() {
     return all.filter((school) => school.chineseName.toLowerCase().includes(keyword) || school.name.toLowerCase().includes(keyword) || (school.city || "").toLowerCase().includes(keyword)).slice(0, 8);
   }, [all, query]);
 
-  const updateProfile = <K extends keyof Profile>(key: K, value: Profile[K]) => setProfile((prev) => ({ ...prev, [key]: value }));
+  const updateProfile = <K extends keyof Profile,>(key: K, value: Profile[K]) => setProfile((prev) => ({ ...prev, [key]: value }));
   const togglePriority = (id: string) => setProfile((prev) => ({ ...prev, priorities: prev.priorities.includes(id) ? prev.priorities.filter((item) => item !== id) : [...prev.priorities, id] }));
   const addSchool = (id: string) => setSelectedIds((prev) => prev.includes(id) ? prev : [...prev, id]);
   const removeSchool = (id: string) => setSelectedIds((prev) => prev.filter((item) => item !== id));
@@ -157,13 +166,14 @@ export default function AssessmentPage() {
   };
 
   return (
+    <PageMotion>
     <div className="min-h-screen bg-surface-base">
-      <header className="border-b border-border-soft bg-surface-1/70 backdrop-blur">
+      <header data-reveal="true" className="border-b border-border-soft bg-surface-1/70 backdrop-blur">
         <div className="mx-auto flex max-w-page flex-wrap items-center gap-3 px-4 py-3 sm:gap-4 sm:px-6">
           <div className="grid h-9 w-9 shrink-0 place-items-center rounded-control bg-cobalt text-paper"><Brain size={18} aria-hidden="true" /></div>
           <div className="min-w-0 flex-1">
             <p className="text-label uppercase tracking-[0.12em] text-cobalt">AI 学校评估</p>
-            <h1 className="text-page text-text-primary">画像与目标校风险体检</h1>
+            <h1 data-heading-stagger="true" className="text-page text-text-primary">画像与目标校风险体检</h1>
             <p className="mt-0.5 text-caption text-text-secondary">使用当前 Supabase 学校数据运行规则评估；配置 DeepSeek 后自动叠加模型分析。</p>
           </div>
           <Link href="/match" className="ml-auto inline-flex h-control items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-3 text-[12px] font-semibold text-text-primary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"><Sparkles size={13} aria-hidden="true" /> 返回自主测验</Link>
@@ -171,7 +181,7 @@ export default function AssessmentPage() {
       </header>
 
       <main className="mx-auto grid max-w-6xl gap-6 px-4 py-6 lg:grid-cols-[390px_1fr]">
-        <div className="lg:col-span-2">
+        <div data-reveal="true" data-reveal-delay="80" className="lg:col-span-2">
           <div
             role="note"
             className="flex items-start gap-2 rounded-control border border-persimmon/30 bg-persimmon/8 px-3 py-2 text-caption text-persimmon"
@@ -184,7 +194,7 @@ export default function AssessmentPage() {
           </div>
         </div>
 
-        <section className="space-y-4">
+        <section data-reveal="true" data-reveal-delay="120" className="space-y-4">
           <div className="rounded-[1.6rem] border border-white/70 bg-white/85 p-5 shadow-xl shadow-ink/5">
             <div className="mb-5">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-jade/80">学生画像</p>
@@ -232,9 +242,13 @@ export default function AssessmentPage() {
             <div className="mt-5 grid gap-3 md:grid-cols-2">
               {selectedSchools.map((school: any) => <article key={school.id} className="rounded-2xl border border-line/45 bg-panel/70 p-3"><div className="flex items-start justify-between gap-3"><div><h3 className="text-sm font-semibold text-ink">{school.chineseName}</h3><p className="text-xs text-ink/40">{school.name}</p><p className="mt-1 text-xs text-ink/45">
                         {school.city}, {school.state} ·{" "}
-                        {readCostRmb(school) !== null
-                          ? `¥${Math.round((readCostRmb(school) as number) / 10000)}万/年`
-                          : "学费数据补充中"}
+                        {(() => {
+                          const rmb = readCostRmb(school);
+                          if (rmb !== null) return `¥${Math.round(rmb / 10000)}万/年`;
+                          const gp = school?.guidePreview?.tuition?.total;
+                          if (gp) return `${gp}/年`;
+                          return "学费数据补充中";
+                        })()}
                       </p></div><button onClick={() => removeSchool(school.id)} className="rounded-full p-1.5 text-ink/30 transition hover:bg-red-50 hover:text-red-500"><Trash2 size={14} /></button></div></article>)}
             </div>
           </div>
@@ -258,6 +272,7 @@ export default function AssessmentPage() {
         </section>
       </main>
     </div>
+    </PageMotion>
   );
 }
 

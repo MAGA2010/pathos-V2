@@ -54,3 +54,29 @@ screenshots/tmp/
 # Local Codex and API inspection output
 /.codex/
 /frontend/api-*.json
+
+# Local preview / browser inspection artifacts
+/.debug.log
+/.shot*.log
+/_tabs.json
+/Microsoft VS Code/
+/Pathos v2/
+/IECG 美本院校资料 Top90-2025(1)/
+/IECG 美本院校资料 Top90-2025(1).zip
+/_archive/
+/frontend/.dev*.err
+/frontend/.dom.*
+/frontend/.edge-profile*/
+/frontend/.entry-shots/
+/frontend/.shot*
+/frontend/.workbench-shots/
+/frontend/review-shots/
+/frontend/verify-home-fx/
+/frontend/verify-phase4/
+/frontend/patch-*.js
+/frontend/test-*.js
+/frontend/tsconfig.tsbuildinfo
+/frontend/scripts/_*
+/frontend/scripts/debug-*
+/frontend/v2/competitor-research/raw-*
+/PATHOS-DEEP-AUDIT-*.md

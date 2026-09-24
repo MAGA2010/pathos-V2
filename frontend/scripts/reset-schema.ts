@@ -17,6 +17,7 @@ async function main() {
   const client = new Client({ connectionString: DATABASE_URL });
   await client.connect();
   await client.query(`
+    DROP TABLE IF EXISTS college_guides CASCADE;
     DROP TABLE IF EXISTS university_details CASCADE;
     DROP TABLE IF EXISTS universities CASCADE;
     DROP TABLE IF EXISTS region_envelope CASCADE;

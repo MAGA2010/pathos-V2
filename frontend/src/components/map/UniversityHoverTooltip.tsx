@@ -103,6 +103,17 @@ const costLabel = tuition !== null ? `¥${Math.round(tuition / 10000)}万/年` :
           </span>
         )}
         </div>
+      {/* IECG fill (P1): surface 师生比 + 4 年毕业率 as a second line when present. */}
+      {(summary.guidePreview?.studentFacultyRatio || summary.guidePreview?.graduationRate4Yr) && (
+        <div className="mt-0.5 flex items-center gap-2 text-ink/60">
+          {summary.guidePreview?.studentFacultyRatio && (
+            <span>师生比 {summary.guidePreview.studentFacultyRatio}</span>
+          )}
+          {summary.guidePreview?.graduationRate4Yr && (
+            <span>· 4 年毕业率 {summary.guidePreview.graduationRate4Yr}</span>
+          )}
+        </div>
+      )}
       {(summary.city || summary.state) && (
         <div className="mt-0.5 text-ink/45">
           {[summary.city, summary.state].filter(Boolean).join(" · ")}

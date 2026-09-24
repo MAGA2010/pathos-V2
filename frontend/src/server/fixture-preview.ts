@@ -15,6 +15,7 @@
 import { NextResponse } from "next/server";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { extractGuidePreview } from "@/lib/guide-preview";
 
 const FIXTURE_ROOT = path.join(process.cwd(), "src", "test", "fixtures");
 
@@ -91,6 +92,42 @@ interface RawUniversityRecord {
 
 const RMB_PER_USD = 7.2;
 
+// Cache of schoolId -> GuidePreview so toSummary() can attach the IECG
+// extracted facts (acceptance rate, tuition, deadlines, programs, etc.)
+// to every UniversitySummary without re-running the extractor.
+let guidePreviewCache: Map<string, ReturnType<typeof extractGuidePreview>> | null = null;
+async function loadGuidePreviewIndex(): Promise<Map<string, ReturnType<typeof extractGuidePreview>>> {
+  if (guidePreviewCache) return guidePreviewCache;
+  const map = new Map<string, ReturnType<typeof extractGuidePreview>>();
+  try {
+    const raw = await loadFixture<{ profiles?: Array<Record<string, unknown>> }>("../../../data/college-guides/iecg-2025.json");
+    for (const profile of raw.profiles ?? []) {
+      const structured = (profile.structured as Record<string, string | number | string[]> | undefined) ?? undefined;
+      const sections = Array.isArray(profile.sections) ? (profile.sections as Array<{ title?: string; text: string }>) : [];
+      const preview = extractGuidePreview({ structured, sections });
+      // Resolve a schoolId via the same fuzzy match used by loadCollegeGuides().
+      const raw = typeof profile.schoolNameRaw === "string" ? profile.schoolNameRaw : "";
+      // schoolNameRaw mixes English + Chinese. Strip non-ASCII so the cache
+      // key matches the keys toSummary() builds from u.name (English-only).
+      const englishOnly = raw.replace(/[^\x00-\x7F]+/g, " ").trim();
+      const englishKey = guideMatchKey(englishOnly);
+      const fullKey = guideMatchKey(raw);
+      if (englishKey) map.set(englishKey, preview);
+      if (fullKey && fullKey !== englishKey) map.set(fullKey, preview);
+    }
+  } catch {
+    // Fixture not available — every guidePreview will be undefined.
+  }
+  guidePreviewCache = map;
+  console.error('[guide-preview] cache built, ' + map.size + ' keys');
+  return map;
+}
+
+// Synchronous variant: caller must have awaited loadGuidePreviewIndex() once.
+function lookupGuidePreview(key: string): ReturnType<typeof extractGuidePreview> | undefined {
+  return guidePreviewCache?.get(key);
+}
+
 function toSummary(u: RawUniversityRecord) {
   // Cost is mandatory data for the Calculator / Compare flows. We
   // refuse to fabricate `0` placeholders — if the fixture row lacks an
@@ -142,6 +179,7 @@ function toSummary(u: RawUniversityRecord) {
     qualitySummary: { coveragePercent: 0, warningCodes: ["source_review_not_completed"] },
     enrollmentSummary: undefined,
     topPrograms: Array.isArray(u.programs) ? u.programs.slice(0, 5) : undefined,
+    guidePreview: lookupGuidePreview(guideMatchKey(u.name)) ?? lookupGuidePreview(guideMatchKey(u.chineseName)),
     displayTier: "preview",
     previewOnly: true,
     datasetVersion: "fixture-2026-07-24",
@@ -283,6 +321,7 @@ export async function handleFixturePreviewRoute(req: Request): Promise<NextRespo
     }
 
     if (endpoint === "universities") {
+      await loadGuidePreviewIndex();
       const list = (await loadUniversities()).map(toSummary);
       // Repeated `?state=CA&state=NY` and `?tier=top20&tier=top50` form
       // (gate-bloker repair #GB-P0-4). Both query sources use `getAll`
@@ -377,6 +416,7 @@ export async function handleFixturePreviewRoute(req: Request): Promise<NextRespo
           String(m.fipsCode ?? "").padStart(2, "0").slice(-2) === normalisedFips &&
           (m.granularity ?? "state") === granularity,
       );
+      await loadGuidePreviewIndex();
       const unis = await loadUniversities();
       const unisHere = unis.filter(
         (u) => (u.stateFips ?? "").padStart(2, "0").slice(-2) === normalisedFips,

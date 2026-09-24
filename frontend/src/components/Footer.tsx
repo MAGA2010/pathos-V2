@@ -30,6 +30,7 @@ export default function Footer() {
               <Link href="/entry/assessment" className="transition-colors hover:text-panel">AI 学校评估</Link>
               <Link href="/entry/portfolio" className="transition-colors hover:text-panel">AI 清单分析</Link>
               <Link href="/news" className="transition-colors hover:text-panel">留学资讯</Link>
+              <Link href="/s/home" className="transition-colors hover:text-panel">数据工作台</Link>
             </div>
           </div>
 

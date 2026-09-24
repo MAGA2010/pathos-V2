@@ -21,6 +21,7 @@ import { usePathname } from "next/navigation";
 import { Compass, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { NavSearch } from "@/components/NavSearch";
 
 const NAV_LINKS = [
   { href: "/entry/map",  label: "留学地图" },
@@ -29,6 +30,8 @@ const NAV_LINKS = [
   { href: "/entry/assessment", label: "AI 学校评估" },
   { href: "/entry/portfolio", label: "AI 清单分析" },
   { href: "/opportunities", label: "机会动态" },
+  { href: "/s/compare", label: "对比" },
+  { href: "/s/home", label: "数据工作台" },
 ] as const;
 
 function isPathActive(pathname: string, href: string): boolean {
@@ -45,6 +48,10 @@ function isPathActive(pathname: string, href: string): boolean {
 export default function NavBar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  // The opportunity preview page renders its own Apple-style chrome;
+  // suppress the global navbar so the two headers do not stack.
+  if (pathname === "/opportunities-preview") return null;
 
   // Close on Escape when the mobile menu is open.
   useEffect(() => {
@@ -114,6 +121,7 @@ export default function NavBar() {
           >
             开始自主测验
           </Link>
+          <NavSearch />
           <ThemeToggle />
           <button
             type="button"
@@ -154,6 +162,12 @@ export default function NavBar() {
                 </Link>
               );
             })}
+            <Link
+              href="/search"
+              className="rounded-control px-3 py-2 text-[14px] font-medium transition-colors text-text-secondary hover:bg-surface-muted hover:text-text-primary"
+            >
+              搜索
+            </Link>
             <Link
               href="/entry/match"
               className="mt-2 inline-flex h-control items-center justify-center gap-1.5 rounded-control bg-ink px-3 text-[13px] font-semibold text-paper"

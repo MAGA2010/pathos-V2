@@ -7,6 +7,7 @@
 // every `/news` page.
 
 import NewsCreditsPage from "@/components/news/NewsCreditsPage";
+import PageMotion from "@/components/shared/PageMotion";
 
 export const metadata = {
   title: "校园摄影来源与授权 · PathOS",
@@ -14,5 +15,9 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <NewsCreditsPage />;
+  return (
+    <PageMotion>
+      <NewsCreditsPage />
+    </PageMotion>
+  );
 }

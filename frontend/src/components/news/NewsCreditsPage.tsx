@@ -29,6 +29,7 @@ export default function NewsCreditsPage() {
       </Link>
 
       <h1
+        data-heading-stagger="true"
         className="mt-10 font-serif font-semibold"
         style={{
           color: NEWS_HERO_COLORS.title,
@@ -70,6 +71,7 @@ export default function NewsCreditsPage() {
           <article
             key={photo.localFile}
             data-testid="news-credits-row"
+            data-reveal="true"
             className="min-w-0 p-5"
             style={{ backgroundColor: NEWS_HERO_COLORS.bgSoft }}
           >
@@ -145,6 +147,7 @@ export default function NewsCreditsPage() {
       </div>
 
       <div
+        data-reveal="true"
         className="mt-12 p-4 font-sans"
         style={{
           border: `1px solid ${NEWS_HERO_COLORS.muted}`,

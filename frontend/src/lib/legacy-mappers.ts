@@ -157,6 +157,9 @@ export function summaryToLegacyUniversityPOI(s: UniversitySummary): UniversityPO
     stateFips:
       s.stateFips ??
       (typeof s.state === "string" ? stateAbbrToFipsOrNull(s.state) : null),
+    // IECG docx-derived compact preview; passed through so the map marker
+    // card can surface real deadlines / language reqs / faculty ratio.
+    guidePreview: s.guidePreview,
   } as unknown as UniversityPOI;
 }
 

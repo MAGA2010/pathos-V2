@@ -12,6 +12,7 @@ import {
 import { useDataSource } from "@/services/data-source-provider";
 import { useUniversitySummaries } from "@/hooks/use-data-source";
 import { DataEmptyState, DataLoadingState } from "@/components/shared/data-states";
+import PageMotion from "@/components/shared/PageMotion";
 import type { UniversitySummary } from "@/domain/dataset";
 
 type SortKey = "rank" | "acceptance" | "cost" | "enrollment";
@@ -147,15 +148,16 @@ export default function CsEngineeringDashboardPage() {
   };
 
   return (
-    <main className="min-h-screen bg-surface-base">
-      <header className="border-b border-border-soft bg-surface-1/80">
+    <PageMotion>
+      <main className="min-h-screen bg-surface-base">
+      <header data-reveal="true" className="border-b border-border-soft bg-surface-1/80">
         <div className="mx-auto flex max-w-page flex-wrap items-center gap-4 px-4 py-5 sm:px-6">
           <div className="grid h-11 w-11 shrink-0 place-items-center rounded-control bg-cobalt text-paper">
             <Cpu size={21} />
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-label uppercase tracking-[0.14em] text-cobalt">TOPIC DASHBOARD</p>
-            <h1 className="text-page text-text-primary">CS 与工程强校对比</h1>
+            <h1 data-heading-stagger="true" className="text-page text-text-primary">CS 与工程强校对比</h1>
             <p className="mt-1 max-w-2xl text-sm leading-relaxed text-text-secondary">
               老师讲课可以直接投影的横向对比视图：62 所学校一次性按 CS / 工程方向、排名、录取率、学费、本科人数排好。
             </p>
@@ -169,7 +171,7 @@ export default function CsEngineeringDashboardPage() {
         </div>
       </header>
 
-      <div className="mx-auto max-w-page px-4 py-5 sm:px-6">
+      <div data-reveal="true" data-reveal-delay="80" className="mx-auto max-w-page px-4 py-5 sm:px-6">
         <div className="mb-5 flex flex-wrap items-center gap-2">
           <span className="mr-2 text-xs text-text-tertiary">方向筛选</span>
           {(["both", "cs", "eng"] as Track[]).map((opt) => (
@@ -273,6 +275,7 @@ export default function CsEngineeringDashboardPage() {
         </p>
       </div>
     </main>
+    </PageMotion>
   );
 }
 

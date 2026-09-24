@@ -24,14 +24,14 @@ export function PortfolioEntry() {
         <div className={styles.orbitTwo} />
       </div>
 
-      <section className={styles.stage} aria-labelledby="portfolio-entry-title">
-        <div className={styles.copy}>
+      <section className={styles.stage} aria-labelledby="portfolio-entry-title" data-reveal="true">
+        <div className={styles.copy} data-reveal="true">
           <p>AI PORTFOLIO REVIEW / STRUCTURE MODEL</p>
-          <h1 id="portfolio-entry-title">让 AI 审视你的选校结构</h1>
+          <h1 id="portfolio-entry-title" data-heading-stagger="true">让 AI 审视你的选校结构</h1>
           <span>识别冲刺、匹配与保底结构中的风险与下一步行动</span>
         </div>
 
-        <div className={styles.robot} role="img" aria-label="缓慢扫描的抽象 AI 机器人">
+        <div className={styles.robot} role="img" data-reveal="true" data-reveal-delay="160" aria-label="缓慢扫描的抽象 AI 机器人">
           <div className={styles.shoulders} aria-hidden="true" />
           <div className={styles.neck} aria-hidden="true" />
           <div className={styles.head} aria-hidden="true">
@@ -46,15 +46,15 @@ export function PortfolioEntry() {
         </div>
 
         <dl className={styles.structure}>
-          <div>
+          <div data-reveal="true" data-reveal-delay="240">
             <dt>REACH</dt>
             <dd>冲刺</dd>
           </div>
-          <div>
+          <div data-reveal="true" data-reveal-delay="320">
             <dt>TARGET</dt>
             <dd>匹配</dd>
           </div>
-          <div>
+          <div data-reveal="true" data-reveal-delay="400">
             <dt>SAFETY</dt>
             <dd>保底</dd>
           </div>

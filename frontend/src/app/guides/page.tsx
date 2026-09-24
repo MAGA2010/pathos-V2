@@ -14,10 +14,13 @@ function formatRate(value: number | null | undefined) {
 }
 
 function formatCost(school: any) {
+  // IECG fill (P1): prefer the explicit tuition band from the parsed
+  // CollegeGuide (e.g. "$86,700/年") over the USD-derived minimumUsd.
+  const gp = school?.guidePreview?.tuition?.total;
+  if (gp) return `${gp}/年`;
   const value = school?.costSummary?.maximumUsd ?? school?.costSummary?.minimumUsd;
   return typeof value === "number" ? `$${Math.round(value).toLocaleString()}/年` : "费用待核验";
 }
-
 export default function GuidesPage() {
   const source = useDataSource();
   const summaries = useUniversitySummaries(source);
@@ -77,7 +80,26 @@ function GuideDetail({ detail, guide, guideLoading }: { detail: any; guide: Coll
   const programs = (detail.programs ?? []).slice(0, 8);
   return <article className="border border-border-soft bg-surface-1">
     <div className="border-b border-border-soft px-5 py-5 sm:px-7"><div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-label uppercase tracking-[0.14em] text-cobalt">COLLEGE GUIDE / {detail.datasetVersion || "SNAPSHOT"}</p><h2 className="mt-2 text-2xl font-semibold text-text-primary">{detail.nameZh}</h2><p className="mt-1 text-sm text-text-secondary">{detail.name} · {detail.city}, {detail.state}</p></div><Link href={`/university/${encodeURIComponent(detail.id)}`} className="inline-flex items-center gap-1.5 rounded-control bg-ink px-3 py-2 text-xs font-semibold text-paper">查看完整档案 <ArrowUpRight size={14} /></Link></div><p className="mt-5 max-w-3xl text-sm leading-7 text-text-secondary">这是一个数据导览页：它帮助家庭先建立学校的基本理解，再进入完整档案核对细节。这里不会把排名直接翻译成录取保证。</p></div>
-    <div className="grid divide-y divide-border-soft sm:grid-cols-2 sm:divide-x sm:divide-y-0"><GuideMetric label="录取率" value={formatRate(detail.acceptanceRate)} /><GuideMetric label="毕业率" value={formatRate(detail.graduationRate)} /><GuideMetric label="本科人数" value={detail.enrollmentSummary?.undergraduate?.toLocaleString?.() ?? "数据补充中"} /><GuideMetric label="年均费用" value={formatCost(detail)} /></div>
+    <div className="grid divide-y divide-border-soft sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+      {/* IECG fill (P1): prefer the parsed CollegeGuide rates over the empty
+          previewMetadata block so the metric strip shows real numbers. The
+          helper functions stay backward-compatible with the existing detail
+          contract — when both fields are absent we still render the empty
+          state label so users never see a fabricated 0%. */}
+      <GuideMetric label="录取率" value={(() => {
+        const ar = detail.acceptanceRate ?? detail.guidePreview?.acceptanceRatePercent;
+        return ar !== null && ar !== undefined ? formatRate(ar) : "数据补充中";
+      })()} />
+      <GuideMetric label="毕业率" value={(() => {
+        const gr = detail.graduationRate ?? (detail.guidePreview?.graduationRate4Yr ? Number(detail.guidePreview.graduationRate4Yr.replace("%","")) : null);
+        return gr !== null && gr !== undefined ? formatRate(gr) : "数据补充中";
+      })()} />
+      <GuideMetric label="本科人数" value={(() => {
+        const ug = detail.enrollmentSummary?.undergraduate ?? detail.guidePreview?.undergraduateStudents;
+        return typeof ug === "number" ? ug.toLocaleString() : "数据补充中";
+      })()} />
+      <GuideMetric label="年均费用" value={formatCost(detail)} />
+    </div>
     <div className="grid gap-0 divide-y divide-border-soft lg:grid-cols-2 lg:divide-x lg:divide-y-0"><GuideBlock title="专业方向" text={programs.length ? programs.map((program: any) => program.name).join(" · ") : "专业数据补充中"} /><GuideBlock title="申请现实" text={detail.previewMetadata?.admissions?.testPolicy?.value ? "请继续核对标化政策、语言要求与申请截止日。" : "申请政策正在补充或核验。"} /><GuideBlock title="来源状态" text={detail.previewOnly ? "当前为可追溯预览数据，部分字段仍待核验。" : "当前档案已连接生产数据源。"} /><GuideBlock title="下一步" text="把这所学校加入申请清单，再与两所不同类型的学校比较。" /></div>
     {guideLoading && <div className="border-t border-border-soft px-5 py-5 sm:px-7"><DataLoadingState message="正在加载 IECG 学校解读…" /></div>}
     {guide ? <ImportedGuide guide={guide} /> : !guideLoading ? <div className="border-t border-border-soft px-5 py-5 sm:px-7 text-sm leading-7 text-text-secondary">这所学校暂时没有关联的 IECG 解读资料。上面的结构化数据仍可用于初步比较，申请政策请以学校官网为准。</div> : null}

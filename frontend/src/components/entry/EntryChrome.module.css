@@ -1,6 +1,7 @@
+/* Entry pages replace the global shell with their own chrome, but the skip
+   link must survive so keyboard users keep a way into the content. */
 :global(body):has(.root) > :global(header[role="banner"]),
-:global(body):has(.root) > :global(footer),
-:global(body):has(.root) > :global(a[href="#main-content"]) {
+:global(body):has(.root) > :global(footer) {
   display: none;
 }
 
@@ -171,7 +172,7 @@
 
 .header,
 .footer {
-  animation: chrome-arrive 900ms 160ms ease both;
+  animation: chrome-arrive 420ms 120ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 @media (max-width: 640px) {

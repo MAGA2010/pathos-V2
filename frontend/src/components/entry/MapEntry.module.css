@@ -11,8 +11,8 @@
   object-position: 53% 48%;
   opacity: 0.9;
   animation:
-    earth-arrive 3.2s cubic-bezier(0.2, 0.74, 0.2, 1) both,
-    earth-drift 18s 3.2s ease-in-out infinite alternate;
+    earth-arrive 560ms cubic-bezier(0.22, 0.61, 0.36, 1) both,
+    earth-drift 18s 560ms ease-in-out infinite alternate;
 }
 
 .wash {
@@ -47,7 +47,7 @@
 
 .title {
   text-align: center;
-  animation: title-arrive 1.2s 380ms cubic-bezier(0.2, 0.72, 0.2, 1) both;
+  animation: title-arrive 520ms 200ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .title > p:first-child {
@@ -92,7 +92,7 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 9px;
   letter-spacing: 0.17em;
-  animation: stat-arrive 1s 850ms ease both;
+  animation: stat-arrive 460ms 360ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .stat > span {

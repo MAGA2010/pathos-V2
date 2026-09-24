@@ -59,9 +59,9 @@ export function AssessmentEntry() {
       }
     >
       <section className={styles.stage} aria-labelledby="assessment-entry-title">
-        <div className={styles.copy}>
+        <div className={styles.copy} data-reveal="true">
           <p className={styles.kicker}>PATHOS · SCHOOL ASSESSMENT</p>
-          <h1 id="assessment-entry-title">
+          <h1 id="assessment-entry-title" data-heading-stagger="true">
             重新审视
             <br />
             <em>你的美国本科选校</em>
@@ -72,7 +72,7 @@ export function AssessmentEntry() {
         </div>
 
         <div
-          className={styles.carousel}
+          className={styles.carousel} data-reveal="true" data-reveal-delay="160"
           data-reduced-motion={reducedMotion ? "true" : "false"}
           aria-label="已授权美国大学校园摄影"
         >
@@ -104,7 +104,7 @@ export function AssessmentEntry() {
           <div className={styles.counter} aria-label={`第 ${active + 1} 张，共 ${CAMPUSES.length} 张`}>
             <strong>{String(active + 1).padStart(2, "0")}</strong>
             <span>/</span>
-            <small>{String(CAMPUSES.length).padStart(2, "0")}</small>
+            <small data-counter="03">{String(CAMPUSES.length).padStart(2, "0")}</small>
           </div>
 
           <div className={styles.meta}>
@@ -113,7 +113,7 @@ export function AssessmentEntry() {
             <span>{campus.location}</span>
           </div>
 
-          <div className={styles.dots} aria-label="选择校园摄影">
+          <div className={styles.dots} data-reveal="true" data-reveal-delay="240" aria-label="选择校园摄影">
             {CAMPUSES.map((item, index) => (
               <button
                 key={item.id}

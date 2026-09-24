@@ -33,29 +33,35 @@ export function MapEntry() {
         <div className={styles.scan} />
       </div>
 
-      <section className={styles.stage} aria-labelledby="map-entry-title">
-        <aside className={`${styles.stat} ${styles.statLeft}`}>
+      <section className={styles.stage} aria-labelledby="map-entry-title" data-reveal="true">
+        <aside className={`${styles.stat} ${styles.statLeft}`} data-reveal="true" data-reveal-delay="160">
           <span>01</span>
-          <strong>4 项州级区域指标</strong>
+          <strong>
+            <span data-counter="4">4</span>
+            {' '}项州级区域指标
+          </strong>
           <small>VERIFIED METRICS</small>
         </aside>
 
         <div className={styles.title}>
           <p>EXPLORE THE</p>
           <span className={styles.rule} aria-hidden="true" />
-          <h1 id="map-entry-title">MAP</h1>
+          <h1 id="map-entry-title" data-heading-stagger="true">MAP</h1>
           <span className={styles.rule} aria-hidden="true" />
           <p className={styles.subtitle}>交互式美国大学择校地图</p>
         </div>
 
-        <aside className={`${styles.stat} ${styles.statRight}`}>
+        <aside className={`${styles.stat} ${styles.statRight}`} data-reveal="true" data-reveal-delay="240">
           <span>02</span>
-          <strong>51 个州级辖区</strong>
+          <strong>
+            <span data-counter="51">51</span>
+            {' '}个州级辖区
+          </strong>
           <small>REGIONAL NETWORK</small>
         </aside>
       </section>
 
-      <p className={styles.credit}>
+      <p className={styles.credit} data-reveal="true" data-reveal-delay="320">
         NASA · S131-E-006087
         <span>EARTH OBSERVATION · 2010</span>
       </p>

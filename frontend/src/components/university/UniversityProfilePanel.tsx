@@ -297,8 +297,10 @@ function OverviewSection({ detail, statusDictionary }: SectionProps) {
       <div className="grid gap-3 sm:grid-cols-2">
         <Field label="中文名称" value={detail.chineseName} />
         <Field label="English Name" value={detail.name} mono />
-        <Field label="所在州" value={detail.state || "数据补充中"} />
-        <Field label="城市" value={detail.city || "数据补充中"} />
+        {/* IECG fill (P1): fall back to the CollegeGuide's location
+            sentence when the canonical city/state fields are missing. */}
+        <Field label="所在州" value={detail.state || (detail.guidePreview?.location ? detail.guidePreview.location.split("。")[0] : null) || "数据补充中"} />
+        <Field label="城市" value={detail.city || (detail.guidePreview?.location ? detail.guidePreview.location.split("，")[0] : null) || "数据补充中"} />
         <Field
           label="排名档次"
           value={detail.rankingBand ?? "数据补充中"}

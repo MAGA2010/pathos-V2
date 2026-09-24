@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./page-motion.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { DataSourceProvider } from "@/services/data-source-provider";

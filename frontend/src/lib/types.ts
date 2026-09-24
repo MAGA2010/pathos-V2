@@ -27,6 +27,8 @@
 // 鈹€鈹€ Identity / Perspective 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 /** The two personas the advisory platform serves. */
+import type { GuidePreview } from "@/lib/guide-preview";
+
 export type Perspective = "student" | "parent";
 
 /** Simplified affordability bucket for quick filtering. */
@@ -289,6 +291,11 @@ export interface UniversityPOI {
 
   // 鈹€鈹€ Nearby Amenities 鈹€鈹€
   nearby: UniversityNearby;
+
+  /** IECG docx-derived compact preview — surfaced by the
+   *  map marker card so it shows real deadlines / language
+   *  requirements / faculty ratio instead of "数据补充中". */
+  guidePreview?: GuidePreview;
 }
 
 
