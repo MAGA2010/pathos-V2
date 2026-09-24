@@ -19,7 +19,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Compass, Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { NavSearch } from "@/components/NavSearch";
 
@@ -49,10 +49,6 @@ export default function NavBar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // The opportunity preview page renders its own Apple-style chrome;
-  // suppress the global navbar so the two headers do not stack.
-  if (pathname === "/opportunities-preview") return null;
-
   // Close on Escape when the mobile menu is open.
   useEffect(() => {
     if (!open) return;
@@ -67,6 +63,11 @@ export default function NavBar() {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  // The opportunity preview page renders its own Apple-style chrome;
+  // suppress the global navbar so the two headers do not stack. Keep this
+  // return after all hooks so the hook order is identical on every route.
+  if (pathname === "/opportunities-preview") return null;
 
   return (
     <header
@@ -121,7 +122,11 @@ export default function NavBar() {
           >
             开始自主测验
           </Link>
-          <NavSearch />
+          <Suspense
+            fallback={<div className="h-9 w-9 shrink-0" aria-hidden="true" />}
+          >
+            <NavSearch />
+          </Suspense>
           <ThemeToggle />
           <button
             type="button"

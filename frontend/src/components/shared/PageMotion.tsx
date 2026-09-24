@@ -260,13 +260,13 @@ export default function PageMotion({ children, className = "", chrome = true }: 
       // Clear wire markers so React StrictMode second mount re-wires observers.
       // Without this, dataset.motionReveal === "wired" survives the disconnect,
       // wire() short-circuits, and every [data-reveal] stays at opacity:0.
-      root.querySelectorAll("[data-reveal]").forEach(function (el) { delete el.dataset.motionReveal; });
-      root.querySelectorAll("[data-counter]").forEach(function (el) {
+      root.querySelectorAll<HTMLElement>("[data-reveal]").forEach(function (el) { delete el.dataset.motionReveal; });
+      root.querySelectorAll<HTMLElement>("[data-counter]").forEach(function (el) {
         delete el.dataset.motionCounter;
         delete el.dataset.motionCounted;
       });
-      root.querySelectorAll("[data-heading-stagger]").forEach(function (el) { delete el.dataset.motionHeadingObserver; });
-      root.querySelectorAll("[data-section]").forEach(function (el) { delete el.dataset.motionSection; });
+      root.querySelectorAll<HTMLElement>("[data-heading-stagger]").forEach(function (el) { delete el.dataset.motionHeadingObserver; });
+      root.querySelectorAll<HTMLElement>("[data-section]").forEach(function (el) { delete el.dataset.motionSection; });
     };
   }, []);
 

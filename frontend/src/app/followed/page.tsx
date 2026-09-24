@@ -60,21 +60,20 @@ export default function FollowedPage() {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  const allSummaries =
-    summaries.state.status === "ready" ? summaries.state.data : [];
-  const allNews = news.state.status === "ready" ? news.state.data : [];
-
   const followedSchools = useMemo(() => {
+    const allSummaries =
+      summaries.state.status === "ready" ? summaries.state.data : [];
     const lookup = new Map(allSummaries.map((s) => [s.id, s]));
     return followedIds
       .map((id) => lookup.get(id))
       .filter((s): s is NonNullable<typeof s> => Boolean(s));
-  }, [followedIds, allSummaries]);
+  }, [followedIds, summaries.state]);
 
   // Count news items that mention any followed university. The news
   // payload links to a university by id; if the id is in the follow
   // set, the article counts.
   const newsById = useMemo(() => {
+    const allNews = news.state.status === "ready" ? news.state.data : [];
     const m = new Map<string, number>();
     for (const a of allNews) {
       const id = a.universityId;
@@ -82,7 +81,7 @@ export default function FollowedPage() {
       m.set(id, (m.get(id) ?? 0) + 1);
     }
     return m;
-  }, [allNews, followedIds]);
+  }, [news.state, followedIds]);
 
   const unfollow = (id: string) => {
     const next = followedIds.filter((x) => x !== id);
