@@ -118,3 +118,66 @@ CREATE TABLE IF NOT EXISTS college_guides (
 CREATE INDEX IF NOT EXISTS idx_college_guides_university ON college_guides(university_id);
 CREATE INDEX IF NOT EXISTS idx_college_guides_snapshot ON college_guides(source_snapshot_year DESC);
 CREATE INDEX IF NOT EXISTS idx_college_guides_search ON college_guides USING GIN(to_tsvector('simple', COALESCE(school_name_raw, '') || ' ' || COALESCE(raw_text, '')));
+-- ---------------------------------------------------------------------------
+-- Commercial v2 tables. Idempotent. See docs in V2-PRODUCT-STRATEGY.md.
+-- ---------------------------------------------------------------------------
+
+-- subscription_leads: intake from /pricing and inline lead forms.
+CREATE TABLE IF NOT EXISTS subscription_leads (
+  id              TEXT PRIMARY KEY,
+  plan            TEXT NOT NULL,
+  contact_name    TEXT,
+  phone           TEXT,
+  wechat          TEXT,
+  email           TEXT,
+  company         TEXT,
+  notes           TEXT,
+  source          TEXT,
+  status          TEXT NOT NULL DEFAULT 'new',
+  meta            JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_subscription_leads_status ON subscription_leads(status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_subscription_leads_plan ON subscription_leads(plan, created_at DESC);
+
+-- api_keys: programmatic access for the data API (opportunity A).
+CREATE TABLE IF NOT EXISTS api_keys (
+  id              TEXT PRIMARY KEY,
+  owner_label     TEXT NOT NULL,
+  key_prefix      TEXT NOT NULL,
+  key_hash        TEXT NOT NULL UNIQUE,
+  scopes          TEXT NOT NULL DEFAULT 'universities.read',
+  rate_limit      INTEGER NOT NULL DEFAULT 60,
+  monthly_quota   INTEGER NOT NULL DEFAULT 10000,
+  calls_this_month INTEGER NOT NULL DEFAULT 0,
+  quota_reset_at  TIMESTAMPTZ NOT NULL DEFAULT date_trunc('month', NOW()) + INTERVAL '1 month',
+  status          TEXT NOT NULL DEFAULT 'active',
+  last_used_at    TIMESTAMPTZ,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_api_keys_prefix ON api_keys(key_prefix);
+CREATE INDEX IF NOT EXISTS idx_api_keys_status ON api_keys(status);
+
+-- reports: AI interpretation report (opportunity A).
+CREATE TABLE IF NOT EXISTS reports (
+  id              TEXT PRIMARY KEY,
+  lead_id         TEXT REFERENCES subscription_leads(id) ON DELETE SET NULL,
+  plan            TEXT NOT NULL DEFAULT 'single_report',
+  profile         JSONB NOT NULL DEFAULT '{}'::jsonb,
+  schools         JSONB NOT NULL DEFAULT '[]'::jsonb,
+  payload         JSONB NOT NULL DEFAULT '{}'::jsonb,
+  status          TEXT NOT NULL DEFAULT 'pending',
+  error           TEXT,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_reports_lead ON reports(lead_id);
+CREATE INDEX IF NOT EXISTS idx_reports_status ON reports(status, created_at DESC);
+
+-- rate_limit_buckets: minute-window counter for /api/v1/*.
+CREATE TABLE IF NOT EXISTS rate_limit_buckets (
+  bucket_key      TEXT PRIMARY KEY,
+  hits            INTEGER NOT NULL DEFAULT 1,
+  window_start    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

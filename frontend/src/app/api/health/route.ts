@@ -1,14 +1,16 @@
-// Health check endpoint for Render + uptime monitors.
-//
-// Returns 200 when the BFF can reach Postgres and the universities
-// table is loaded. Returns 503 with a structured error code when
-// DATABASE_URL is missing, the connection fails, or the table is
-// empty (i.e. db:import was never run).
-
 import { NextResponse } from "next/server";
 import { DatabaseNotConfiguredError, getPool } from "@/server/db";
 
 export const dynamic = "force-dynamic";
+
+function resolveMode(): string {
+  const raw = process.env.PATHOS_DATA_MODE?.trim();
+  if (raw) return raw;
+  // Default: when PATHOS_DATA_MODE is unset, treat the deployment as
+  // the backend BFF (matching resolveDataMode() in pathos-preview.ts).
+  // This removes the historical "mode: unknown" from /api/health.
+  return "backend";
+}
 
 export async function GET(): Promise<NextResponse> {
   try {
@@ -24,7 +26,7 @@ export async function GET(): Promise<NextResponse> {
     );
     return NextResponse.json({
       ok: true,
-      mode: process.env.PATHOS_DATA_MODE ?? "unknown",
+      mode: resolveMode(),
       universities: uniCount.rows[0]?.n ?? 0,
       universityDetails: detailCount.rows[0]?.n ?? 0,
       manifestUpdatedAt: manifestRow.rows[0]?.updated_at ?? null,
