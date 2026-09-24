@@ -150,8 +150,8 @@ CREATE TABLE IF NOT EXISTS api_keys (
   scopes          TEXT NOT NULL DEFAULT 'universities.read',
   rate_limit      INTEGER NOT NULL DEFAULT 60,
   monthly_quota   INTEGER NOT NULL DEFAULT 10000,
-  calls_this_month INTEGER NOT NULL DEFAULT 0,
-  quota_reset_at  TIMESTAMPTZ NOT NULL DEFAULT date_trunc('month', NOW()) + INTERVAL '1 month',
+  calls_this_month INTEGER NOT NULL DEFAULT 0
+  quota_reset_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   status          TEXT NOT NULL DEFAULT 'active',
   last_used_at    TIMESTAMPTZ,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()

@@ -22,6 +22,7 @@ export interface ApiKeyRow {
   rate_limit: number;
   monthly_quota: number;
   calls_this_month: number;
+  quota_reset_at: Date | string;
   status: string;
 }
 
@@ -86,7 +87,7 @@ export async function authenticate(req: Request): Promise<AuthSuccess | AuthFail
   try {
     const r = await getPool().query<ApiKeyRow>(
       `SELECT id, owner_label, key_hash, scopes, rate_limit, monthly_quota,
-              calls_this_month, status
+              calls_this_month, quota_reset_at, status
        FROM api_keys WHERE key_hash = $1 LIMIT 1`,
       [hash],
     );
@@ -96,6 +97,25 @@ export async function authenticate(req: Request): Promise<AuthSuccess | AuthFail
     }
     if (row.status !== "active") {
       return { ok: false, response: fail("API_KEY_REVOKED", "API key has been revoked.", 403) };
+    }
+    // Lazy monthly reset: if the previous reset window has passed,
+    // zero the counter and slide the window forward before we test it.
+    const resetAt = row.quota_reset_at instanceof Date
+      ? row.quota_reset_at
+      : new Date(row.quota_reset_at);
+    if (Number.isFinite(resetAt.getTime()) && resetAt.getTime() <= Date.now()) {
+      try {
+        await getPool().query(
+          `UPDATE api_keys
+             SET calls_this_month = 0,
+                 quota_reset_at = date_trunc('month', NOW()) + INTERVAL '1 month'
+           WHERE id = $1`,
+          [row.id],
+        );
+        row.calls_this_month = 0;
+      } catch (e) {
+        console.error("[v1] quota reset error:", e);
+      }
     }
     if (row.calls_this_month >= row.monthly_quota) {
       return { ok: false, response: fail("QUOTA_EXHAUSTED", "Monthly quota exhausted.", 429) };
