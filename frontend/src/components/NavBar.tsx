@@ -1,6 +1,6 @@
 "use client";
 
-// Stage 7A closing patch — the ONE authoritative global navigation.
+// Stage 7A closing patch -- the ONE authoritative global navigation.
 //
 // Rules this component enforces:
 //   - 6 items total: 留学地图 / 留学计算器 / 自主测验 / AI 学校评估 /
@@ -8,13 +8,16 @@
 //   - Active state uses the real Next.js pathname; only one route
 //     can be active at a time.
 //   - Logo + nav items live inside a `max-w-page` container and
-//     flex-shrink so they don't overflow at 1024–1920px widths.
+//     flex-shrink so they don't overflow at 1024-1920px widths.
 //   - Below `lg`, the nav collapses to a hamburger; an Escape
 //     handler closes the drawer.
 //   - The right-side CTA is hidden on mobile to free horizontal
 //     space; the theme toggle is always visible.
 //   - All buttons/links use the new design tokens (`h-control`,
-//     `rounded-control`, `text-text-secondary`, …).
+//     `rounded-control`, `text-text-secondary`, ...).
+//
+// Phase 1.1 added an AuthButton peer to ThemeToggle; the marketing
+// chrome is unchanged.
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -22,6 +25,7 @@ import { Compass, Menu, X } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { NavSearch } from "@/components/NavSearch";
+import { AuthButton } from "@/components/AuthButton";
 
 const NAV_LINKS = [
   { href: "/entry/map",  label: "留学地图" },
@@ -75,7 +79,7 @@ export default function NavBar() {
       className="sticky top-0 z-50 h-nav border-b border-border-soft bg-surface-1/95 backdrop-blur supports-[backdrop-filter]:bg-surface-1/80 dark:bg-surface-1/90"
     >
       <div className="mx-auto flex h-nav w-full max-w-page items-center gap-3 px-4 sm:gap-4 sm:px-6">
-        {/* Logo — shrink-0 protects it from being clipped on narrow widths */}
+        {/* Logo -- shrink-0 protects it from being clipped on narrow widths */}
         <Link
           href="/"
           aria-label="PathOS 首页"
@@ -114,7 +118,7 @@ export default function NavBar() {
           })}
         </nav>
 
-        {/* Right cluster — always visible, including mobile */}
+        {/* Right cluster -- always visible, including mobile */}
         <div className="ml-auto flex shrink-0 items-center gap-2">
           <Link
             href="/entry/match"
@@ -128,6 +132,7 @@ export default function NavBar() {
             <NavSearch />
           </Suspense>
           <ThemeToggle />
+          <AuthButton />
           <button
             type="button"
             aria-label={open ? "关闭菜单" : "打开菜单"}
