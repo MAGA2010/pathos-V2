@@ -125,6 +125,13 @@ export function AuthButton(): JSX.Element {
             数据工作台
           </Link>
           <Link
+            href="/workbench/orgs"
+            role="menuitem"
+            className="block rounded-control px-3 py-2 text-[13px] text-text-secondary hover:bg-surface-muted hover:text-text-primary"
+          >
+            我的组织
+          </Link>
+          <Link
             href="/followed"
             role="menuitem"
             className="block rounded-control px-3 py-2 text-[13px] text-text-secondary hover:bg-surface-muted hover:text-text-primary"
@@ -146,3 +153,4 @@ export function AuthButton(): JSX.Element {
 }
 
 export default AuthButton;
+

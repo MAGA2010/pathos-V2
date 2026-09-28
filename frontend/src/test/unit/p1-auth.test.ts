@@ -17,13 +17,13 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 const queryMock = vi.hoisted(() =>
-  vi.fn((_q: string, _params: unknown[]) =>
+  vi.fn((_q: string, _params: unknown[]): Promise<{ rows: unknown[]; rowCount: number }> =>
     Promise.resolve({ rows: [], rowCount: 0 }),
   ),
 );
 
 vi.mock("@/server/db", () => ({
-  getPool: () => ({ query: (...args: unknown[]) => queryMock(...args) }),
+  getPool: () => ({ query: (q: string, p: unknown[]) => queryMock(q, p) as any }),
 }));
 
 import {
@@ -42,9 +42,13 @@ import {
 } from "@/lib/session";
 import { ConsoleMailer, getMailer, __resetMailerForTests } from "@/lib/mailer";
 
+type DbResult = { rows: unknown[]; rowCount: number };
+
 afterEach(() => {
   queryMock.mockReset();
-  queryMock.mockImplementation(() => Promise.resolve({ rows: [], rowCount: 0 }));
+  queryMock.mockImplementation(
+    () => Promise.resolve({ rows: [], rowCount: 0 }) as Promise<DbResult>,
+  );
   __resetMailerForTests();
 });
 
@@ -82,7 +86,7 @@ describe("consumeMagicLink atomicity", () => {
     claimed: boolean;
     user?: { id: string; email: string; display_name: string | null; tier: "free" | "pro" | "studio"; inserted: boolean };
   }) {
-    return (q: string) => {
+    return (q: string): Promise<DbResult> => {
       if (q.includes("UPDATE auth_magic_links") && q.includes("consumed_at = NOW")) {
         return opts.claimed
           ? Promise.resolve({ rows: [{ id: "ml_1", email: "alice@example.com" }], rowCount: 1 })
@@ -114,12 +118,8 @@ describe("consumeMagicLink atomicity", () => {
   });
 
   it("returns null on a second consume of the same token (single-use)", async () => {
-    // Stateful mock: the first claim UPDATE wins, the second claim
-    // UPDATE (for the same token) returns zero rows. The upsert and
-    // backfill are unreachable on the second call because the claim
-    // returns null early.
     let consumed = false;
-    queryMock.mockImplementation((q: string) => {
+    queryMock.mockImplementation((q: string): Promise<DbResult> => {
       if (q.includes("UPDATE auth_magic_links") && q.includes("consumed_at = NOW")) {
         if (consumed) return Promise.resolve({ rows: [], rowCount: 0 });
         consumed = true;
@@ -166,10 +166,9 @@ describe("session ids", () => {
     await createSession({ userId: "u_1" });
     const insertCall = queryMock.mock.calls[0] as [string, string[]];
     expect(insertCall[0]).toMatch(/INSERT INTO auth_sessions/);
-    // params: [id, user_id, token_hash, expires_at, ip_hash, user_agent]
     expect(insertCall[1][1]).toBe("u_1");
     expect(insertCall[1][2]).toMatch(/^[0-9a-f]{64}$/);
-    expect(insertCall[1][2]).not.toBe(insertCall[1][0]); // hash != raw id
+    expect(insertCall[1][2]).not.toBe(insertCall[1][0]);
     await revokeSession("sid-xyz");
     const delCall = queryMock.mock.calls[1] as [string, string[]];
     expect(delCall[0]).toMatch(/DELETE FROM auth_sessions/);
@@ -182,7 +181,7 @@ describe("findSessionUser lookup", () => {
     foundUser?: { id: string; email: string; display_name: string | null; tier: "free" | "pro" | "studio" };
     expired?: boolean;
   }) {
-    return (q: string) => {
+    return (q: string): Promise<DbResult> => {
       if (q.includes("SELECT u.id, u.email") && q.includes("FROM auth_sessions s")) {
         if (opts.expired) return Promise.resolve({ rows: [], rowCount: 0 });
         if (opts.foundUser) return Promise.resolve({ rows: [opts.foundUser], rowCount: 1 });
@@ -221,7 +220,6 @@ describe("findSessionUser lookup", () => {
     const sid = generateSessionId();
     await findSessionUser(sid);
     const selectCall = queryMock.mock.calls[0] as [string, string[]];
-    // params order: [id, token_hash]
     expect(selectCall[1][0]).toBe(sid);
     expect(selectCall[1][1]).toBe(hashSessionId(sid));
   });
