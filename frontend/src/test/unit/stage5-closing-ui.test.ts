@@ -186,11 +186,11 @@ describe("Stage 5 closing UI compliance", () => {
       await copyFile(
         path.join(
           BUNDLE_ROOT,
-          "university-details/candidate-v2:harvard-university.json",
+          "university-details/candidate-v2/harvard-university.json",
         ),
         path.join(
           root,
-          "university-details/candidate-v2:harvard-university.json",
+          "university-details/candidate-v2/harvard-university.json",
         ),
       );
       const response = await createPreviewRouteHandler(backendEnv(root))(

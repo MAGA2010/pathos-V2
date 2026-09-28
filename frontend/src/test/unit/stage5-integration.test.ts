@@ -33,7 +33,7 @@ async function realFixture() {
   const summaries = parseStage5Summaries(await artifact("universities.json"));
   const detail = parseStage5Detail(
     await artifact(
-      "university-details/candidate-v2:arizona-state-university.json",
+      "university-details/candidate-v2/arizona-state-university.json",
     ),
   );
   const sourceIndex = parseStage5SourceIndex(await artifact("source-index.json"));
@@ -156,7 +156,7 @@ describe("Stage 5 frontend/backend integration contract", () => {
 
   it("10b unknown field status is rejected", async () => {
     const detail = await artifact<any>(
-      "university-details/candidate-v2:harvard-university.json",
+      "university-details/candidate-v2/harvard-university.json",
     );
     for (const invalidStatus of ["invented_status", 42, null]) {
       expect(() =>
@@ -242,7 +242,7 @@ describe("Stage 5 frontend/backend integration contract", () => {
 
   it("19 enrollment year warning", async () => {
     const detail = parseStage5Detail(
-      await artifact("university-details/candidate-v2:harvard-university.json"),
+      await artifact("university-details/candidate-v2/harvard-university.json"),
     );
     const normalized = normalizeStage5Detail(
       detail,
@@ -261,7 +261,7 @@ describe("Stage 5 frontend/backend integration contract", () => {
   it("21 SAT/ACT not_reported", async () => {
     const details = await Promise.all(
       (await artifact<string[] | Record<string, never>>("universities.json") as unknown as Array<{id:string}>)
-        .map(({ id }) => artifact<Record<string, unknown>>(`university-details/${id}.json`)),
+        .map(({ id }) => artifact<Record<string, unknown>>(`university-details/candidate-v2/${id.slice("candidate-v2:".length)}.json`)),
     );
     expect(details.filter((d: any) => d.admissions.sat.status === "not_reported")).toHaveLength(9);
     expect(details.filter((d: any) => d.admissions.act.status === "not_reported")).toHaveLength(9);
@@ -285,13 +285,13 @@ describe("Stage 5 frontend/backend integration contract", () => {
 
   it("24 county scope", async () => {
     const detail = parseStage5Detail(
-      await artifact("university-details/candidate-v2:harvey-mudd-college.json"),
+      await artifact("university-details/candidate-v2/harvey-mudd-college.json"),
     );
     expect(["place", "county"]).toContain(detail.geography.geographyScope);
     const all = await artifact<Array<{ id: string }>>("universities.json");
     let county = 0;
     for (const { id } of all) {
-      const row = await artifact<any>(`university-details/${id}.json`);
+      const row = await artifact<any>(`university-details/candidate-v2/${id.slice("candidate-v2:".length)}.json`);
       if (row.geography.geographyScope === "county") county += 1;
     }
     expect(county).toBe(16);
@@ -300,7 +300,7 @@ describe("Stage 5 frontend/backend integration contract", () => {
   it("24b all-major gaps preserve not-reported semantics", async () => {
     const detail = parseStage5Detail(
       await artifact(
-        "university-details/candidate-v2:arizona-state-university.json",
+        "university-details/candidate-v2/arizona-state-university.json",
       ),
     );
     const normalized = normalizeStage5Detail(
