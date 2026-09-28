@@ -35,6 +35,7 @@ import {
   ShieldAlert,
   TrendingUp,
   Wallet,
+  Briefcase,
 } from "lucide-react";
 
 import type {
@@ -469,6 +470,96 @@ function SchoolIndex({
   );
 }
 
+// AdvisorLeadsCard — Phase 1.8 advisor-only entry into /admin/leads.
+//
+// Behavior:
+//   - On mount, fetch GET /api/admin/leads/stats.
+//   - 200 -> render a single workbench card linking to /admin/leads,
+//     showing total lead count and the "new" (uncontacted) bucket.
+//   - 401/403 (or any non-OK) -> render nothing. The /s/home page is
+//     shared with students, so non-advisors must not see the link.
+//   - DB not configured (503) -> also render nothing; the rest of the
+//     page already handles missing-first surfaces.
+//   - Skips fetch entirely on the server (no SSR fetch call needed).
+//
+// Why a dedicated component: HomeMode is already hot with data hooks
+// (useUniversitySummaries, useNews, useMemo chains). Putting the CRM
+// probe in a sibling component keeps HomeMode's hook count stable and
+// satisfies the rules-of-hooks constraint this file calls out above.
+function AdvisorLeadsCard() {
+  const [state, setState] = useState<
+    | { kind: "loading" }
+    | { kind: "ready"; total: number; newCount: number }
+    | { kind: "hidden" }
+  >({ kind: "loading" });
+
+  useEffect(() => {
+    let cancelled = false;
+    const ac = new AbortController();
+    fetch("/api/admin/leads/stats", { signal: ac.signal, cache: "no-store" })
+      .then(async (res) => {
+        if (!res.ok) {
+          // 401 (not signed in) / 403 (not advisor) / 503 (db off) —
+          // in every case the right thing is to render nothing.
+          if (!cancelled) setState({ kind: "hidden" });
+          return;
+        }
+        const body = (await res.json()) as {
+          ok?: boolean;
+          total?: number;
+          byStatus?: Record<string, number>;
+        };
+        if (cancelled) return;
+        if (!body || body.ok !== true) {
+          setState({ kind: "hidden" });
+          return;
+        }
+        const newCount = body.byStatus?.new ?? 0;
+        setState({ kind: "ready", total: body.total ?? 0, newCount });
+      })
+      .catch(() => {
+        if (!cancelled) setState({ kind: "hidden" });
+      });
+    return () => {
+      cancelled = true;
+      ac.abort();
+    };
+  }, []);
+
+  if (state.kind !== "ready") return null;
+
+  return (
+    <Link
+      href="/admin/leads"
+      className="group flex items-center justify-between gap-4 rounded-control border border-border-soft bg-surface-1 px-4 py-3 transition hover:border-cobalt/40 hover:bg-surface-muted"
+    >
+      <div className="flex items-start gap-3">
+        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-control bg-cobalt/10 text-cobalt">
+          <Briefcase size={16} aria-hidden="true" />
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-text-primary">销售线索 CRM</p>
+          <p className="mt-0.5 text-[12px] text-text-muted">
+            管理订阅意向、跟进状态与转化记录。仅顾问/管理员可见。
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-4">
+        <div className="text-right">
+          <p className="text-[10px] font-medium uppercase tracking-wide text-text-muted">线索总数</p>
+          <p className="text-lg font-semibold tabular-nums text-text-primary">{state.total}</p>
+        </div>
+        <div className="text-right">
+          <p className="text-[10px] font-medium uppercase tracking-wide text-text-muted">待跟进</p>
+          <p className="text-lg font-semibold tabular-nums text-cobalt">{state.newCount}</p>
+        </div>
+        <ArrowUpRight size={16} aria-hidden="true" className="text-text-muted transition group-hover:text-cobalt" />
+      </div>
+    </Link>
+  );
+}
+
+
 function HomeMode({ family }: { family: Family }) {
   const source = useDataSource();
   const summaries = useUniversitySummaries(source);
@@ -558,6 +649,8 @@ function HomeMode({ family }: { family: Family }) {
               </div>
             </V2Panel>
           ) : null}
+
+          <AdvisorLeadsCard />
 
           <SchoolIndex schools={schools} family={family} />
         </>
