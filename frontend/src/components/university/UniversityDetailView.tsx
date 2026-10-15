@@ -170,7 +170,7 @@ export function UniversityDetailView() {
             );
           })()}
           <Link
-            href="/s/compare"
+            href="/compare"
             className="inline-flex items-center rounded-md border border-line/60 px-3 py-1.5 text-xs font-medium text-ink/60 hover:border-cobalt/30 hover:text-cobalt"
           >
             打开对比 ({compare.ids.length}/{compare.maxItems})

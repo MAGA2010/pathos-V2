@@ -34,7 +34,7 @@ const PRINCIPLES = [
 ];
 
 const SURFACES = [
-  { icon: GitCompareArrows, href: "/s/compare", title: "专业横向对比", body: "把分散在各校官网的专业口径拉到同一张表里比较。" },
+  { icon: GitCompareArrows, href: "/compare", title: "专业横向对比", body: "把分散在各校官网的专业口径拉到同一张表里比较。" },
   { icon: LineChart, href: "/s/timeseries", title: "时序与趋势", body: "录取、学费与排名的逐年变化，保留原始口径与采集时间。" },
   { icon: Radar, href: "/s/radar", title: "事件雷达", body: "政策与招生变动按时间线归档，附来源链接。" },
   { icon: Wallet, href: "/calculator", title: "家庭预算工具", body: "按学制、城市与汇率拆解四年总支出结构。" },

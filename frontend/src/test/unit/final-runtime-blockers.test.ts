@@ -13,12 +13,13 @@ function readSource(relativePath: string): string {
 }
 
 describe("final runtime blocker regressions", () => {
-  it("provides a stable /compare entry to the canonical map comparison experience", () => {
+  it("provides a stable /compare entry to the canonical comparison workspace", () => {
     const route = "src/app/compare/page.tsx";
     expect(existsSync(resolve(FRONTEND_ROOT, route))).toBe(true);
     const source = readSource(route);
 
-    expect(source).toContain('redirect("/map")');
+    expect(source).toContain("ComparisonMatrix");
+    expect(source).not.toContain('redirect("/map")');
     expect(source).not.toMatch(/universities\.json|mock/i);
   });
 

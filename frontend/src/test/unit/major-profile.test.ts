@@ -229,7 +229,7 @@ describe("major aggregation", () => {
     });
     const profile = aggregateMajorProfile("biology", { universities: [second, first] });
 
-    expect(profile && majorCompareHref(profile)).toBe("/map?compare=first&compare=second");
+    expect(profile && majorCompareHref(profile)).toBe("/compare?ids=first,second");
   });
 });
 

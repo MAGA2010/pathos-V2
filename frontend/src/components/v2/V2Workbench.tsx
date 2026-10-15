@@ -324,7 +324,7 @@ const STUDENT_LINKS: FeatureLink[] = [
     icon: <Compass size={19} />,
   },
   {
-    href: "/s/compare",
+    href: "/compare",
     title: "学校对比",
     description: "并排比较排名、学费、录取率与标化中位线。",
     icon: <Scale size={19} />,

@@ -270,7 +270,5 @@ export function aggregateMajorCatalog(input: AggregateMajorInput): MajorProfile[
 
 export function majorCompareHref(profile: MajorProfile): string {
   const ids = profile.representativeSchools.slice(0, 2).map((item) => item.universityId);
-  const params = new URLSearchParams();
-  for (const id of ids) params.append("compare", id);
-  return ids.length > 0 ? "/map?" + params.toString() : "/map";
+  return ids.length > 0 ? `/compare?ids=${ids.map(encodeURIComponent).join(",")}` : "/compare";
 }

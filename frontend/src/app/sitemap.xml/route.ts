@@ -13,6 +13,7 @@ const INFORMATION_PATHS = [
   "/entry/match",
   "/entry/assessment",
   "/entry/portfolio",
+  "/compare",
   "/majors",
   "/deadlines",
   "/costs",
