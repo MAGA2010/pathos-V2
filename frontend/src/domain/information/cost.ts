@@ -566,6 +566,8 @@ function annualScenario(
 }
 
 function rangeFromScenarios(scenarios: CostAnnualScenario[]): CostMoneyRange {
+  if (scenarios.length === 0) return emptyMoney();
+  if (scenarios.every((scenario) => scenario.combined.basis === "no_items")) return emptyMoney();
   return money(
     Math.min(...scenarios.map((scenario) => scenario.combined.min)),
     scenarios.find((scenario) => scenario.scenario === "central")?.combined.median ?? 0,
@@ -630,19 +632,25 @@ export function projectCosts(input: CostProjectionInput): CostProjectionResult {
     totalHigh += usd.max;
   }
 
+  const hasProvidedItems = years.some((year) => year.range.usd.basis === "provided_items");
   return {
     baseYear,
     assumptions,
     assumptionNotes: buildCostAssumptionNotes(items, assumptions),
     years,
-    total: {
-      usd: money(totalLow, totalMedian, totalHigh),
-      cny: cnyMoney(
-        totalLow * assumptions.exchangeRate.cnyPerUsd.low,
-        totalMedian * assumptions.exchangeRate.cnyPerUsd.central,
-        totalHigh * assumptions.exchangeRate.cnyPerUsd.high,
-      ),
-    },
+    total: hasProvidedItems
+      ? {
+          usd: money(totalLow, totalMedian, totalHigh),
+          cny: cnyMoney(
+            totalLow * assumptions.exchangeRate.cnyPerUsd.low,
+            totalMedian * assumptions.exchangeRate.cnyPerUsd.central,
+            totalHigh * assumptions.exchangeRate.cnyPerUsd.high,
+          ),
+        }
+      : {
+          usd: emptyMoney(),
+          cny: { min: 0, median: 0, max: 0, currency: "CNY", basis: "no_items" },
+        },
   };
 }
 import { normalizeAcademicYear } from "@/domain/information/normalize";
