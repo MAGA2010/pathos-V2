@@ -196,6 +196,7 @@ describe("source repository", () => {
       sourceId: "src_1",
       url: "https://example.edu/admissions",
       fetchStatus: "unknown" as never,
+      fetchOutcome: "failed",
     };
     await expect(recordSourceDocument(draft)).rejects.toThrow(/invalid source document status/);
   });
@@ -205,6 +206,7 @@ describe("source repository", () => {
       sourceId: "src_1",
       url: "https://example.edu/admissions",
       fetchStatus: "succeeded",
+      fetchOutcome: "changed",
     };
     await expect(recordSourceDocument(draft)).rejects.toThrow(/contentHash/);
   });
@@ -241,6 +243,7 @@ describe("source repository", () => {
       fetchDurationMs: 100,
       errorCode: "UPSTREAM_503",
       errorMessage: "service unavailable",
+      fetchOutcome: "failed",
     });
     expect(doc.fetchStatus).toBe("failed");
     expect(doc.contentHash).toBeNull();

@@ -20,7 +20,9 @@
     "db:migrate": "tsx scripts/migrate.ts",
     "db:mint-key": "tsx scripts/mint-api-key.ts",
     "guides:extract": "python scripts/extract-iecg-guides.py --source-dir \"../IECG 美本院校资料 Top90-2025(1)/IECG 美本院校资料 Top90-2025\" --output data/college-guides/iecg-2025.json --year 2025",
-    "guides:import": "tsx scripts/import-iecg-guides.ts"
+    "guides:import": "tsx scripts/import-iecg-guides.ts",
+    "info:sources:register": "tsx scripts/information/register-sources.ts",
+    "info:sources:fetch": "tsx scripts/information/fetch-sources.ts"
   },
   "dependencies": {
     "d3-scale-chromatic": "^3.1.0",

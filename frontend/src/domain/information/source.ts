@@ -14,6 +14,22 @@ export type SourceType = (typeof SOURCE_TYPES)[number];
 export const SOURCE_DOCUMENT_STATUSES = ["succeeded", "failed", "blocked"] as const;
 export type SourceDocumentStatus = (typeof SOURCE_DOCUMENT_STATUSES)[number];
 
+export const SOURCE_ACCESS_REVIEW_STATUSES = [
+  "pending",
+  "allowed",
+  "disallowed",
+  "not_applicable",
+] as const;
+export type SourceAccessReviewStatus = (typeof SOURCE_ACCESS_REVIEW_STATUSES)[number];
+
+export const SOURCE_FETCH_OUTCOMES = [
+  "changed",
+  "unchanged",
+  "failed",
+  "blocked",
+] as const;
+export type SourceFetchOutcome = (typeof SOURCE_FETCH_OUTCOMES)[number];
+
 export interface SourceDraft {
   name: string;
   url: string;
@@ -24,6 +40,12 @@ export interface SourceDraft {
   parserName?: string;
   rateLimitSeconds?: number;
   isActive?: boolean;
+  robotsReviewStatus?: SourceAccessReviewStatus;
+  termsReviewStatus?: SourceAccessReviewStatus;
+  fetchEnabled?: boolean;
+  timeoutMs?: number;
+  maxResponseBytes?: number;
+  userAgent?: string;
 }
 
 export interface Source extends Required<
@@ -33,6 +55,12 @@ export interface Source extends Required<
   publisher: string | null;
   licenseNote: string | null;
   parserName: string;
+  robotsReviewStatus: SourceAccessReviewStatus;
+  termsReviewStatus: SourceAccessReviewStatus;
+  fetchEnabled: boolean;
+  timeoutMs: number;
+  maxResponseBytes: number;
+  userAgent: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -48,6 +76,10 @@ export interface SourceDocumentDraft {
   errorCode?: string | null;
   errorMessage?: string | null;
   parserMetadata?: Record<string, unknown>;
+  fetchOutcome: SourceFetchOutcome;
+  finalUrl?: string | null;
+  redirectCount?: number;
+  contentType?: string | null;
 }
 
 export interface SourceDocument extends SourceDocumentDraft {
@@ -56,6 +88,10 @@ export interface SourceDocument extends SourceDocumentDraft {
   fetchedAt: string;
   createdAt: string;
   parserMetadata: Record<string, unknown>;
+  fetchOutcome: SourceFetchOutcome;
+  finalUrl: string | null;
+  redirectCount: number;
+  contentType: string | null;
 }
 
 function includes<T extends string>(values: readonly T[], value: unknown): value is T {
@@ -72,4 +108,14 @@ export function isSourceType(value: unknown): value is SourceType {
 
 export function isSourceDocumentStatus(value: unknown): value is SourceDocumentStatus {
   return includes(SOURCE_DOCUMENT_STATUSES, value);
+}
+
+export function isSourceAccessReviewStatus(
+  value: unknown,
+): value is SourceAccessReviewStatus {
+  return includes(SOURCE_ACCESS_REVIEW_STATUSES, value);
+}
+
+export function isSourceFetchOutcome(value: unknown): value is SourceFetchOutcome {
+  return includes(SOURCE_FETCH_OUTCOMES, value);
 }
