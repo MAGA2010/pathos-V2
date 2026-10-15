@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { Compass, Github, KeyRound, MessageCircle, Receipt } from "lucide-react";
+import { BellRing, Compass, Github, KeyRound, MessageCircle, Receipt } from "lucide-react";
 import { getContactChannels } from "@/lib/contact";
+import { isInformationPlatformMode } from "@/lib/product-mode";
 
 export default function Footer() {
   const contact = getContactChannels();
+  const informationMode = isInformationPlatformMode();
   return (
     <footer className="border-t border-line/50 bg-ink/95 text-panel/70">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
@@ -20,13 +22,23 @@ export default function Footer() {
               面向中国家庭的留学选校数据平台。<br />
               数据驱动，让选校更理性。
             </p>
-            <a
-              href="/pricing"
-              className="mt-4 inline-flex items-center gap-1.5 rounded-control border border-panel/20 px-3 py-1.5 text-[13px] font-medium text-panel transition hover:border-panel/40 hover:bg-panel/10"
-            >
-              <Receipt size={14} aria-hidden="true" />
-              查看付费方案
-            </a>
+            {informationMode ? (
+              <Link
+                href="/opportunities"
+                className="mt-4 inline-flex items-center gap-1.5 rounded-control border border-panel/20 px-3 py-1.5 text-[13px] font-medium text-panel transition hover:border-panel/40 hover:bg-panel/10"
+              >
+                <BellRing size={14} aria-hidden="true" />
+                查看信息动态
+              </Link>
+            ) : (
+              <a
+                href="/pricing"
+                className="mt-4 inline-flex items-center gap-1.5 rounded-control border border-panel/20 px-3 py-1.5 text-[13px] font-medium text-panel transition hover:border-panel/40 hover:bg-panel/10"
+              >
+                <Receipt size={14} aria-hidden="true" />
+                查看付费方案
+              </a>
+            )}
           </div>
 
           {/* Platform */}
@@ -46,14 +58,28 @@ export default function Footer() {
 
           {/* For business */}
           <div>
-            <h3 className="mb-3 text-sm font-semibold text-panel/85">企业与顾问</h3>
+            <h3 className="mb-3 text-sm font-semibold text-panel/85">
+              {informationMode ? "数据与协作" : "企业与顾问"}
+            </h3>
             <div className="grid grid-cols-1 gap-2 text-sm">
-              <Link href="/pricing" className="transition-colors hover:text-panel">付费方案</Link>
-              <Link href="/account/subscription" className="transition-colors hover:text-panel">我的订阅</Link>
               <Link href="/account/api-keys" className="inline-flex items-center gap-1.5 transition-colors hover:text-panel">
                 <KeyRound size={12} aria-hidden="true" /> 数据 API 文档
               </Link>
               <Link href="/about" className="transition-colors hover:text-panel">关于 PathOS</Link>
+              {informationMode ? (
+                <Link
+                  href="/pricing"
+                  className="text-panel/60 transition-colors hover:text-panel"
+                  title="保留的顾问协作入口"
+                >
+                  顾问协作
+                </Link>
+              ) : (
+                <>
+                  <Link href="/pricing" className="transition-colors hover:text-panel">付费方案</Link>
+                  <Link href="/account/subscription" className="transition-colors hover:text-panel">我的订阅</Link>
+                </>
+              )}
             </div>
           </div>
 

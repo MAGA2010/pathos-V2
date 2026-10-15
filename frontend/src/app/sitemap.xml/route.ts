@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { getPool } from "@/server/db";
+import { isInformationPlatformMode } from "@/lib/product-mode";
 
 export const dynamic = "force-dynamic";
 
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://personal-os-zu9q.onrender.com").trim();
 
-const STATIC_PATHS = [
+const INFORMATION_PATHS = [
   "/",
   "/entry/map",
   "/calculator",
@@ -17,9 +18,16 @@ const STATIC_PATHS = [
   "/topics",
   "/xuanxiao",
   "/about",
+];
+
+const COMMERCIAL_PATHS = [
   "/pricing",
   "/account/subscription",
 ];
+
+const STATIC_PATHS = isInformationPlatformMode()
+  ? INFORMATION_PATHS
+  : [...INFORMATION_PATHS, ...COMMERCIAL_PATHS];
 
 function xmlEscape(value: string): string {
   return value
