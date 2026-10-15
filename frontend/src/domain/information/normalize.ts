@@ -150,7 +150,9 @@ export function normalizeDateToUtc(
   const explicitOffset = input.trim().match(/([+-]\d{2}):?(\d{2})$/);
   if (explicitOffset) {
     const sign = explicitOffset[1].startsWith("-") ? -1 : 1;
-    const offsetMinutes = sign * (Number(explicitOffset[1]) * 60 + Number(explicitOffset[2]));
+    // The first capture group retains its sign; only the minute component
+    // needs the sign applied separately.
+    const offsetMinutes = Number(explicitOffset[1]) * 60 + sign * Number(explicitOffset[2]);
     const wallTime = utcDateOrThrow(
       parts.year,
       parts.month,
