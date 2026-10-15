@@ -12,6 +12,7 @@ import { useDataSource } from "@/services/data-source-provider";
 import { useStatusDictionary, useUniversityDetail } from "@/hooks/use-data-source";
 import { useCompareStore } from "@/state/compare-store";
 import { UniversityProfilePanel } from "@/components/university/UniversityProfilePanel";
+import { UniversityFactSection } from "@/components/university/UniversityFactSection";
 import {
   DataLoadingState,
   DataEmptyState,
@@ -179,6 +180,7 @@ export function UniversityDetailView() {
         </div>
       </header>
 
+      <UniversityFactSection universityId={d.id} />
       <UniversityProfilePanel detail={d} statusDictionary={dictionary} />
     </main>
   );
