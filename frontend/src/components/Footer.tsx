@@ -50,6 +50,9 @@ export default function Footer() {
               <Link href="/entry/match" className="transition-colors hover:text-panel">自主测验</Link>
               <Link href="/entry/assessment" className="transition-colors hover:text-panel">AI 学校评估</Link>
               <Link href="/entry/portfolio" className="transition-colors hover:text-panel">AI 清单分析</Link>
+              <Link href="/majors" className="transition-colors hover:text-panel">专业档案</Link>
+              <Link href="/deadlines" className="transition-colors hover:text-panel">申请日历</Link>
+              <Link href="/costs" className="transition-colors hover:text-panel">成本中心</Link>
               <Link href="/news" className="transition-colors hover:text-panel">留学资讯</Link>
               <Link href="/s/home" className="transition-colors hover:text-panel">数据工作台</Link>
               <Link href="/followed" className="transition-colors hover:text-panel">我的关注</Link>

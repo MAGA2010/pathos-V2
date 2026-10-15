@@ -53,4 +53,13 @@ describe("product mode", () => {
     expect(sitemap).toContain("COMMERCIAL_PATHS");
     expect(sitemap).toContain("isInformationPlatformMode()");
   });
+
+  it("exposes the information platform centers in persistent public entry points", () => {
+    const footer = read("src/components/Footer.tsx");
+    const sitemap = read("src/app/sitemap.xml/route.ts");
+    for (const route of ["/majors", "/deadlines", "/costs"]) {
+      expect(footer).toContain(`href="${route}"`);
+      expect(sitemap).toContain(`"${route}"`);
+    }
+  });
 });
