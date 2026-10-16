@@ -24,11 +24,14 @@ import {
   ArrowUpRight,
   BookOpen,
   Calculator,
+  CalendarClock,
   Compass,
   ExternalLink,
+  FileText,
   GraduationCap,
   LineChart,
   ListChecks,
+  RefreshCw,
   Radar,
   Scale,
   Search,
@@ -515,6 +518,476 @@ function SchoolIndex({
   );
 }
 
+// ── Student cockpit primitives ───────────────────────────────────────
+
+type WorkbenchResource<T> =
+  | { kind: "loading" }
+  | { kind: "ready"; data: T }
+  | { kind: "unauthenticated" }
+  | { kind: "unavailable"; message: string };
+
+function useWorkbenchResource<T>(
+  url: string,
+  reloadToken: number,
+): WorkbenchResource<T> {
+  const [state, setState] = useState<WorkbenchResource<T>>({
+    kind: "loading",
+  });
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setState({ kind: "loading" });
+
+    fetch(url, { cache: "no-store", signal: controller.signal })
+      .then(async (response) => {
+        const body = (await response.json().catch(() => null)) as
+          | { ok?: boolean; message?: string }
+          | null;
+        if (response.status === 401) {
+          setState({ kind: "unauthenticated" });
+          return;
+        }
+        if (!response.ok || body?.ok !== true) {
+          setState({
+            kind: "unavailable",
+            message: "数据服务暂不可用，已停止展示未核验内容。",
+          });
+          return;
+        }
+        setState({ kind: "ready", data: body as T });
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+        setState({
+          kind: "unavailable",
+          message: "数据源暂不可用，已停止展示未核验内容。",
+        });
+      });
+
+    return () => controller.abort();
+  }, [url, reloadToken]);
+
+  return state;
+}
+
+function formatWorkbenchDate(value: string | null | undefined): string {
+  if (!value) return "日期待核验";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "日期待核验";
+  return new Intl.DateTimeFormat("zh-CN", {
+    timeZone: "UTC",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
+function CockpitPanel({
+  icon,
+  title,
+  badge,
+  action,
+  children,
+}: {
+  icon: ReactNode;
+  title: string;
+  badge?: ReactNode;
+  action?: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <V2Panel className="flex h-full flex-col">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-start gap-2.5">
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-control bg-cobalt/10 text-cobalt">
+            {icon}
+          </span>
+          <div className="min-w-0">
+            <h3 className="truncate text-sm font-semibold text-text-primary">
+              {title}
+            </h3>
+            {badge ? <div className="mt-1">{badge}</div> : null}
+          </div>
+        </div>
+        {action ? <div className="shrink-0">{action}</div> : null}
+      </div>
+      <div className="mt-4 flex-1">{children}</div>
+    </V2Panel>
+  );
+}
+
+function CockpitNotice({
+  tone,
+  title,
+  description,
+  action,
+}: {
+  tone: "neutral" | "warning" | "unavailable";
+  title: string;
+  description: string;
+  action?: ReactNode;
+}) {
+  const toneClass =
+    tone === "unavailable"
+      ? "border-persimmon/30 bg-persimmon/8 text-persimmon"
+      : tone === "warning"
+        ? "border-cobalt/30 bg-cobalt/8 text-cobalt"
+        : "border-border-soft bg-surface-muted/50 text-text-secondary";
+
+  return (
+    <div
+      role={tone === "unavailable" ? "alert" : "status"}
+      className={`rounded-control border px-3 py-2.5 ${toneClass}`}
+    >
+      <p className="text-xs font-semibold">{title}</p>
+      <p className="mt-1 text-[11px] leading-5 text-text-secondary">
+        {description}
+      </p>
+      {action ? <div className="mt-2">{action}</div> : null}
+    </div>
+  );
+}
+
+function CockpitRetryButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex min-h-[44px] items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-2.5 text-[11px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+    >
+      <RefreshCw size={12} aria-hidden="true" />
+      重试
+    </button>
+  );
+}
+
+interface WorkbenchDeadlineCalendar {
+  groups: {
+    urgent: Array<{
+      deadline: { title: string; dueAtUtc: string; sourceUrl: string };
+      urgency: string;
+      daysRemaining: number;
+    }>;
+    upcoming: Array<{
+      deadline: { title: string; dueAtUtc: string; sourceUrl: string };
+      urgency: string;
+      daysRemaining: number;
+    }>;
+  };
+  coverage: { deadlineFacts: number; scheduled: number; missing: number };
+}
+
+function DeadlineRemindersCard() {
+  const [reloadToken, setReloadToken] = useState(0);
+  const state = useWorkbenchResource<WorkbenchDeadlineCalendar>(
+    "/api/information/deadlines",
+    reloadToken,
+  );
+  const items =
+    state.kind === "ready"
+      ? [...state.data.groups.urgent, ...state.data.groups.upcoming].slice(0, 4)
+      : [];
+
+  return (
+    <CockpitPanel
+      icon={<CalendarClock size={16} aria-hidden="true" />}
+      title="申请截止提醒"
+      badge={
+        state.kind === "ready" ? (
+          <span className="text-[11px] text-text-muted">
+            {state.data.groups.urgent.length} 项紧急 ·{" "}
+            {state.data.coverage.scheduled} 项可排期
+          </span>
+        ) : null
+      }
+      action={
+        <Link
+          href="/deadlines"
+          className="inline-flex min-h-[44px] items-center rounded-control border border-border-soft px-2.5 text-[11px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+        >
+          日历
+        </Link>
+      }
+    >
+      {state.kind === "loading" ? (
+        <CockpitNotice
+          tone="neutral"
+          title="正在读取已审核截止日"
+          description="只读取当前有效 facts，不使用往年日期补位。"
+        />
+      ) : state.kind === "unavailable" ? (
+        <CockpitNotice
+          tone="unavailable"
+          title="申请截止日暂不可用"
+          description={state.message}
+          action={<CockpitRetryButton onClick={() => setReloadToken(v => v + 1)} />}
+        />
+      ) : state.kind === "ready" && items.length === 0 ? (
+        <CockpitNotice
+          tone="neutral"
+          title="暂无可排期截止日"
+          description={`已审核 deadline facts ${state.data.coverage.deadlineFacts} 条；缺失 ${state.data.coverage.missing} 条会保持显式空态。`}
+        />
+      ) : (
+        <ul className="space-y-2">
+          {items.map((item) => {
+            const urgent = item.daysRemaining <= 7;
+            const soon = item.daysRemaining <= 14;
+            return (
+              <li
+                key={`${item.deadline.title}-${item.deadline.dueAtUtc}`}
+                className="rounded-control border border-border-soft px-3 py-2"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <p className="min-w-0 flex-1 truncate text-xs font-medium text-text-primary">
+                    {item.deadline.title}
+                  </p>
+                  <span
+                    className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                      urgent
+                        ? "bg-danger/10 text-danger"
+                        : soon
+                          ? "bg-persimmon/10 text-persimmon"
+                          : "bg-cobalt/10 text-cobalt"
+                    }`}
+                  >
+                    {item.daysRemaining} 天
+                  </span>
+                </div>
+                <div className="mt-1 flex items-center justify-between gap-2 text-[11px] text-text-muted">
+                  <span>{formatWorkbenchDate(item.deadline.dueAtUtc)} UTC</span>
+                  <a
+                    href={item.deadline.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="inline-flex items-center gap-1 hover:text-cobalt"
+                  >
+                    来源
+                    <ExternalLink size={11} aria-hidden="true" />
+                  </a>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </CockpitPanel>
+  );
+}
+
+interface WorkbenchShortlist {
+  id: string;
+  name: string;
+  season: string | null;
+  updatedAt: string;
+}
+
+function ShortlistsCard() {
+  const [reloadToken, setReloadToken] = useState(0);
+  const state = useWorkbenchResource<{ shortlists: WorkbenchShortlist[] }>(
+    "/api/shortlists",
+    reloadToken,
+  );
+  const lists = state.kind === "ready" ? state.data.shortlists : [];
+
+  return (
+    <CockpitPanel
+      icon={<ListChecks size={16} aria-hidden="true" />}
+      title="选校清单"
+      badge={
+        state.kind === "ready" ? (
+          <span className="text-[11px] text-text-muted">
+            {lists.length} 份清单
+          </span>
+        ) : null
+      }
+      action={
+        <Link
+          href="/workbench/shortlists"
+          className="inline-flex min-h-[44px] items-center rounded-control border border-border-soft px-2.5 text-[11px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+        >
+          管理
+        </Link>
+      }
+    >
+      {state.kind === "loading" ? (
+        <CockpitNotice
+          tone="neutral"
+          title="正在读取选校清单"
+          description="清单按当前登录用户归属读取。"
+        />
+      ) : state.kind === "unauthenticated" ? (
+        <CockpitNotice
+          tone="neutral"
+          title="登录后同步清单"
+          description="未登录时不展示任何默认或示例选校组合。"
+        />
+      ) : state.kind === "unavailable" ? (
+        <CockpitNotice
+          tone="unavailable"
+          title="选校清单暂不可用"
+          description={state.message}
+          action={<CockpitRetryButton onClick={() => setReloadToken(v => v + 1)} />}
+        />
+      ) : lists.length === 0 ? (
+        <CockpitNotice
+          tone="neutral"
+          title="暂无选校清单"
+          description="创建清单后再关联冲刺、匹配、保底学校。"
+        />
+      ) : (
+        <ul className="space-y-2">
+          {lists.slice(0, 3).map((list) => (
+            <li key={list.id}>
+              <Link
+                href={`/workbench/shortlists/${list.id}`}
+                className="block rounded-control border border-border-soft px-3 py-2 transition hover:border-cobalt/40 hover:bg-surface-muted/40"
+              >
+                <p className="truncate text-xs font-medium text-text-primary">
+                  {list.name}
+                </p>
+                <p className="mt-1 text-[11px] text-text-muted">
+                  {list.season ?? "申请季未填写"} · 更新{" "}
+                  {formatWorkbenchDate(list.updatedAt)}
+                </p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </CockpitPanel>
+  );
+}
+
+interface WorkbenchEventRecord {
+  recordKind?: string;
+  title: string;
+  summary: string | null;
+  publishedAt: string;
+  universityNameZh: string | null;
+  entityName: string | null;
+  source: { name: string; url: string };
+}
+
+function RecentEventsCard() {
+  const [reloadToken, setReloadToken] = useState(0);
+  const state = useWorkbenchResource<{
+    events: WorkbenchEventRecord[];
+    previewNews: WorkbenchEventRecord[];
+    previewFallback: boolean;
+  }>("/api/information/events?limit=5", reloadToken);
+  const records =
+    state.kind === "ready"
+      ? state.data.events.length > 0
+        ? state.data.events
+        : state.data.previewNews
+      : [];
+  const isPreview =
+    state.kind === "ready" &&
+    state.data.events.length === 0 &&
+    state.data.previewNews.length > 0;
+
+  return (
+    <CockpitPanel
+      icon={<Radar size={16} aria-hidden="true" />}
+      title="最近事件"
+      badge={
+        state.kind === "ready" ? (
+          <span className="text-[11px] text-text-muted">
+            {isPreview ? "Preview 动态" : "Approved 事件"}
+          </span>
+        ) : null
+      }
+      action={
+        <Link
+          href="/opportunities"
+          className="inline-flex min-h-[44px] items-center rounded-control border border-border-soft px-2.5 text-[11px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+        >
+          全部
+        </Link>
+      }
+    >
+      {state.kind === "loading" ? (
+        <CockpitNotice
+          tone="neutral"
+          title="正在读取事件流"
+          description="事件会保留 approved / Preview 状态标识。"
+        />
+      ) : state.kind === "unavailable" ? (
+        <CockpitNotice
+          tone="unavailable"
+          title="事件流暂不可用"
+          description={state.message}
+          action={<CockpitRetryButton onClick={() => setReloadToken(v => v + 1)} />}
+        />
+      ) : records.length === 0 ? (
+        <CockpitNotice
+          tone="neutral"
+          title="暂无事件"
+          description="当前事实层没有可展示的已审核事件。"
+        />
+      ) : (
+        <ul className="space-y-2">
+          {records.slice(0, 3).map((record) => (
+            <li
+              key={`${record.title}-${record.publishedAt}`}
+              className="rounded-control border border-border-soft px-3 py-2"
+            >
+              <p className="truncate text-xs font-medium text-text-primary">
+                {record.title}
+              </p>
+              <p className="mt-1 truncate text-[11px] text-text-muted">
+                {record.universityNameZh ?? record.entityName ?? record.source.name}{" "}
+                · {formatWorkbenchDate(record.publishedAt)}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </CockpitPanel>
+  );
+}
+
+function ReportsCard() {
+  return (
+    <CockpitPanel
+      icon={<FileText size={16} aria-hidden="true" />}
+      title="报告"
+      badge={<span className="text-[11px] text-text-muted">生成入口</span>}
+      action={
+        <Link
+          href="/assessment"
+          className="inline-flex min-h-[44px] items-center rounded-control border border-border-soft px-2.5 text-[11px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+        >
+          评估
+        </Link>
+      }
+    >
+      <CockpitNotice
+        tone="neutral"
+        title="从真实输入生成报告"
+        description="先完成学校评估或清单分析，再使用生成的分享链接查看报告。当前没有可查询的报告索引，因此不显示模拟历史记录。"
+      />
+      <div className="mt-3 flex flex-wrap gap-2">
+        <Link
+          href="/assessment"
+          className="inline-flex min-h-[44px] items-center rounded-control bg-cobalt/10 px-3 text-[11px] font-semibold text-cobalt transition hover:bg-cobalt/15"
+        >
+          AI 学校评估
+        </Link>
+        <Link
+          href="/portfolio"
+          className="inline-flex min-h-[44px] items-center rounded-control border border-border-soft px-3 text-[11px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+        >
+          清单分析
+        </Link>
+      </div>
+    </CockpitPanel>
+  );
+}
+
 // AdvisorLeadsCard — Phase 1.8 advisor-only entry into /admin/leads.
 //
 // Behavior:
@@ -626,99 +1099,79 @@ function InformationCoverageCard({
   if (!coverage) return null;
 
   return (
-    <V2Panel className="mt-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h2 className="text-sm font-semibold text-text-primary">
-            已审核事实覆盖
-          </h2>
-          <p className="mt-1 max-w-2xl text-xs leading-relaxed text-text-muted">
-            {coverage.status === "ready"
-              ? "以下统计只来自当前有效、已通过审核的 facts；事实为空或带 null_reason 时都会显式显示，不用预览数据补位。"
-              : coverage.unavailableReason}
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href="/deadlines"
-            className="inline-flex items-center gap-1.5 rounded-control border border-border-soft px-2.5 py-1.5 text-[11px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
-          >
-            <ListChecks size={13} aria-hidden="true" />
-            截止日
-          </Link>
-          <Link
-            href="/costs"
-            className="inline-flex items-center gap-1.5 rounded-control border border-border-soft px-2.5 py-1.5 text-[11px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
-          >
-            <Wallet size={13} aria-hidden="true" />
-            成本
-          </Link>
-        </div>
-      </div>
-
-      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <div className="rounded-control bg-surface-2/60 px-3 py-2">
-          <p className="text-[10px] uppercase tracking-wide text-text-muted">
-            已审核事实
-          </p>
-          <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
-            {coverage.approvedFacts}
-          </p>
-        </div>
-        <div className="rounded-control bg-surface-2/60 px-3 py-2">
-          <p className="text-[10px] uppercase tracking-wide text-text-muted">
-            覆盖学校
-          </p>
-          <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
-            {coverage.universities}
-          </p>
-        </div>
-        <div className="rounded-control bg-surface-2/60 px-3 py-2">
-          <p className="text-[10px] uppercase tracking-wide text-text-muted">
-            截止日 / 成本
-          </p>
-          <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
-            {coverage.deadlineFacts} / {coverage.costFacts}
-          </p>
-        </div>
-        <div className="rounded-control bg-surface-2/60 px-3 py-2">
-          <p className="text-[10px] uppercase tracking-wide text-text-muted">
-            显式缺失
-          </p>
-          <p className="mt-1 text-sm font-semibold tabular-nums text-persimmon">
-            {coverage.missingFacts}
-          </p>
-        </div>
-      </div>
-
-      {coverage.status === "ready" && coverage.recentChanges.length > 0 ? (
-        <ul className="mt-3 divide-y divide-border-soft rounded-control border border-border-soft">
-          {coverage.recentChanges.map((change) => (
-            <li
-              key={change.factId}
-              className="flex flex-wrap items-center justify-between gap-2 px-3 py-2"
-            >
-              <div className="min-w-0">
-                <p className="truncate text-[12px] font-medium text-text-primary">
-                  {change.fieldKey}
-                </p>
-                <a
-                  href={change.sourceUrl}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-[11px] text-text-secondary underline decoration-text-tertiary underline-offset-2 hover:text-cobalt"
+    <CockpitPanel
+      icon={<ShieldAlert size={16} aria-hidden="true" />}
+      title="已审核事实覆盖"
+      badge={
+        coverage.status === "ready" ? (
+          <span className="text-[11px] text-text-muted">
+            {coverage.universities} 所学校 · {coverage.approvedFacts} 条事实
+          </span>
+        ) : null
+      }
+      action={
+        <Link
+          href="/costs"
+          className="inline-flex min-h-[44px] items-center rounded-control border border-border-soft px-2.5 text-[11px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+        >
+          成本
+        </Link>
+      }
+    >
+      {coverage.status === "unavailable" ? (
+        <CockpitNotice
+          tone="unavailable"
+          title="已审核事实层暂不可用"
+          description="当前不展示推测覆盖率，也不用预览数据补位。"
+        />
+      ) : (
+        <>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-control bg-surface-2/60 px-3 py-2">
+              <p className="text-[10px] text-text-muted">截止日事实</p>
+              <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
+                {coverage.deadlineFacts}
+              </p>
+            </div>
+            <div className="rounded-control bg-surface-2/60 px-3 py-2">
+              <p className="text-[10px] text-text-muted">成本事实</p>
+              <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
+                {coverage.costFacts}
+              </p>
+            </div>
+            <div className="rounded-control bg-surface-2/60 px-3 py-2">
+              <p className="text-[10px] text-text-muted">显式缺失</p>
+              <p className="mt-1 text-sm font-semibold tabular-nums text-persimmon">
+                {coverage.missingFacts}
+              </p>
+            </div>
+            <div className="rounded-control bg-surface-2/60 px-3 py-2">
+              <p className="text-[10px] text-text-muted">最近变更</p>
+              <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
+                {coverage.recentChanges.length}
+              </p>
+            </div>
+          </div>
+          {coverage.recentChanges.length > 0 ? (
+            <ul className="mt-3 space-y-1.5">
+              {coverage.recentChanges.slice(0, 2).map((change) => (
+                <li
+                  key={change.factId}
+                  className="flex items-center justify-between gap-2 text-[11px]"
                 >
-                  r{change.revision} · 来源
-                </a>
-              </div>
-              <span className="shrink-0 text-[11px] text-text-muted">
-                {change.updatedAt.slice(0, 10)}
-              </span>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-    </V2Panel>
+                  <span className="min-w-0 truncate font-medium text-text-secondary">
+                    {change.fieldKey}
+                  </span>
+                  <span className="shrink-0 text-text-muted">
+                    {formatWorkbenchDate(change.updatedAt)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </>
+      )}
+    </CockpitPanel>
   );
 }
 
@@ -747,25 +1200,55 @@ function HomeMode({
     <main className={PAGE}>
       <V2PageHeader
         eyebrow={family === "f" ? "家庭决策工作台" : "学生数据工作台"}
-        title={family === "f" ? "家庭端决策模块" : "学生端数据模块"}
+        title={family === "f" ? "家庭端决策模块" : "学生工作台"}
         description={
           family === "f"
             ? "在现有 PathOS 之上新增的决策模块：政策动态、学校档案与 ROI 测算。所有数字来自已核验数据源，缺失即标注。"
-            : "在现有 PathOS 之上新增的数据模块：专业聚合、学校对比、时序、政策雷达与计算器。所有数字来自已核验数据源，缺失即标注。"
+            : "按截止风险、数据质量、清单、事件和报告组织今天要做的事。所有数字只来自已核验数据源，缺失即标注。"
         }
         action={
-          <Link
-            href="/map"
-            className="inline-flex items-center gap-1.5 rounded-control border border-border-soft px-3 py-1.5 text-xs font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
-          >
-            返回留学地图
-            <ArrowUpRight size={13} />
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/workbench/shortlists"
+              className="inline-flex min-h-[44px] items-center gap-1.5 rounded-control bg-cobalt/10 px-3 text-xs font-semibold text-cobalt transition hover:bg-cobalt/15"
+            >
+              管理选校清单
+            </Link>
+            <Link
+              href="/map"
+              className="inline-flex min-h-[44px] items-center gap-1.5 rounded-control border border-border-soft px-3 text-xs font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+            >
+              留学地图
+              <ArrowUpRight size={13} />
+            </Link>
+          </div>
         }
       />
 
+      {family === "s" ? (
+        <section
+          aria-label="学生工作台优先事项"
+          className="grid gap-3 md:grid-cols-2 xl:grid-cols-3"
+        >
+          <div className="md:col-span-2 xl:col-span-1">
+            <DeadlineRemindersCard />
+          </div>
+          <InformationCoverageCard coverage={informationCoverage} />
+          <ShortlistsCard />
+          <RecentEventsCard />
+          <ReportsCard />
+        </section>
+      ) : null}
+
       {summaries.state.status === "loading" ? (
-        <Loading message="正在读取院校数据…" />
+        <V2Panel className={family === "s" ? "mt-6" : ""}>
+          <p className="text-xs font-medium text-text-secondary">
+            正在读取院校索引…
+          </p>
+          <p className="mt-1 text-[11px] text-text-muted">
+            优先事项面板不受院校索引影响，会分别显示自己的数据状态。
+          </p>
+        </V2Panel>
       ) : summaries.state.status === "error" ? (
         <Failure
           code={summaries.state.code}
@@ -778,7 +1261,11 @@ function HomeMode({
         />
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div
+            className={`grid grid-cols-2 gap-3 sm:grid-cols-4 ${
+              family === "s" ? "mt-6" : ""
+            }`}
+          >
             <StatTile label="已收录院校" value={schools.length} />
             <StatTile label="覆盖专业" value={programs.length} />
             <StatTile label="指南已匹配" value={guideCovered} />
@@ -790,6 +1277,7 @@ function HomeMode({
             />
           </div>
 
+          <h2 className="sr-only">决策工具</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {cards.map((card) => (
               <V2FeatureCard
@@ -825,9 +1313,9 @@ function HomeMode({
             </V2Panel>
           ) : null}
 
-          <AdvisorLeadsCard />
-
-          <InformationCoverageCard coverage={informationCoverage} />
+          <div className="mt-3">
+            <AdvisorLeadsCard />
+          </div>
 
           <SchoolIndex schools={schools} family={family} />
         </>
