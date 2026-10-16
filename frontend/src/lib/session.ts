@@ -12,6 +12,11 @@
 import { createHash, randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
 import { getPool } from "@/server/db";
+import {
+  PREVIEW_AUTH_COOKIE,
+  PREVIEW_AUTH_USER,
+  isPreviewAuthEnabled,
+} from "@/lib/preview-auth";
 
 export const SESSION_COOKIE = process.env.PATHOS_SESSION_COOKIE ?? "pathos.sid";
 const SESSION_TTL_MS = Number(process.env.PATHOS_SESSION_TTL_DAYS ?? 30) * 24 * 60 * 60 * 1000;
@@ -88,6 +93,9 @@ export async function findSessionUser(id: string): Promise<SessionUser | null> {
 
 export async function getCurrentUser(): Promise<SessionUser | null> {
   const jar = cookies();
+  if (isPreviewAuthEnabled() && jar.get(PREVIEW_AUTH_COOKIE)?.value === "1") {
+    return { ...PREVIEW_AUTH_USER };
+  }
   const sid = jar.get(SESSION_COOKIE)?.value;
   if (!sid) return null;
   return findSessionUser(sid);

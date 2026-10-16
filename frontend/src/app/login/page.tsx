@@ -2,15 +2,22 @@
 // and reads any `?error=` from the callback redirect.
 import { Compass } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import LoginForm from "./LoginForm";
+import { isPreviewAuthEnabled, safePreviewDestination } from "@/lib/preview-auth";
 
 export const dynamic = "force-dynamic";
 
 interface LoginPageProps {
-  searchParams?: { error?: string };
+  searchParams?: { error?: string; next?: string };
 }
 
 export default function LoginPage({ searchParams }: LoginPageProps): JSX.Element {
+  if (isPreviewAuthEnabled()) {
+    const target = safePreviewDestination(searchParams?.next ?? null);
+    redirect(`/api/auth/preview-login?next=${encodeURIComponent(target)}`);
+  }
+
   return (
     <main className="mx-auto flex min-h-[calc(100vh-12rem)] max-w-md flex-col justify-center px-4 py-12 sm:px-6">
       <div className="flex flex-col gap-6 rounded-control border border-border-soft bg-surface-1 p-6 shadow-sm">

@@ -6,6 +6,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { SESSION_COOKIE, revokeSession } from "@/lib/session";
+import { PREVIEW_AUTH_COOKIE } from "@/lib/preview-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -35,5 +36,16 @@ export async function POST(req: Request): Promise<NextResponse> {
 
   const response = NextResponse.json({ ok: true });
   response.headers.append("Set-Cookie", cookieValue.join("; "));
+  response.headers.append(
+    "Set-Cookie",
+    [
+      `${PREVIEW_AUTH_COOKIE}=`,
+      "Path=/",
+      "HttpOnly",
+      "SameSite=Lax",
+      "Expires=Thu, 01 Jan 1970 00:00:00 GMT",
+      "Max-Age=0",
+    ].join("; "),
+  );
   return response;
 }
