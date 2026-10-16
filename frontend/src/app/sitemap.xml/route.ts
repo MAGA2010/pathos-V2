@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { ANSWER_CARD_PATHS } from "@/domain/information/answer-card";
 import { getPool } from "@/server/db";
 import { isInformationPlatformMode } from "@/lib/product-mode";
 
@@ -19,7 +20,7 @@ const INFORMATION_PATHS = [
   "/costs",
   "/opportunities",
   "/news",
-  "/topics",
+  ...ANSWER_CARD_PATHS,
   "/xuanxiao",
   "/about",
 ];
