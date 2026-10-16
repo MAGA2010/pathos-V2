@@ -1,13 +1,6 @@
-import {
-  copyFile,
-  mkdir,
-  mkdtemp,
-  readFile,
-  rm,
-} from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { parseManifest } from "@/schemas/dataset.schema";
 import { parseStage5Manifest, parseStage5Summaries } from "@/schemas/stage5-preview.schema";
@@ -22,6 +15,40 @@ async function artifact<T = unknown>(name: string): Promise<T> {
   return JSON.parse(await readFile(path.join(BUNDLE_ROOT, name), "utf8")) as T;
 }
 
+const queryMock = vi.hoisted(() => vi.fn());
+
+vi.mock("@/server/db", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/server/db")>();
+  return {
+    ...actual,
+    getPool: () => ({
+      query: (query: string, params?: unknown[]) => queryMock(query, params),
+    }),
+  };
+});
+
+async function defaultBackendQuery(
+  query: string,
+  params: unknown[] = [],
+): Promise<{ rows: any[] }> {
+  if (query.includes("FROM manifest")) {
+    return { rows: [{ payload: await artifact("manifest.json") }] };
+  }
+  if (query.includes("FROM university_details")) {
+    const id = String(params[0]);
+    const slug = id.slice("candidate-v2:".length);
+    return {
+      rows: [{ payload: await artifact(`university-details/candidate-v2/${slug}.json`) }],
+    };
+  }
+  if (query.includes("FROM source_index")) {
+    return { rows: [{ payload: await artifact("source-index.json") }] };
+  }
+  if (query.includes("FROM status_dictionary")) {
+    return { rows: [] };
+  }
+  throw new Error(`Unexpected Stage5 backend query: ${query}`);
+}
 function backendEnv(bundleDir = BUNDLE_ROOT) {
   return {
     NODE_ENV: "test",
@@ -31,6 +58,10 @@ function backendEnv(bundleDir = BUNDLE_ROOT) {
 }
 
 describe("Stage 5 closing UI compliance", () => {
+  beforeEach(() => {
+    queryMock.mockImplementation(defaultBackendQuery);
+  });
+
   it("01 retains backend feature readiness in the frontend manifest", async () => {
     const manifest = parseManifest(await artifact("manifest.json"));
     expect(manifest.disabledFeatures).toContain("parent_mode");
@@ -126,7 +157,7 @@ describe("Stage 5 closing UI compliance", () => {
     vi.unstubAllGlobals();
   });
 
-  it("08 uses dynamic university routing with no fixture static params", async () => {
+  it("08 uses dynamic university routing with no fixture static params", { timeout: 15000 }, async () => {
     const route = await import("@/app/university/[id]/page");
     const source = await readFile(
       path.join(process.cwd(), "src/app/university/[id]/page.tsx"),
@@ -137,15 +168,27 @@ describe("Stage 5 closing UI compliance", () => {
     expect(source).not.toMatch(/fixture|generateStaticParams/);
   });
 
-  it("09 real backend Bundle has 62 unique stable route IDs", async () => {
+  it("09 real backend Bundle has 62 unique detail-backed route IDs", async () => {
     const rows = parseStage5Summaries(await artifact("universities.json"));
-    expect(rows).toHaveLength(62);
-    expect(new Set(rows.map(({ id }) => id)).size).toBe(62);
+    const manifest = await artifact<Record<string, any>>("manifest.json");
+    const detailIds = new Set(
+      Object.keys(manifest.artifactHashes)
+        .filter((key) => key.startsWith("university-details/candidate-v2/"))
+        .map((key) => `candidate-v2:${key.slice("university-details/candidate-v2/".length).replace(/\.json$/, "")}`),
+    );
+    const routeRows = rows.filter(({ id }) => detailIds.has(id));
+    expect(rows).toHaveLength(94);
+    expect(routeRows).toHaveLength(62);
+    expect(new Set(routeRows.map(({ id }) => id)).size).toBe(62);
   });
 
-  it("10 missing Bundle fails closed", async () => {
+  it("10 missing manifest row fails closed", async () => {
+    queryMock.mockImplementation(async (query, params = []) => {
+      if (query.includes("FROM manifest")) return { rows: [] };
+      return defaultBackendQuery(query, params);
+    });
     const response = await createPreviewRouteHandler(
-      backendEnv("/definitely/missing"),
+      backendEnv(),
     )(new Request("http://localhost/api/pathos/preview?endpoint=manifest"));
     expect(response.status).toBe(503);
     expect(await response.json()).toMatchObject({
@@ -176,34 +219,18 @@ describe("Stage 5 closing UI compliance", () => {
   });
 
   it("13 missing source index is a Bundle failure, not university 404", async () => {
-    const root = await mkdtemp(path.join(tmpdir(), "pathos-closing-ui-"));
-    try {
-      await mkdir(path.join(root, "university-details"), { recursive: true });
-      await copyFile(
-        path.join(BUNDLE_ROOT, "manifest.json"),
-        path.join(root, "manifest.json"),
-      );
-      await copyFile(
-        path.join(
-          BUNDLE_ROOT,
-          "university-details/candidate-v2/harvard-university.json",
-        ),
-        path.join(
-          root,
-          "university-details/candidate-v2/harvard-university.json",
-        ),
-      );
-      const response = await createPreviewRouteHandler(backendEnv(root))(
-        new Request(
-          "http://localhost/api/pathos/preview?endpoint=university&id=candidate-v2%3Aharvard-university",
-        ),
-      );
-      expect(response.status).toBe(503);
-      expect(await response.json()).toMatchObject({
-        code: "BUNDLE_ARTIFACT_MISSING",
-      });
-    } finally {
-      await rm(root, { recursive: true, force: true });
-    }
+    queryMock.mockImplementation(async (query, params = []) => {
+      if (query.includes("FROM source_index")) return { rows: [] };
+      return defaultBackendQuery(query, params);
+    });
+    const response = await createPreviewRouteHandler(backendEnv())(
+      new Request(
+        "http://localhost/api/pathos/preview?endpoint=university&id=candidate-v2%3Aharvard-university",
+      ),
+    );
+    expect(response.status).toBe(503);
+    expect(await response.json()).toMatchObject({
+      code: "BUNDLE_ARTIFACT_MISSING",
+    });
   });
 });

@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   normalizeStage5Detail,
@@ -19,6 +19,7 @@ import {
   resolveDataMode,
 } from "@/server/pathos-preview";
 import { handleAiContextRoute } from "@/server/ai-context";
+import { DatabaseNotConfiguredError } from "@/server/db";
 
 const BUNDLE_ROOT = process.env.PATHOS_PREVIEW_BUNDLE_DIR
   ? path.resolve(process.env.PATHOS_PREVIEW_BUNDLE_DIR)
@@ -26,6 +27,106 @@ const BUNDLE_ROOT = process.env.PATHOS_PREVIEW_BUNDLE_DIR
 
 async function artifact<T = unknown>(name: string): Promise<T> {
   return JSON.parse(await readFile(path.join(BUNDLE_ROOT, name), "utf8")) as T;
+}
+
+
+const queryMock = vi.hoisted(() => vi.fn());
+
+vi.mock("@/server/db", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/server/db")>();
+  return {
+    ...actual,
+    getPool: () => ({
+      query: (query: string, params?: unknown[]) => queryMock(query, params),
+    }),
+  };
+});
+
+interface BackendStore {
+  manifest: Record<string, any>;
+  summaries: Array<Record<string, any>>;
+  details: Record<string, Record<string, any>>;
+  sourceIndex: Record<string, any>;
+  region: Record<string, any>;
+  statuses: Record<string, any>;
+}
+
+let backendStorePromise: Promise<BackendStore> | null = null;
+
+function loadBackendStore(): Promise<BackendStore> {
+  backendStorePromise ??= (async () => {
+    const summaries = await artifact<Array<Record<string, any>>>("universities.json");
+    const manifest = await artifact<Record<string, any>>("manifest.json");
+    const detailSlugs = Object.keys(manifest.artifactHashes ?? {})
+      .filter((key) => key.startsWith("university-details/candidate-v2/"))
+      .map((key) => key.slice("university-details/candidate-v2/".length).replace(/\.json$/, ""));
+    const detailEntries = await Promise.all(
+      detailSlugs.map(async (slug) => [
+        `candidate-v2:${slug}`,
+        await artifact<Record<string, any>>(`university-details/candidate-v2/${slug}.json`),
+      ] as const),
+    );
+    return {
+      manifest,
+      summaries,
+      details: Object.fromEntries(detailEntries),
+      sourceIndex: await artifact("source-index.json"),
+      region: await artifact("region-metrics.json"),
+      statuses: await artifact("status-dictionary.json"),
+    };
+  })();
+  return backendStorePromise;
+}
+
+async function defaultBackendQuery(
+  query: string,
+  params: unknown[] = [],
+): Promise<{ rows: any[] }> {
+  const store = await loadBackendStore();
+  if (query.includes("FROM manifest")) {
+    return { rows: [{ payload: store.manifest }] };
+  }
+  if (query.includes("FROM university_details")) {
+    return { rows: [{ payload: store.details[String(params[0])] }] };
+  }
+  if (query.includes("FROM source_index")) {
+    return { rows: [{ payload: store.sourceIndex }] };
+  }
+  if (query.includes("FROM region_envelope")) {
+    return { rows: [{ payload: store.region }] };
+  }
+  if (query.includes("FROM status_dictionary")) {
+    return {
+      rows: Object.entries(store.statuses).map(([code, payload]) => ({ code, payload })),
+    };
+  }
+  if (query.includes("FROM universities")) {
+    if (query.includes("search_text")) {
+      const needle = String(params[0]).toLowerCase();
+      const rows = store.summaries
+        .map((summary) => {
+          const detail = store.details[summary.id];
+          const haystack = [
+            summary.name,
+            summary.chineseName,
+            summary.city,
+            summary.state,
+            summary.region,
+            ...(summary.aliases ?? []),
+            ...(summary.topPrograms ?? []),
+            ...(detail?.allMajors ?? []).flatMap((major: { name?: string; displayName?: string }) => [major.name, major.displayName]),
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+          return haystack.includes(needle) ? { payload: summary } : null;
+        })
+        .filter(Boolean);
+      return { rows };
+    }
+    return { rows: store.summaries.map((payload) => ({ payload })) };
+  }
+  throw new Error(`Unexpected Stage5 backend query: ${query}`);
 }
 
 async function realFixture() {
@@ -49,13 +150,17 @@ function env(mode: "fixture" | "backend", bundleDir = BUNDLE_ROOT) {
 }
 
 describe("Stage 5 frontend/backend integration contract", () => {
+  beforeEach(() => {
+    queryMock.mockImplementation(defaultBackendQuery);
+  });
+
   it("01 backend DataSource success", async () => {
     const handler = createPreviewRouteHandler(env("backend"));
     const response = await handler(
       new Request("http://localhost/api/pathos/preview?endpoint=universities"),
     );
     expect(response.status).toBe(200);
-    expect(await response.json()).toHaveLength(62);
+    expect(await response.json()).toHaveLength(94);
   });
 
   it("02 fixture DataSource success", async () => {
@@ -73,11 +178,13 @@ describe("Stage 5 frontend/backend integration contract", () => {
     expect(resolveDataMode({ NODE_ENV: "production" })).toBe("backend");
   });
 
-  it("04 backend mode has no fixture fallback", async () => {
+  it("04 backend database unavailable has no fixture fallback", async () => {
+    queryMock.mockRejectedValue(new DatabaseNotConfiguredError());
     const response = await createPreviewRouteHandler(
-      env("backend", "/definitely/missing"),
+      env("backend"),
     )(new Request("http://localhost/api/pathos/preview?endpoint=universities"));
     expect(response.status).toBe(503);
+    expect((await response.json()).code).toBe("DATABASE_NOT_CONFIGURED");
     expect(response.headers.get("X-PathOS-Data-Mode")).toBe("backend");
   });
 
@@ -109,6 +216,10 @@ describe("Stage 5 frontend/backend integration contract", () => {
   });
 
   it("07 detail 404 has no fallback", async () => {
+    queryMock.mockImplementation(async (query, params = []) => {
+      if (query.includes("FROM university_details")) return { rows: [] };
+      return defaultBackendQuery(query, params);
+    });
     const handler = createPreviewRouteHandler(env("backend"));
     const response = await handler(
       new Request(
@@ -174,9 +285,13 @@ describe("Stage 5 frontend/backend integration contract", () => {
     }
   });
 
-  it("11 missing manifest has no fallback", async () => {
+  it("11 missing manifest row has no fallback", async () => {
+    queryMock.mockImplementation(async (query, params = []) => {
+      if (query.includes("FROM manifest")) return { rows: [] };
+      return defaultBackendQuery(query, params);
+    });
     const response = await createPreviewRouteHandler(
-      env("backend", path.join(BUNDLE_ROOT, "university-details")),
+      env("backend"),
     )(new Request("http://localhost/api/pathos/preview?endpoint=manifest"));
     expect(response.status).toBe(503);
     expect((await response.json()).code).toBe("BUNDLE_ARTIFACT_MISSING");
@@ -259,9 +374,11 @@ describe("Stage 5 frontend/backend integration contract", () => {
   });
 
   it("21 SAT/ACT not_reported", async () => {
+    const manifest = await artifact<Record<string, any>>("manifest.json");
+    const detailPaths = Object.keys(manifest.artifactHashes)
+      .filter((key) => key.startsWith("university-details/candidate-v2/"));
     const details = await Promise.all(
-      (await artifact<string[] | Record<string, never>>("universities.json") as unknown as Array<{id:string}>)
-        .map(({ id }) => artifact<Record<string, unknown>>(`university-details/candidate-v2/${id.slice("candidate-v2:".length)}.json`)),
+      detailPaths.map((name) => artifact<Record<string, unknown>>(name)),
     );
     expect(details.filter((d: any) => d.admissions.sat.status === "not_reported")).toHaveLength(9);
     expect(details.filter((d: any) => d.admissions.act.status === "not_reported")).toHaveLength(9);
@@ -290,8 +407,11 @@ describe("Stage 5 frontend/backend integration contract", () => {
     expect(["place", "county"]).toContain(detail.geography.geographyScope);
     const all = await artifact<Array<{ id: string }>>("universities.json");
     let county = 0;
-    for (const { id } of all) {
-      const row = await artifact<any>(`university-details/candidate-v2/${id.slice("candidate-v2:".length)}.json`);
+    const manifest = await artifact<Record<string, any>>("manifest.json");
+    const detailPaths = Object.keys(manifest.artifactHashes)
+      .filter((key) => key.startsWith("university-details/candidate-v2/"));
+    for (const name of detailPaths) {
+      const row = await artifact<any>(name);
       if (row.geography.geographyScope === "county") county += 1;
     }
     expect(county).toBe(16);

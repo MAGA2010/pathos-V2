@@ -2079,7 +2079,7 @@
     "status": "verified",
     "value": "Illinois began in 1867 as the Illinois Industrial University."
   },
-  "id": "candidate-v2:university-of-illinois-urbana-champaign",
+  "id": "candidate-v2:university-of-illinois-at-urbana-champaign",
   "latitude": 40.104718,
   "longitude": -88.229114,
   "name": "University of Illinois Urbana-Champaign",
@@ -2132,20 +2132,20 @@
       "displayAsNone": false,
       "displayLabel": "数据补充中",
       "programName": "Research and Experimental Psychology, Other",
-      "slotId": "candidate-v2:university-of-illinois-urbana-champaign:slot-1",
+      "slotId": "candidate-v2:university-of-illinois-at-urbana-champaign:slot-1",
       "status": "source_review_not_completed"
     },
     {
       "displayAsNone": false,
       "displayLabel": "数据补充中",
       "programName": "Accounting",
-      "slotId": "candidate-v2:university-of-illinois-urbana-champaign:slot-3",
+      "slotId": "candidate-v2:university-of-illinois-at-urbana-champaign:slot-3",
       "status": "source_review_not_completed"
     }
   ],
   "programs": [
     {
-      "id": "candidate-v2:university-of-illinois-urbana-champaign:program:1",
+      "id": "candidate-v2:university-of-illinois-at-urbana-champaign:program:1",
       "name": "Research and Experimental Psychology, Other",
       "rank": null,
       "rankingFamily": "ipeds_reported_award_area",
@@ -2154,7 +2154,7 @@
       ]
     },
     {
-      "id": "candidate-v2:university-of-illinois-urbana-champaign:program:2",
+      "id": "candidate-v2:university-of-illinois-at-urbana-champaign:program:2",
       "name": "Computer Engineering, General",
       "rank": null,
       "rankingFamily": "ipeds_reported_award_area",
@@ -2163,7 +2163,7 @@
       ]
     },
     {
-      "id": "candidate-v2:university-of-illinois-urbana-champaign:program:3",
+      "id": "candidate-v2:university-of-illinois-at-urbana-champaign:program:3",
       "name": "Accounting",
       "rank": null,
       "rankingFamily": "ipeds_reported_award_area",
@@ -2172,7 +2172,7 @@
       ]
     },
     {
-      "id": "candidate-v2:university-of-illinois-urbana-champaign:program:4",
+      "id": "candidate-v2:university-of-illinois-at-urbana-champaign:program:4",
       "name": "Finance, General",
       "rank": null,
       "rankingFamily": "ipeds_reported_award_area",
@@ -2181,7 +2181,7 @@
       ]
     },
     {
-      "id": "candidate-v2:university-of-illinois-urbana-champaign:program:5",
+      "id": "candidate-v2:university-of-illinois-at-urbana-champaign:program:5",
       "name": "Computer Science",
       "rank": null,
       "rankingFamily": "ipeds_reported_award_area",

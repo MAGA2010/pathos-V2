@@ -70,7 +70,7 @@ function readCostRmb(school: any): number | null {
 
 const LOCAL_AI_PORTFOLIO_DEMO: AnalysisResult = {
   source: "本地 Demo 示例",
-  summary: "这是本地交互示例，用于展示 AI 清单分析的输出结构。它不会连接外部 AI，也不会推断任何学校的录取概率。",
+  summary: "这是本地交互示例，用于展示 AI 清单分析的输出结构。它是非真实 AI 结论，示例不评分，也不会推断录取概率。",
   portfolio: {
     reachCount: null,
     targetCount: null,
@@ -175,18 +175,9 @@ export default function PortfolioPage() {
     setAnalyzing(true);
     setAiError(null);
     setResult(null);
+    // Keep this demo entirely local until the AI product boundary is restored.
+    await new Promise((resolve) => setTimeout(resolve, 250));
     try {
-      const r = await fetch("/api/ai/analyze", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ mode: "portfolio_review", profile: { background: "高中留学生", targetDegree: "bachelor" }, schools: schools }),
-      });
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      const data = await r.json();
-      setResult(data);
-    } catch (error: unknown) {
-      console.warn("ai analyze failed", error instanceof Error ? error.message : error);
-      setAiError("分析接口暂不可用，已切换为离线结构示例。");
       setResult(LOCAL_AI_PORTFOLIO_DEMO);
     } finally {
       setAnalyzing(false);
@@ -201,7 +192,7 @@ export default function PortfolioPage() {
           <div className="min-w-0 flex-1">
             <p className="text-label uppercase tracking-[0.12em] text-persimmon">AI 清单分析</p>
             <h1 className="text-page text-text-primary">冲刺 / 匹配 / 保底结构</h1>
-            <p className="mt-0.5 text-caption text-text-secondary">使用当前 Supabase 学校数据检查清单结构；配置 DeepSeek 后自动叠加模型分析。</p>
+            <p className="mt-0.5 text-caption text-text-secondary">当前仅运行浏览器内本地结构示例；AI 服务开放前不生成真实结论或评分。</p>
           </div>
           <Link href="/assessment" className="ml-auto inline-flex h-control items-center gap-1.5 rounded-control bg-ink px-3 text-[12px] font-semibold text-paper transition hover:bg-ink/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"><Brain size={13} aria-hidden="true" /> 先做学校评估</Link>
         </div>

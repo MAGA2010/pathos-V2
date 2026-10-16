@@ -82,9 +82,8 @@ export function updateSearchParam(key: string, value: string | null): void {
 
   const next = url.pathname + (url.search ? url.search : "") + url.hash;
   // Preserve the current history.state so any consumers that read it
-  // (e.g. Next.js' own router) keep their handle. We intentionally use
-  // replaceState — not pushState — because rapid metric toggles should
-  // not pollute the back/forward stack.
+  // (e.g. Next.js' own router) keep their handle. Rapid metric toggles
+  // must update the current entry rather than create history entries.
   window.history.replaceState(window.history.state, "", next);
   // `replaceState` does not fire `popstate`. We dispatch one manually
   // so `useSyncExternalStore` subscribers re-read the URL. We use

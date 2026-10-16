@@ -33,7 +33,7 @@ const NAV_LINKS = [
   { href: "/entry/match", label: "自主测验" },
   { href: "/entry/assessment", label: "AI 学校评估" },
   { href: "/entry/portfolio", label: "AI 清单分析" },
-  { href: "/opportunities", label: "机会动态" },
+  { href: "/news", label: "留学资讯" },
   { href: "/compare", label: "对比" },
   { href: "/s/home", label: "数据工作台" },
 ] as const;

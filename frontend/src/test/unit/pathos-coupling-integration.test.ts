@@ -99,7 +99,13 @@ describe("PathOS parallel-development coupling contract", () => {
     const integratedSources = sourceFiles.map(read).join("\n");
 
     expect(bff).toContain("handlePreviewRoute");
-    expect(backendLoader).toContain("PATHOS_PREVIEW_BUNDLE_DIR");
+    // Since 85385a9 the canonical Preview backend reads immutable artifacts
+    // from Postgres. Keep the old filesystem escape hatch out so production
+    // cannot silently fall back to unreviewed local fixture files.
+    expect(backendLoader).toContain("getPool().query");
+    expect(backendLoader).toContain("DatabaseNotConfiguredError");
+    expect(backendLoader).not.toContain("readFile");
+    expect(backendLoader).not.toContain("PATHOS_PREVIEW_BUNDLE_DIR");
     expect(integratedSources).not.toMatch(/PATHOS_DATA_MODE\s*=\s*[\"']fixture[\"']/);
     expect(integratedSources).not.toContain("candidate-inventory");
   });

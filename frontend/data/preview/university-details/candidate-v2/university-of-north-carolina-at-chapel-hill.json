@@ -271,7 +271,7 @@
     "status": "verified",
     "value": "UNC-Chapel Hill opened to students in 1795 as the nation’s first public university."
   },
-  "id": "candidate-v2:university-of-north-carolina-chapel-hill",
+  "id": "candidate-v2:university-of-north-carolina-at-chapel-hill",
   "latitude": 35.911769,
   "longitude": -79.050969,
   "name": "University of North Carolina—Chapel Hill",
@@ -299,34 +299,34 @@
       "displayAsNone": false,
       "displayLabel": "数据补充中",
       "programName": "Asian Studies, B.A. — Japanese Concentration",
-      "slotId": "candidate-v2:university-of-north-carolina-chapel-hill:slot-1",
+      "slotId": "candidate-v2:university-of-north-carolina-at-chapel-hill:slot-1",
       "status": "source_review_not_completed"
     },
     {
       "displayAsNone": false,
       "displayLabel": "数据补充中",
       "programName": "Asian Studies, B.A. — Korean Studies Concentration",
-      "slotId": "candidate-v2:university-of-north-carolina-chapel-hill:slot-2",
+      "slotId": "candidate-v2:university-of-north-carolina-at-chapel-hill:slot-2",
       "status": "source_review_not_completed"
     },
     {
       "displayAsNone": false,
       "displayLabel": "数据补充中",
       "programName": "Asian Studies, B.A. — South Asian Studies Concentration",
-      "slotId": "candidate-v2:university-of-north-carolina-chapel-hill:slot-3",
+      "slotId": "candidate-v2:university-of-north-carolina-at-chapel-hill:slot-3",
       "status": "source_review_not_completed"
     },
     {
       "displayAsNone": false,
       "displayLabel": "数据补充中",
       "programName": "Economics",
-      "slotId": "candidate-v2:university-of-north-carolina-chapel-hill:slot-5",
+      "slotId": "candidate-v2:university-of-north-carolina-at-chapel-hill:slot-5",
       "status": "source_review_not_completed"
     }
   ],
   "programs": [
     {
-      "id": "candidate-v2:university-of-north-carolina-chapel-hill:program:1",
+      "id": "candidate-v2:university-of-north-carolina-at-chapel-hill:program:1",
       "name": "Asian Studies, B.A. — Japanese Concentration",
       "rank": null,
       "rankingFamily": "official_major_list",
@@ -335,7 +335,7 @@
       ]
     },
     {
-      "id": "candidate-v2:university-of-north-carolina-chapel-hill:program:2",
+      "id": "candidate-v2:university-of-north-carolina-at-chapel-hill:program:2",
       "name": "Asian Studies, B.A. — Korean Studies Concentration",
       "rank": null,
       "rankingFamily": "official_major_list",
@@ -344,7 +344,7 @@
       ]
     },
     {
-      "id": "candidate-v2:university-of-north-carolina-chapel-hill:program:3",
+      "id": "candidate-v2:university-of-north-carolina-at-chapel-hill:program:3",
       "name": "Asian Studies, B.A. — South Asian Studies Concentration",
       "rank": null,
       "rankingFamily": "official_major_list",

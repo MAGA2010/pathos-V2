@@ -89,7 +89,7 @@ function readCostRmb(school: any): number | null {
 
 const LOCAL_AI_ASSESSMENT_DEMO: AnalysisResult = {
   source: "本地 Demo 示例",
-  summary: "这是本地交互示例，用于展示 AI 学校评估的输出结构。它不会连接外部 AI，也不会生成录取结论或学校适配分数。",
+  summary: "这是本地交互示例，用于展示 AI 学校评估的输出结构。它是非真实 AI 结论，示例不评分，也不会生成录取判断。",
   portfolio: {
     reachCount: null,
     targetCount: null,
@@ -146,19 +146,10 @@ export default function AssessmentPage() {
     setAnalyzing(true);
     setAiError(null);
     setResult(null);
-    const selectedSchools = selectedIds.map((id) => all.find((school) => school.id === id)).filter(Boolean);
+    // The hosted AI endpoint is intentionally disabled in this release.
+    // Keep the interaction local so no student profile leaves the browser.
+    await new Promise((resolve) => setTimeout(resolve, 250));
     try {
-      const r = await fetch("/api/ai/analyze", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ mode: "school_assessment", profile, schools: selectedSchools }),
-      });
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      const data = await r.json();
-      setResult(data);
-    } catch (error: unknown) {
-      console.warn("ai analyze failed, falling back to local demo", error instanceof Error ? error.message : error);
-      setAiError("分析接口暂不可用，已切换为离线结构示例。");
       setResult(LOCAL_AI_ASSESSMENT_DEMO);
     } finally {
       setAnalyzing(false);
@@ -174,7 +165,7 @@ export default function AssessmentPage() {
           <div className="min-w-0 flex-1">
             <p className="text-label uppercase tracking-[0.12em] text-cobalt">AI 学校评估</p>
             <h1 data-heading-stagger="true" className="text-page text-text-primary">画像与目标校风险体检</h1>
-            <p className="mt-0.5 text-caption text-text-secondary">使用当前 Supabase 学校数据运行规则评估；配置 DeepSeek 后自动叠加模型分析。</p>
+            <p className="mt-0.5 text-caption text-text-secondary">当前仅运行浏览器内本地结构示例；AI 服务开放前不生成真实结论或评分。</p>
           </div>
           <Link href="/match" className="ml-auto inline-flex h-control items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-3 text-[12px] font-semibold text-text-primary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"><Sparkles size={13} aria-hidden="true" /> 返回自主测验</Link>
         </div>

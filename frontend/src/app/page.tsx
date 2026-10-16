@@ -93,6 +93,15 @@ const CORE_MODULES = [
   },
   {
     index: "07",
+    title: "留学资讯",
+    eyebrow: "NEWS",
+    description: "查看经过来源整理的院校动态、政策变化与申请信息。",
+    reveal: "打开留学资讯，追踪与申请决策相关的公开信息更新。",
+    href: "/news",
+    icon: BookOpen,
+  },
+  {
+    index: "08",
     title: "读懂大学",
     eyebrow: "UNDERSTAND",
     description: "先理解学校的学习方式、成本与申请现实，再决定是否申请。",

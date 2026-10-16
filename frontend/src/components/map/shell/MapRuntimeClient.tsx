@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MapShell } from "@/components/map/MapShell";
 
 /**
@@ -75,15 +75,5 @@ export function MapRuntimeClient(): JSX.Element {
     );
   }
 
-  return (
-    <Suspense
-      fallback={
-        <div className="flex h-full w-full items-center justify-center bg-paper text-sm text-ink/40">
-          加载地图…
-        </div>
-      }
-    >
-      <MapShell className="h-full" />
-    </Suspense>
-  );
+  return <MapShell className="h-full" />;
 }
