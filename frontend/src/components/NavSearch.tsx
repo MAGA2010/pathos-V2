@@ -97,7 +97,7 @@ export function NavSearch() {
           setOpen(true);
           focusInput();
         }}
-        className="grid h-9 w-9 place-items-center rounded-control border border-border-soft bg-surface-1 text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+        className="grid h-11 w-11 place-items-center rounded-control border border-border-soft bg-surface-1 text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
       >
         <Search size={15} aria-hidden="true" />
       </button>
@@ -127,7 +127,7 @@ export function NavSearch() {
           placeholder="搜索学校 / 城市"
           aria-label="搜索学校 / 城市"
           // Compact width on small screens, fixed 240px on >= sm.
-          className="w-44 rounded-control border border-border-soft bg-surface-1 py-1.5 pl-8 pr-3 text-[13px] outline-none transition focus:border-cobalt/45 focus:ring-2 focus:ring-focus-ring sm:w-60"
+          className="min-h-11 w-44 rounded-control border border-border-soft bg-surface-1 py-1.5 pl-8 pr-3 text-[13px] outline-none transition focus:border-cobalt/45 focus:ring-2 focus:ring-focus-ring sm:w-60"
         />
       </div>
       <button
@@ -137,7 +137,7 @@ export function NavSearch() {
           setValue("");
           setOpen(false);
         }}
-        className="grid h-9 w-9 place-items-center rounded-control text-text-secondary transition hover:bg-surface-muted hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+        className="grid h-11 w-11 place-items-center rounded-control text-text-secondary transition hover:bg-surface-muted hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
       >
         <X size={15} aria-hidden="true" />
       </button>

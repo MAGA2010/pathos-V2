@@ -82,23 +82,22 @@ export function FeaturedSchoolsSection() {
   const featured = all.slice(0, 6);
 
   return (
-    <section className={styles.featured} aria-labelledby="featured-title" data-section="featured" data-chapter-target="featured">
-      <span className={styles.chapterMarker} aria-hidden="true">07 / 14</span>
-      <div className={styles.featuredInner}>
-        <div className={styles.sectionHeading} data-reveal="true">
-          <p>FEATURED SCHOOLS</p>
-          <h2 id="featured-title" data-reveal="true" data-heading-stagger="true">先看几所被收录的真实院校。</h2>
-          <p className={styles.sectionLead}>
+    <section className="border-b border-border-soft bg-surface-base" aria-labelledby="featured-title" data-section="featured">
+      <div className="mx-auto w-full max-w-page px-4 py-10 sm:px-6 lg:py-14">
+        <div className="max-w-2xl" data-reveal="true">
+          <p className="text-label text-cobalt">FEATURED SCHOOLS</p>
+          <h2 id="featured-title" className="mt-2 text-page">先看几所被收录的真实院校。</h2>
+          <p className="mt-3 text-body text-text-secondary">
             字段缺失的地方显示「暂无」，不做编造。点击进入学校主页查看完整事实链。
           </p>
         </div>
 
         {featured.length === 0 ? (
-          <p className={styles.featuredEmpty} data-reveal="true" data-reveal-delay="80">
+          <p className="mt-6 rounded-card border border-border-soft bg-surface-1 p-5 text-body text-text-secondary" data-reveal="true" data-reveal-delay="80">
             院校数据加载中或暂未收录…
           </p>
         ) : (
-          <div className={styles.featuredGrid}>
+          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((summary, idx) => {
               const delay = String(Math.min(idx * 60, 480));
               const rank = formatRank(summary);
@@ -109,30 +108,30 @@ export function FeaturedSchoolsSection() {
                 <Link
                   key={summary.id}
                   href={`/university/${summary.id}`}
-                  className={styles.featuredCard}
+                  className="flex flex-col rounded-card border border-border-soft bg-surface-1 p-5 transition hover:-translate-y-0.5 hover:border-cobalt/40"
                   data-reveal="true"
                   data-reveal-delay={delay}
                 >
-                  <div className={styles.featuredMeta}>
-                    <span className={styles.featuredRank}>{rank}<DataFreshnessDot asOf={summary.datasetVersion} /></span>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="inline-flex items-center gap-2 text-caption font-semibold text-cobalt">{rank}<DataFreshnessDot asOf={summary.datasetVersion} /></span>
                     <ArrowUpRight aria-hidden="true" size={16} />
                   </div>
-                  <h3 className={styles.featuredName}>{zhName}</h3>
+                  <h3 className="mt-3 text-section text-text-primary">{zhName}</h3>
                   {enName ? (
-                    <p className={styles.featuredNameEn}>{enName}</p>
+                    <p className="mt-1 truncate text-caption text-text-muted">{enName}</p>
                   ) : null}
-                  <dl className={styles.featuredFacts}>
-                    <div className={styles.featuredFact}>
-                      <dt>
+                  <dl className="mt-4 space-y-3">
+                    <div>
+                      <dt className="flex items-center gap-1.5 text-caption text-text-muted">
                         <MapPin aria-hidden="true" size={13} /> 所在地
                       </dt>
-                      <dd>暂无</dd>
+                      <dd className="mt-1 text-body text-text-secondary">暂无</dd>
                     </div>
-                    <div className={styles.featuredFact}>
-                      <dt>
+                    <div>
+                      <dt className="flex items-center gap-1.5 text-caption text-text-muted">
                         <Wallet aria-hidden="true" size={13} /> 费用区间
                       </dt>
-                      <dd>{cost}</dd>
+                      <dd className="mt-1 text-body text-text-secondary">{cost}</dd>
                     </div>
                   </dl>
                 </Link>

@@ -24,7 +24,7 @@ test("homepage renders the information-platform entry", async ({ page }) => {
   await open(page, "/");
 
   await expect(page.getByRole("heading", { level: 1, name: "PathOS" })).toBeVisible();
-  await expect(page.getByText("把复杂选择拆成可以行动的七个章节。")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "把选校拆成可以执行的三步。" })).toBeVisible();
 });
 
 test("interactive map leaves its loading state and renders controls", async ({ page }) => {

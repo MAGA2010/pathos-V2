@@ -62,7 +62,7 @@ export default function CookieConsent() {
       role="dialog"
       aria-live="polite"
       aria-label="Cookie 同意"
-      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-3xl rounded-2xl border border-border-soft bg-surface-1/95 p-4 shadow-2xl backdrop-blur supports-[backdrop-filter]:bg-surface-1/80 sm:bottom-5"
+      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-3xl rounded-card border border-border-soft bg-surface-1/95 p-4 shadow-panel backdrop-blur supports-[backdrop-filter]:bg-surface-1/80 sm:bottom-5"
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
         <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ink/8 text-text-secondary">
@@ -79,14 +79,14 @@ export default function CookieConsent() {
           <button
             type="button"
             onClick={reject}
-            className="h-9 rounded-control border border-border-soft bg-surface-1 px-3 text-[13px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+            className="h-11 rounded-control border border-border-soft bg-surface-1 px-3 text-[13px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
           >
             仅必要
           </button>
           <button
             type="button"
             onClick={accept}
-            className="h-9 rounded-control bg-ink px-3 text-[13px] font-semibold text-paper transition hover:bg-ink/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+            className="h-11 rounded-control bg-ink px-3 text-[13px] font-semibold text-paper transition hover:bg-ink/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
           >
             同意
           </button>
@@ -94,7 +94,7 @@ export default function CookieConsent() {
             type="button"
             onClick={reject}
             aria-label="关闭"
-            className="grid h-9 w-9 place-items-center rounded-control text-text-tertiary transition hover:bg-surface-muted hover:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+            className="grid h-11 w-11 place-items-center rounded-control text-text-tertiary transition hover:bg-surface-muted hover:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
           >
             <X size={16} aria-hidden="true" />
           </button>

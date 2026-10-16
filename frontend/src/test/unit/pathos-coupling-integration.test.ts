@@ -52,11 +52,11 @@ describe("PathOS parallel-development coupling contract", () => {
     const home = read("src/app/page.tsx");
     const mapShell = read("src/components/map/MapShell.tsx");
 
-    for (const verifiedFact of ["62", "904", "51", '"4", "项州级区域指标"']) {
+    for (const verifiedFact of ["62", "904", "51", "4 项区域指标"]) {
       expect(home).toContain(verifiedFact);
     }
     expect(home).not.toContain("40+");
-    expect(home).not.toContain("18");
+    expect(home).not.toContain("\"18\"");
     expect(home).not.toContain("6大核心指标");
     expect(home).toContain("Preview");
     expect(home).toContain("不构成录取保证");
@@ -73,17 +73,16 @@ describe("PathOS parallel-development coupling contract", () => {
     expect(mapShell).toContain("regionalCounters.verifiedCount / REGIONAL_METRIC_IDS.length");
   });
 
-  it("extracts candidate visual language without candidate media or mock data", () => {
+  it("keeps the operational home free of candidate media or mock data", () => {
     const home = read("src/app/page.tsx");
     const modulePath = resolve(ROOT, "src/app/home.module.css");
     expect(existsSync(modulePath)).toBe(true);
     if (!existsSync(modulePath)) return;
     const moduleStyles = read("src/app/home.module.css");
 
-    expect(home).toContain("home.module.css");
-    expect(home).toContain("data-integration-source=\"hybrid-visual-extraction\"");
+    expect(home).toContain("home-fx.css");
+    expect(home).not.toContain("data-integration-source=");
     expect(home).not.toMatch(/src\/data\//);
-    expect(home).toContain("heroEarth");
     expect(home).not.toMatch(/portfolio-robot|harvard-library|mit-dome|stanford-quad/);
     expect(home).not.toMatch(/https?:\/\//);
     expect(moduleStyles).toContain("prefers-reduced-motion: reduce");

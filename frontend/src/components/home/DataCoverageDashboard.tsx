@@ -11,7 +11,6 @@ import Link from "next/link";
 import { ArrowUpRight, BarChart3, CheckCircle2, Clock3, Layers3, ShieldCheck } from "lucide-react";
 import { useDataSource } from "@/services/data-source-provider";
 import { useDatasetManifest, useUniversitySummaries } from "@/hooks/use-data-source";
-import styles from "@/app/home.module.css";
 
 const PRIMARY_FIELDS = [
   { key: "tuitionBand",     label: "学费区间" },
@@ -113,72 +112,70 @@ export function DataCoverageDashboard() {
 
   return (
     <section
-      className={styles.coverage}
+      className="border-b border-border-soft bg-surface-base"
       aria-labelledby="coverage-title"
       data-section="coverage"
-      data-chapter-target="coverage"
     >
-      <span className={styles.chapterMarker} aria-hidden="true">08 / 14</span>
-      <div className={styles.sectionHeading} data-reveal="true">
-        <p>DATA COVERAGE</p>
-        <h2 id="coverage-title" data-reveal="true" data-heading-stagger="true">
+      <div className="mx-auto w-full max-w-page px-4 py-10 sm:px-6 lg:py-14">
+      <div className="max-w-2xl" data-reveal="true">
+        <p className="text-label text-cobalt">DATA COVERAGE</p>
+        <h2 id="coverage-title" className="mt-2 text-page">
           真实覆盖多少，我们现在直说。
         </h2>
-        <p className={styles.sectionLead}>
+        <p className="mt-3 text-body text-text-secondary">
           不展示估算值。每一行都基于本次数据集的字段存在情况，缺失字段保持「暂无」语义。
         </p>
       </div>
 
-      <div className={styles.coverageMeta}>
+      <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {meta.map((m, idx) => {
           const Icon = m.icon;
           const delay = String(idx * 80);
           return (
             <article
               key={m.eyebrow}
-              className={styles.coverageMetaCard}
+              className="rounded-card border border-border-soft bg-surface-1 p-5 transition hover:border-cobalt/40"
               data-reveal="true"
               data-reveal-delay={delay}
             >
-              <span className={styles.coverageMetaEyebrow}>
+              <span className="inline-flex items-center gap-1.5 text-caption font-semibold text-text-muted">
                 <Icon aria-hidden="true" size={14} /> {m.eyebrow}
               </span>
-              <p className={styles.coverageMetaValue}>
+              <p className="mt-3 text-[1.75rem] font-semibold leading-none text-text-primary">
                 {m.value}
-                {m.suffix ? <span className={styles.coverageMetaSuffix}>{m.suffix}</span> : null}
+                {m.suffix ? <span className="ml-1 text-caption font-medium text-text-muted">{m.suffix}</span> : null}
               </p>
-              <p className={styles.coverageMetaCaption}>{m.caption}</p>
+              <p className="mt-3 text-caption text-text-secondary">{m.caption}</p>
             </article>
           );
         })}
       </div>
 
-      <div className={styles.coverageBars} data-reveal="true" data-reveal-delay="320">
-        <header className={styles.coverageBarsHeader}>
-          <h3 className={styles.coverageBarsTitle}>六大主字段覆盖明细</h3>
-          <p className={styles.coverageBarsHint}>
+      <div className="mt-4 rounded-card border border-border-soft bg-surface-1 p-5 sm:p-6" data-reveal="true" data-reveal-delay="320">
+        <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <h3 className="text-section">六大主字段覆盖明细</h3>
+          <p className="inline-flex items-center gap-1.5 text-caption text-text-muted">
             <CheckCircle2 aria-hidden="true" size={13} /> 绿色 = 已收集，灰色 = 数据补充中
           </p>
         </header>
-        <ul className={styles.coverageBarList}>
+        <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {coverageRows.map((row, idx) => {
             const delay = String(360 + idx * 80);
             return (
               <li
                 key={row.key}
-                className={styles.coverageBarItem}
                 data-reveal="true"
                 data-reveal-delay={delay}
               >
-                <div className={styles.coverageBarLabel}>
+                <div className="flex items-baseline justify-between gap-3 text-caption text-text-secondary">
                   <span>{row.label}</span>
-                  <span className={styles.coverageBarPct}>
-                    {row.covered}<span className={styles.coverageBarOf}>/{row.total}</span>
+                  <span className="font-semibold text-text-primary">
+                    {row.covered}<span className="text-text-muted">/{row.total}</span>
                   </span>
                 </div>
-                <div className={styles.coverageBarTrack} aria-hidden="true">
+                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-muted" aria-hidden="true">
                   <span
-                    className={styles.coverageBarFill}
+                    className="block h-full rounded-full bg-cobalt transition-[width] duration-500"
                     style={{ width: row.pct + "%" }}
                     data-state={row.pct >= 70 ? "high" : row.pct >= 40 ? "mid" : "low"}
                   />
@@ -189,13 +186,14 @@ export function DataCoverageDashboard() {
         </ul>
       </div>
 
-      <div className={styles.coverageFooter} data-reveal="true" data-reveal-delay="600">
-        <Link href="/entry/map" className={styles.coverageFooterLink}>
+      <div className="mt-5" data-reveal="true" data-reveal-delay="600">
+        <Link href="/entry/map" className="inline-flex min-h-control items-center gap-2 rounded-control border border-border-soft bg-surface-1 px-4 text-caption font-semibold text-text-primary transition hover:border-cobalt/40 hover:text-cobalt">
           <span>在地图上查看全部 {total} 所院校 <ArrowUpRight aria-hidden="true" size={14} /></span>
-          <span className={styles.coverageFooterCaption}>
+          <span className="text-text-muted">
             {sourceCommit ? "Source commit " + sourceCommit.slice(0, 7) : "加载中…"}
           </span>
         </Link>
+      </div>
       </div>
     </section>
   );

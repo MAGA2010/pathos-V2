@@ -46,7 +46,7 @@ export function ThemeToggle() {
       data-theme-mode={isHydrated ? mode : "system"}
       data-theme-resolved={isHydrated ? resolved : "light"}
       data-hydrated={isHydrated ? "true" : "false"}
-      className="grid h-9 w-9 place-items-center rounded-control border border-border-soft bg-surface-1 text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+      className="grid h-11 w-11 place-items-center rounded-control border border-border-soft bg-surface-1 text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
     >
       <Icon size={15} aria-hidden="true" />
       <span className="sr-only">{label}</span>

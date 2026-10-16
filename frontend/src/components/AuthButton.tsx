@@ -77,14 +77,14 @@ export function AuthButton(): JSX.Element {
   // hydration. The ThemeToggle peer also renders as a fixed-size
   // chip, so the cluster stays balanced.
   if (!loaded) {
-    return <div className="h-9 w-9 shrink-0" aria-hidden="true" />;
+    return <div className="h-11 w-11 shrink-0" aria-hidden="true" />;
   }
 
   if (!user) {
     return (
       <Link
         href="/login"
-        className="inline-flex h-control items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-3 text-[13px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+        className="inline-flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-3 text-[13px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
       >
         <LogIn size={14} aria-hidden="true" />
         <span className="hidden sm:inline">登录</span>
@@ -100,7 +100,7 @@ export function AuthButton(): JSX.Element {
         aria-haspopup="menu"
         aria-expanded={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
-        className="inline-flex h-control items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-2.5 text-[13px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+        className="inline-flex h-11 min-w-11 items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-2.5 text-[13px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
       >
         <UserRound size={14} aria-hidden="true" />
         <span className="hidden max-w-[120px] truncate sm:inline">{label}</span>
@@ -120,7 +120,7 @@ export function AuthButton(): JSX.Element {
           <Link
             href="/s/home"
             role="menuitem"
-            className="block rounded-control px-3 py-2 text-[13px] text-text-secondary hover:bg-surface-muted hover:text-text-primary"
+            className="block min-h-11 rounded-control px-3 py-2.5 text-[13px] text-text-secondary hover:bg-surface-muted hover:text-text-primary"
           >
             数据工作台
           </Link>
@@ -142,7 +142,7 @@ export function AuthButton(): JSX.Element {
             type="button"
             role="menuitem"
             onClick={signOut}
-            className="flex w-full items-center gap-1.5 rounded-control px-3 py-2 text-left text-[13px] text-text-secondary hover:bg-surface-muted hover:text-text-primary"
+            className="flex min-h-11 w-full items-center gap-1.5 rounded-control px-3 py-2.5 text-left text-[13px] text-text-secondary hover:bg-surface-muted hover:text-text-primary"
           >
             <LogOut size={13} aria-hidden="true" /> 退出登录
           </button>

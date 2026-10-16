@@ -1,42 +1,75 @@
 "use client";
 
-// Stage 7A closing patch -- the ONE authoritative global navigation.
-//
-// Rules this component enforces:
-//   - 6 items total: 留学地图 / 留学计算器 / 自主测验 / AI 学校评估 /
-//     AI 清单分析 / 留学资讯. No second tier.
-//   - Active state uses the real Next.js pathname; only one route
-//     can be active at a time.
-//   - Logo + nav items live inside a `max-w-page` container and
-//     flex-shrink so they don't overflow at 1024-1920px widths.
-//   - Below `lg`, the nav collapses to a hamburger; an Escape
-//     handler closes the drawer.
-//   - The right-side CTA is hidden on mobile to free horizontal
-//     space; the theme toggle is always visible.
-//   - All buttons/links use the new design tokens (`h-control`,
-//     `rounded-control`, `text-text-secondary`, ...).
-//
-// Phase 1.1 added an AuthButton peer to ThemeToggle; the marketing
-// chrome is unchanged.
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Compass, Menu, X } from "lucide-react";
-import { Suspense, useEffect, useState } from "react";
+import {
+  Calculator,
+  ChevronDown,
+  ClipboardCheck,
+  Compass,
+  Database,
+  FileStack,
+  GitCompareArrows,
+  LayoutDashboard,
+  Map,
+  Menu,
+  Newspaper,
+  Scale,
+  Search,
+  SlidersHorizontal,
+  Wrench,
+  X,
+  type LucideIcon,
+} from "lucide-react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { NavSearch } from "@/components/NavSearch";
 import { AuthButton } from "@/components/AuthButton";
 
-const NAV_LINKS = [
-  { href: "/entry/map",  label: "留学地图" },
-  { href: "/calculator", label: "留学计算器" },
-  { href: "/entry/match", label: "自主测验" },
-  { href: "/entry/assessment", label: "AI 学校评估" },
-  { href: "/entry/portfolio", label: "AI 清单分析" },
-  { href: "/news", label: "留学资讯" },
-  { href: "/compare", label: "对比" },
-  { href: "/s/home", label: "数据工作台" },
-] as const;
+type NavLink = {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+};
+
+type NavGroup = {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  links: readonly NavLink[];
+};
+
+const NAV_GROUPS = [
+  {
+    id: "information",
+    label: "信息",
+    icon: Database,
+    links: [
+      { href: "/entry/map", label: "留学地图", icon: Map },
+      { href: "/news", label: "留学资讯", icon: Newspaper },
+    ],
+  },
+  {
+    id: "decision",
+    label: "决策",
+    icon: Scale,
+    links: [
+      { href: "/calculator", label: "留学计算器", icon: Calculator },
+      { href: "/entry/match", label: "自主测验", icon: SlidersHorizontal },
+      { href: "/compare", label: "对比", icon: GitCompareArrows },
+    ],
+  },
+  {
+    id: "tools",
+    label: "工具",
+    icon: Wrench,
+    links: [
+      { href: "/entry/assessment", label: "AI 学校评估", icon: ClipboardCheck },
+      { href: "/entry/portfolio", label: "AI 清单分析", icon: FileStack },
+      { href: "/s/home", label: "数据工作台", icon: LayoutDashboard },
+    ],
+  },
+] as const satisfies readonly NavGroup[];
 
 function isPathActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";
@@ -51,21 +84,59 @@ function isPathActive(pathname: string, href: string): boolean {
 
 export default function NavBar() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const headerRef = useRef<HTMLElement | null>(null);
+  const mobileButtonRef = useRef<HTMLButtonElement | null>(null);
+  const groupButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const groupMenuRefs = useRef<Record<string, HTMLUListElement | null>>({});
 
-  // Close on Escape when the mobile menu is open.
+  // Escape is the explicit keyboard exit for both navigation disclosures.
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+    if (!openGroup) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      groupButtonRefs.current[openGroup]?.focus();
+      setOpenGroup(null);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [openGroup]);
 
-  // Close on route change.
+  // A pointer action outside the active disclosure closes that disclosure.
   useEffect(() => {
-    setOpen(false);
+    if (!openGroup) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (
+        !(target instanceof Element) ||
+        target.closest(`[data-nav-group="${openGroup}"]`) === null
+      ) {
+        setOpenGroup(null);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [openGroup]);
+
+  // Keep the mobile drawer keyboard-dismissable and return focus to its trigger.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      setMobileOpen(false);
+      mobileButtonRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobileOpen]);
+
+  // Route changes always close transient navigation state.
+  useEffect(() => {
+    setOpenGroup(null);
+    setMobileOpen(false);
   }, [pathname]);
 
   // The opportunity preview page renders its own Apple-style chrome;
@@ -73,17 +144,20 @@ export default function NavBar() {
   // return after all hooks so the hook order is identical on every route.
   if (pathname === "/opportunities-preview") return null;
 
+  const groupHasActivePage = (group: NavGroup) =>
+    group.links.some((link) => isPathActive(pathname, link.href));
+
   return (
     <header
+      ref={headerRef}
       role="banner"
-      className="sticky top-0 z-50 h-nav border-b border-border-soft bg-surface-1/95 backdrop-blur supports-[backdrop-filter]:bg-surface-1/80 dark:bg-surface-1/90"
+      className="sticky top-0 z-50 border-b border-border-soft bg-surface-1/95 backdrop-blur supports-[backdrop-filter]:bg-surface-1/80 dark:bg-surface-1/90"
     >
       <div className="mx-auto flex h-nav w-full max-w-page items-center gap-3 px-4 sm:gap-4 sm:px-6">
-        {/* Logo -- shrink-0 protects it from being clipped on narrow widths */}
         <Link
           href="/"
           aria-label="PathOS 首页"
-          className="flex shrink-0 items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring rounded"
+          className="flex h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
         >
           <div className="grid h-8 w-8 place-items-center rounded-control bg-ink text-paper dark:bg-paper dark:text-ink">
             <Compass size={17} aria-hidden="true" />
@@ -93,94 +167,181 @@ export default function NavBar() {
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav
-          aria-label="主导航"
-          className="hidden min-w-0 flex-1 items-center gap-0.5 lg:flex"
-        >
-          {NAV_LINKS.map((link) => {
-            const active = isPathActive(pathname, link.href);
+        {/* Desktop primary level intentionally has three grouped destinations. */}
+        <nav aria-label="主导航" className="hidden min-w-0 flex-1 items-center gap-1 lg:flex">
+          {NAV_GROUPS.map((group) => {
+            const GroupIcon = group.icon;
+            const groupActive = groupHasActivePage(group);
+            const isOpen = openGroup === group.id;
+            const menuId = `desktop-nav-${group.id}`;
             return (
-              <Link
-                key={link.href}
-                href={link.href as any}
-                aria-current={active ? "page" : undefined}
-                className={
-                  "rounded-control px-2.5 py-1.5 text-[13px] font-medium transition-colors " +
-                  (active
-                    ? "bg-ink/8 text-text-primary"
-                    : "text-text-secondary hover:bg-surface-muted hover:text-text-primary")
-                }
+              <div
+                key={group.id}
+                className="relative"
+                data-nav-group={group.id}
+                onMouseEnter={() => setOpenGroup(group.id)}
+                onMouseLeave={() => setOpenGroup(null)}
               >
-                {link.label}
-              </Link>
+                <button
+                  ref={(element) => {
+                    groupButtonRefs.current[group.id] = element;
+                  }}
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-controls={menuId}
+                  onClick={() => setOpenGroup(isOpen ? null : group.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "ArrowDown") {
+                      event.preventDefault();
+                      setOpenGroup(group.id);
+                      requestAnimationFrame(() => {
+                        groupMenuRefs.current[group.id]
+                          ?.querySelector("a")
+                          ?.focus();
+                      });
+                    }
+                  }}
+                  className={
+                    "inline-flex h-11 items-center gap-1.5 rounded-control px-3 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring " +
+                    (groupActive || isOpen
+                      ? "bg-ink/8 text-text-primary"
+                      : "text-text-secondary hover:bg-surface-muted hover:text-text-primary")
+                  }
+                >
+                  <GroupIcon size={15} aria-hidden="true" />
+                  {group.label}
+                  {groupActive && (
+                    <span
+                      aria-hidden="true"
+                      className="h-1.5 w-1.5 rounded-full bg-cobalt"
+                    />
+                  )}
+                  <ChevronDown
+                    size={13}
+                    aria-hidden="true"
+                    className={"transition-transform " + (isOpen ? "rotate-180" : "")}
+                  />
+                </button>
+                {isOpen && (
+                  <ul
+                    id={menuId}
+                    ref={(element) => {
+                      groupMenuRefs.current[group.id] = element;
+                    }}
+                    className="absolute left-0 top-[calc(100%+6px)] w-56 overflow-hidden rounded-card border border-border-soft bg-surface-1 p-2 shadow-pop"
+                  >
+                    {group.links.map((link) => {
+                      const LinkIcon = link.icon;
+                      const active = isPathActive(pathname, link.href);
+                      return (
+                        <li key={link.href}>
+                          <Link
+                            href={link.href}
+                            aria-current={active ? "page" : undefined}
+                            className={
+                              "flex min-h-11 items-center gap-2.5 rounded-control px-3 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring " +
+                              (active
+                                ? "bg-ink/8 text-text-primary"
+                                : "text-text-secondary hover:bg-surface-muted hover:text-text-primary")
+                            }
+                          >
+                            <LinkIcon size={15} aria-hidden="true" />
+                            {link.label}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
             );
           })}
         </nav>
 
-        {/* Right cluster -- always visible, including mobile */}
         <div className="ml-auto flex shrink-0 items-center gap-2">
           <Link
             href="/entry/match"
-            className="hidden h-control items-center gap-1.5 rounded-control bg-ink px-3 text-[13px] font-semibold text-paper transition hover:bg-ink/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring sm:inline-flex"
+            className="hidden h-control-lg items-center gap-1.5 rounded-control bg-ink px-3 text-[13px] font-semibold text-paper transition hover:bg-ink/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring sm:inline-flex"
           >
             开始自主测验
           </Link>
-          <Suspense
-            fallback={<div className="h-9 w-9 shrink-0" aria-hidden="true" />}
-          >
+          <Suspense fallback={<div className="h-11 w-11 shrink-0" aria-hidden="true" />}>
             <NavSearch />
           </Suspense>
           <ThemeToggle />
           <AuthButton />
           <button
+            ref={mobileButtonRef}
             type="button"
-            aria-label={open ? "关闭菜单" : "打开菜单"}
-            aria-expanded={open}
+            aria-label={mobileOpen ? "关闭菜单" : "打开菜单"}
+            aria-expanded={mobileOpen}
             aria-controls="mobile-nav-drawer"
-            onClick={() => setOpen((v) => !v)}
-            className="grid h-9 w-9 place-items-center rounded-control border border-border-soft bg-surface-1 text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring lg:hidden"
+            onClick={() => setMobileOpen((value) => !value)}
+            className="grid h-11 w-11 place-items-center rounded-control border border-border-soft bg-surface-1 text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring lg:hidden"
           >
-            {open ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
+            {mobileOpen ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile drawer */}
-      {open && (
+      {mobileOpen && (
         <nav
           id="mobile-nav-drawer"
           aria-label="主导航（移动端）"
-          className="border-t border-border-soft bg-surface-1 px-4 py-3 lg:hidden"
+          className="border-t border-border-soft bg-surface-1 px-4 py-4 lg:hidden"
         >
-          <div className="flex flex-col gap-1">
-            {NAV_LINKS.map((link) => {
-              const active = isPathActive(pathname, link.href);
+          <div className="flex flex-col gap-4">
+            {NAV_GROUPS.map((group) => {
+              const GroupIcon = group.icon;
               return (
-                <Link
-                  key={link.href}
-                  href={link.href as any}
-                  aria-current={active ? "page" : undefined}
-                  className={
-                    "rounded-control px-3 py-2 text-[14px] font-medium transition-colors " +
-                    (active
-                      ? "bg-ink/8 text-text-primary"
-                      : "text-text-secondary hover:bg-surface-muted hover:text-text-primary")
-                  }
+                <section
+                  key={group.id}
+                  aria-labelledby={`mobile-nav-${group.id}`}
+                  className="flex flex-col gap-2"
                 >
-                  {link.label}
-                </Link>
+                  <h2
+                    id={`mobile-nav-${group.id}`}
+                    className="flex h-6 items-center gap-2 px-3 text-label text-text-muted"
+                  >
+                    <GroupIcon size={14} aria-hidden="true" />
+                    {group.label}
+                  </h2>
+                  <ul className="flex flex-col gap-2">
+                    {group.links.map((link) => {
+                      const LinkIcon = link.icon;
+                      const active = isPathActive(pathname, link.href);
+                      return (
+                        <li key={link.href}>
+                          <Link
+                            href={link.href}
+                            aria-current={active ? "page" : undefined}
+                            className={
+                              "flex min-h-11 items-center gap-2.5 rounded-control px-3 text-[14px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring " +
+                              (active
+                                ? "bg-ink/8 text-text-primary"
+                                : "text-text-secondary hover:bg-surface-muted hover:text-text-primary")
+                            }
+                          >
+                            <LinkIcon size={16} aria-hidden="true" />
+                            {link.label}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
               );
             })}
             <Link
               href="/search"
-              className="rounded-control px-3 py-2 text-[14px] font-medium transition-colors text-text-secondary hover:bg-surface-muted hover:text-text-primary"
+              className="flex min-h-11 items-center gap-2.5 rounded-control px-3 text-[14px] font-medium text-text-secondary transition-colors hover:bg-surface-muted hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
             >
+              <Search size={16} aria-hidden="true" />
               搜索
             </Link>
             <Link
               href="/entry/match"
-              className="mt-2 inline-flex h-control items-center justify-center gap-1.5 rounded-control bg-ink px-3 text-[13px] font-semibold text-paper"
+              className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-control bg-ink px-3 text-[13px] font-semibold text-paper transition hover:bg-ink/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
             >
               开始自主测验
             </Link>
