@@ -96,13 +96,16 @@ export function UniversityFactSection({ universityId }: { universityId: string }
     const url = `/api/information/facts?entityType=university&entityId=${encodeURIComponent(universityId)}`;
     fetch(url, { signal: controller.signal, cache: "no-store" })
       .then(async (response) => {
-        if (!response.ok) {
-          const body = (await response.json().catch(() => ({}))) as ApiErrorBody;
-          setState({
-            kind: "unavailable",
-            code: body.code,
-            message: body.message ?? `事实层请求失败 (${response.status})`,
-          });
+          if (!response.ok) {
+            const body = (await response.json().catch(() => ({}))) as ApiErrorBody;
+            setState({
+              kind: "unavailable",
+              code: body.code,
+              message:
+                response.status >= 500
+                  ? "已审核事实层暂不可用，稍后会随数据库配置恢复。"
+                  : body.message ?? `事实层请求失败 (${response.status})`,
+            });
           return;
         }
         const body = (await response.json()) as { ok?: boolean; profile?: SchoolFactProfile };

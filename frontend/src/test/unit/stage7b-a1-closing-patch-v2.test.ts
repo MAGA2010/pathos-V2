@@ -343,19 +343,25 @@ describe("G. SSR-stable placeholder mirrors MapShell (F1/v3)", () => {
 describe("H. MapCanvas synchronous setMapReady (F2)", () => {
   const src = readSrc("src/components/map/MapCanvas.tsx");
 
-  it("H1. the load handler calls setMapReady(true) WITHOUT requestAnimationFrame", () => {
+  it("H1. readiness events call markReady synchronously WITHOUT requestAnimationFrame", () => {
     // The previous code wrapped setMapReady inside a rAF; under Strict
     // Mode + Fast Refresh that rAF was being cancelled mid-flight by
     // the tree tear-down caused by the Suspense null fallback (F1).
-    // The fix: setMapReady flips synchronously inside the load handler.
-    const block = src.slice(
-      src.indexOf('map.on("load"'),
-      src.indexOf('map.on("error"'),
+    // The fix: markReady flips setMapReady synchronously, and the real
+    // readiness events bind it directly. A checked rAF fallback may
+    // follow only after those direct handlers are registered.
+    const readyHandlerBlock = src.slice(
+      src.indexOf("const markReady"),
+      src.indexOf("const map ="),
     );
-    expect(block).toContain("setMapReady(true)");
-    expect(block).not.toMatch(/requestAnimationFrame/);
+    const eventBlock = src.slice(
+      src.indexOf('map.on("load"'),
+      src.indexOf("requestAnimationFrame", src.indexOf('map.on("load"')),
+    );
+    expect(readyHandlerBlock).toContain("setMapReady(true)");
+    expect(eventBlock).toContain('map.on("load", markReady)');
+    expect(eventBlock).not.toContain("requestAnimationFrame");
   });
-
   it("H2. no rAF/jumpTo dance remains around the load handler", () => {
     // The resize+jumpTo indirection that was meant to fix stale
     // projections has been moved to the ResizeObserver. The load

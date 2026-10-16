@@ -144,8 +144,11 @@ function findRowValue(text: string, labels: string[]): string | undefined {
       const seg = part.trim();
       if (!seg) continue;
       const colonIdx = seg.search(/[：:]/);
-      if (colonIdx > 0 && colonIdx < seg.length - 1 && seg[colonIdx] === "：") {
-        tokens.push(seg.slice(0, colonIdx).trim());
+      const possibleLabel = colonIdx > 0 ? seg.slice(0, colonIdx).trim() : "";
+      // Only split a labelled cell such as "合计：$86,700". Splitting every
+      // full-width colon also destroys ratio values such as "1：6".
+      if (colonIdx > 0 && colonIdx < seg.length - 1 && labels.includes(possibleLabel)) {
+        tokens.push(possibleLabel);
         tokens.push(seg.slice(colonIdx + 1).trim());
       } else {
         tokens.push(seg);

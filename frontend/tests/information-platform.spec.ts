@@ -27,6 +27,15 @@ test("homepage renders the information-platform entry", async ({ page }) => {
   await expect(page.getByText("把复杂选择拆成可以行动的七个章节。")).toBeVisible();
 });
 
+test("interactive map leaves its loading state and renders controls", async ({ page }) => {
+  await open(page, "/map");
+
+  const loading = page.getByRole("status").filter({ hasText: "加载地图中" });
+  await expect(loading).toHaveCount(0, { timeout: 15_000 });
+  await expect(page.getByRole("button", { name: "Zoom in" })).toBeVisible();
+  await expect(page.getByRole("combobox", { name: "选择区域图层" })).toBeVisible();
+});
+
 test("compare renders a two-school matrix with explicit preview provenance", async ({ page }) => {
   await open(page, "/compare?ids=princeton-university,harvard-university");
 

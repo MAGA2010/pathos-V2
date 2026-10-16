@@ -287,7 +287,9 @@ function missingCellBase(unit: string | null = null) {
     unit,
     academicYear: null as string | null,
     applicantScope: null as string | null,
-    missingReason: "not_reported",
+    // Absence here means PathOS has not collected an approved fact for this
+    // slot. It does not mean the school officially reported nothing.
+    missingReason: "not_collected",
   };
 }
 
@@ -544,7 +546,7 @@ export function comparisonToCsv(model: UniversityComparisonModel): string {
     lines.push([
       COMPARISON_PERSPECTIVE_META[row.perspective].title,
       row.label,
-      ...row.cells.map(cell => cell.value ?? MISSING_LABELS[cell.missingReason ?? ""] ?? "缺失"),
+      ...row.cells.map(cell => cell.value ?? comparisonMissingLabel(cell)),
       row.yearMismatch ? "否" : "是",
       row.sourceMismatch ? "否" : "是",
       row.unitMismatch ? "否" : "是",
@@ -554,5 +556,6 @@ export function comparisonToCsv(model: UniversityComparisonModel): string {
 }
 
 export function comparisonMissingLabel(cell: ComparisonCell): string {
+  if (cell.missingReason === "not_collected") return "未采集";
   return MISSING_LABELS[cell.missingReason ?? ""] ?? "缺失";
 }

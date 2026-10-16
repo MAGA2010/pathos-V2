@@ -81,7 +81,10 @@ export default function CalculatorPage() {
     () => allUnis.filter((u) => !selectedIds.includes(u.id)),
     [allUnis, selectedIds],
   );
-  const addUni = useCallback((id: string) => { compare.add(id); }, [compare]);
+  const addUni = useCallback((id: string) => {
+    compare.add(id);
+    setPickerOpen(false);
+  }, [compare]);
   const removeUni = useCallback((id: string) => { compare.remove(id); }, [compare]);
 
   const totalsById = useMemo(() => {

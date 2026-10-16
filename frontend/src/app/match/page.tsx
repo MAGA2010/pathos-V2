@@ -40,10 +40,20 @@ const formatRmb = (value: number | null | undefined) => {
 // tuition band (e.g. "$86,700"), surface it directly. The Match
 // screen's per-school card is the canonical place parents see the
 // figure, so we avoid "学费数据补充中" whenever we can.
-function formatRmbWithGuide(usd: number | null | undefined, gp?: { tuition?: { total?: string } } | null): string {
+function formatAnnualCostWithGuide(
+  usd: number | null | undefined,
+  gp?: { tuition?: { total?: string } } | null,
+): string {
   const total = gp?.tuition?.total;
-  if (total) return `${total}/年`;
-  return formatRmb(usd);
+  if (total) {
+    const cleaned = total
+      .replace(/\/\s*年$/i, "")
+      .replace(/\/?\s*per\s*year$/i, "")
+      .trim();
+    if (cleaned) return `${cleaned}/年`;
+  }
+  const fallback = formatRmb(usd);
+  return fallback === "学费数据补充中" ? fallback : `${fallback}/年`;
 }
 
 function getMetricMap(metricId: string, records: readonly any[]) {
@@ -343,7 +353,7 @@ export default function SmartMatchPage() {
                         <span>{university.city}, {university.state}</span>
                         <span aria-hidden="true">·</span>
 
-<span>{formatRmbWithGuide(costRmbForDisplay, university?.guidePreview)}/年</span>
+<span>{formatAnnualCostWithGuide(costRmbForDisplay, university?.guidePreview)}</span>
                         <span aria-hidden="true">·</span>
                         <span>安全 {safetyLabel}</span>
                       </div>
@@ -373,7 +383,7 @@ export default function SmartMatchPage() {
                       </div>
                     </div>
                     <div className="flex shrink-0 flex-row items-center justify-between gap-3 sm:w-28 sm:flex-col sm:items-end">
-                      <div className="text-right"><div className={"text-3xl font-black tabular-nums " + tone}>{university.match}%</div><div className="text-[11px] text-ink/40">匹配度</div></div>
+                      <div className="text-right"><div className={"text-3xl font-black tabular-nums " + tone}>{university.match}%</div><div className="text-[11px] text-ink/40">预算+排名</div></div>
                       <div className="flex gap-2 sm:flex-col">
                         <button onClick={() => { saveToPortfolio(university); setAddedId(university.id); setTimeout(() => setAddedId(null), 1800); }} className="inline-flex items-center justify-center gap-1.5 rounded-full border border-line/60 px-3 py-1.5 text-xs font-semibold text-ink/62 transition hover:border-cobalt/40 hover:bg-cobalt/8 hover:text-cobalt">{addedId === university.id ? <Check size={13} /> : <Bookmark size={13} />}{addedId === university.id ? "已加入" : "加清单"}</button>
                         <Link href={"/map?school=" + university.id} className="inline-flex items-center justify-center gap-1.5 rounded-full bg-ink px-3 py-1.5 text-xs font-semibold text-panel transition hover:bg-ink/90"><Map size={13} /> 地图</Link>

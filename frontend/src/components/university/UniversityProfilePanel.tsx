@@ -596,7 +596,7 @@ function CostSection({ detail, statusDictionary }: SectionProps) {
               ))}
             </tbody>
           </table>
-          {detail.studentFacultyRatio !== undefined && (
+          {typeof detail.studentFacultyRatio === "number" && (
             <p className="text-[11px] text-ink/52">
               师生比 1 : {detail.studentFacultyRatio}
             </p>

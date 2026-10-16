@@ -121,7 +121,7 @@ describe("comparison domain", () => {
     const sat25 = comparisonRowsForPerspective(model, "admission")
       .find(row => row.id === "sat_25");
     expect(sat25?.cells[2].value).toBeNull();
-    expect(sat25?.cells[2].missingReason).toBe("not_reported");
+    expect(sat25?.cells[2].missingReason).toBe("not_collected");
     expect(sat25?.cells[1].isBest).toBe(true);
     expect(sat25?.cells[0].isExtreme).toBe(true);
     expect(sat25?.cells[2].isBest || sat25?.cells[2].isExtreme).toBe(false);
@@ -154,7 +154,7 @@ describe("comparison domain", () => {
     });
     const csv = comparisonToCsv(model);
     expect(csv.split("\n")[0]).toContain('"视角","字段","A 大学","B 大学","学年口径一致","来源口径一致","单位口径一致"');
-    expect(csv).toContain('"官方未报告"');
+    expect(csv).toContain('"未采集"');
   });
 });
 

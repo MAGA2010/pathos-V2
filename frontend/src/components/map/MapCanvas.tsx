@@ -322,6 +322,10 @@ export function MapCanvas({
   useEffect(() => {
     if (!containerRef.current || initializedRef.current) return;
     initializedRef.current = true;
+    let disposed = false;
+    const markReady = () => {
+      if (!disposed) setMapReady(true);
+    };
 
     const map = new maplibregl.Map({
       container: containerRef.current,
@@ -442,8 +446,14 @@ export function MapCanvas({
     // whenever the container size settles). Marking the map ready
     // here only gates "are MapLibre's APIs usable?" — projection is a
     // separate concern owned by the resize observer.
-    map.on("load", () => {
-      setMapReady(true);
+    map.on("load", markReady);
+    // An inline raster style can finish its first render before the public
+    // `load` event is observed in some browser timing windows. Style/load and
+    // first-render are equally valid readiness signals for child layers.
+    map.on("style.load", markReady);
+    map.once("render", markReady);
+    requestAnimationFrame(() => {
+      if (map.isStyleLoaded()) markReady();
     });
 
     // Style-load error — surface to console so devs can diagnose
@@ -521,6 +531,7 @@ export function MapCanvas({
     // Benign style-diff warnings are now routed through MapLibre's own
     // `error` handler filter (above) and child-effect try/catch wrappers.
     return () => {
+      disposed = true;
       map.remove();
       mapRef.current = null;
       initializedRef.current = false;

@@ -319,8 +319,8 @@ export default function ComparisonMatrix() {
           <div className="mt-4 flex items-start gap-2 rounded-control border border-persimmon/30 bg-persimmon/8 p-3 text-xs leading-5 text-persimmon">
             <AlertCircle size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
             <span>
-              Approved facts 对比层暂不可用{factsState.code ? `（${factsState.code}）` : ""}：{factsState.message}
-              下方 Preview 单元格会显式降级展示，不会标记为已审核。
+              Approved facts 对比暂不可用{factsState.code ? `（${factsState.code}）` : ""}。
+              已自动降级到可追溯 Preview 字段，不会标记为已审核。
             </span>
           </div>
         )}
