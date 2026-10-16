@@ -4,7 +4,6 @@ import { useState, useMemo, useCallback } from "react";
 import { useDataSource } from "@/services/data-source-provider";
 import { useRegionMetrics, useUniversitySummaries } from "@/hooks/use-data-source";
 import { Calculator, DollarSign, Plane, ShieldCheck, FileText, Plus, X, Copy, Check } from "lucide-react";
-import Link from "next/link";
 import { useCompareStore } from "@/state/compare-store";
 import {
   computeAnnualTotalRmb,
@@ -15,7 +14,7 @@ import {
 } from "@/lib/cost-format";
 import { tuitionRmbFromSummary } from "@/lib/legacy-mappers";
 import { SchoolPicker } from "@/components/calculator/SchoolPicker";
-import PageMotion from "@/components/shared/PageMotion";
+import { PageEmptyState, PageShell, PageStep } from "@/components/shared/PageShell";
 
 const EXCHANGE_RATE = 7.2;
 const STANDARD_COSTS = [
@@ -129,20 +128,36 @@ export default function CalculatorPage() {
   }, [selected, tier, standardTotal, totalsById]);
 
   return (
-    <PageMotion>
-      <div className="min-h-screen bg-surface-base">
-      <header className="page-motion-compact-hero px-6 py-7 sm:px-8 sm:py-9" data-reveal>
-        <div className="mx-auto flex max-w-page items-center gap-3 px-4 py-3 sm:px-6">
-          <div className="grid h-8 w-8 shrink-0 place-items-center rounded-control bg-ink text-paper"><Calculator size={16} aria-hidden="true" /></div>
-          <div className="min-w-0 flex-1">
-            <p className="text-label uppercase tracking-[0.12em] text-cobalt">留学预算</p>
-            <h1 className="text-page text-text-primary" data-heading-stagger>预算计算器</h1>
-          </div>
-          <Link href="/map" className="ml-auto text-caption text-cobalt hover:underline">← 返回地图</Link>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-page px-4 py-5 sm:px-6" data-section>
+    <>
+      <PageShell
+        eyebrow="留学预算"
+        title="预算计算器"
+        description="选择最多三所大学，按学费、生活费档次、州成本系数和固定支出生成年度预算。"
+        icon={Calculator}
+        backHref="/map"
+        backLabel="返回地图"
+        primaryAction={
+          selectedIds.length < 3 ? (
+            <button
+              type="button"
+              onClick={() => setPickerOpen(true)}
+              className="inline-flex h-control items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-3 text-caption font-semibold text-text-primary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+            >
+              <Plus size={13} aria-hidden="true" /> 添加大学
+            </button>
+          ) : undefined
+        }
+        coverage={{
+          detail: "学费来自公开学费区间与 IECG 学费带；缺失学费会显示为数据补充中，不会被估算或计入最高费用比较。",
+        }}
+        contentClassName="space-y-5"
+      >
+      <PageStep
+        step="01"
+        title="选择学校并设定生活费"
+        description="最多比较三所大学；费用口径、汇率和计算过程在每张卡片内保持可见。"
+        aside={<span className="inline-flex items-center gap-1.5 rounded-control border border-border-soft bg-surface-2 px-2.5 py-1 text-caption text-text-secondary"><DollarSign size={12} aria-hidden="true" /> 汇率 {EXCHANGE_RATE}</span>}
+      >
         {/* Controls */}
         <div className="flex flex-wrap items-center gap-4 mb-5" data-reveal data-reveal-delay="80">
           <div className="flex items-center gap-2">
@@ -192,18 +207,20 @@ export default function CalculatorPage() {
 
         {/* Empty */}
         {selectedIds.length === 0 && (
-          <div className="flex flex-col items-center justify-center rounded-overlay border-2 border-dashed border-border-soft bg-surface-1 py-16 text-center" data-reveal data-reveal-delay="240">
-            <Calculator size={48} className="mb-4 text-border-soft" aria-hidden="true" />
-            <p className="text-body text-text-secondary">请添加大学开始预算计算</p>
-            <button
-              type="button"
-              onClick={() => setPickerOpen(true)}
-              className="mt-4 inline-flex items-center gap-1.5 rounded-control border border-cobalt/40 bg-cobalt px-4 py-2 text-caption font-semibold text-paper transition hover:bg-cobalt/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-            >
-              <Plus size={14} aria-hidden="true" />
-              选择第一所大学
-            </button>
-          </div>
+          <PageEmptyState
+            title="请添加大学开始预算计算"
+            description="先选择学校，再调整生活费档次；缺失学费会明确显示，不会生成假总额。"
+            action={
+              <button
+                type="button"
+                onClick={() => setPickerOpen(true)}
+                className="inline-flex items-center gap-1.5 rounded-control bg-cobalt px-4 py-2 text-caption font-semibold text-paper transition hover:bg-cobalt/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+              >
+                <Plus size={14} aria-hidden="true" />
+                选择第一所大学
+              </button>
+            }
+          />
         )}
 
         {/* Cards */}
@@ -369,7 +386,8 @@ export default function CalculatorPage() {
             </div>
           </>
         )}
-      </main>
+      </PageStep>
+      </PageShell>
 
       {/* School picker dialog — opens from the empty-state CTA, the
           top-of-page selector, and the dashed-slot CTA on each card
@@ -383,8 +401,7 @@ export default function CalculatorPage() {
         onPick={(id) => addUni(id)}
         storageKey="pathos:calculator:picker:query"
       />
-      </div>
-    </PageMotion>
+    </>
   );
 }
 

@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import PageMotion from "@/components/shared/PageMotion";
 import Link from "next/link";
-import { AlertTriangle, Brain, CheckCircle2, ClipboardCheck, Plus, Sparkles, Trash2 } from "lucide-react";
+import { Brain, CheckCircle2, ClipboardCheck, Plus, Sparkles, Trash2 } from "lucide-react";
 import { SearchInput } from "@/components/shared/SearchInput";
+import { PageEmptyState, PageResultPanel, PageShell, PageStep } from "@/components/shared/PageShell";
 import { useDataSource } from "@/services/data-source-provider";
 import { useUniversitySummaries } from "@/hooks/use-data-source";
 
@@ -157,33 +157,24 @@ export default function AssessmentPage() {
   };
 
   return (
-    <PageMotion>
-    <div className="min-h-screen bg-surface-base">
-      <header data-reveal="true" className="border-b border-border-soft bg-surface-1/70 backdrop-blur">
-        <div className="mx-auto flex max-w-page flex-wrap items-center gap-3 px-4 py-3 sm:gap-4 sm:px-6">
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-control bg-cobalt text-paper"><Brain size={18} aria-hidden="true" /></div>
-          <div className="min-w-0 flex-1">
-            <p className="text-label uppercase tracking-[0.12em] text-cobalt">AI 学校评估</p>
-            <h1 data-heading-stagger="true" className="text-page text-text-primary">画像与目标校风险体检</h1>
-            <p className="mt-0.5 text-caption text-text-secondary">当前仅运行浏览器内本地结构示例；AI 服务开放前不生成真实结论或评分。</p>
-          </div>
-          <Link href="/match" className="ml-auto inline-flex h-control items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-3 text-[12px] font-semibold text-text-primary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"><Sparkles size={13} aria-hidden="true" /> 返回自主测验</Link>
-        </div>
-      </header>
-
-      <main className="mx-auto grid max-w-6xl gap-6 px-4 py-6 lg:grid-cols-[390px_1fr]">
-        <div data-reveal="true" data-reveal-delay="80" className="lg:col-span-2">
-          <div
-            role="note"
-            className="flex items-start gap-2 rounded-control border border-persimmon/30 bg-persimmon/8 px-3 py-2 text-caption text-persimmon"
-          >
-            <AlertTriangle size={13} aria-hidden="true" className="mt-0.5 shrink-0" />
-            <p>
-              区域指标（安全 / 就业 / 华人社区）当前仅在地图上作环境参考，
-              未进入 AI 评估与自主匹配分数；区域数据接入完整数据源后会再次校准评分口径。
-            </p>
-          </div>
-        </div>
+    <PageShell
+      eyebrow="AI 学校评估"
+      title="画像与目标校风险体检"
+      description="当前仅运行浏览器内本地结构示例；AI 服务开放前不生成真实结论或评分。"
+      icon={Brain}
+      backHref="/"
+      backLabel="返回首页"
+      primaryAction={
+        <Link href="/match" className="inline-flex h-control items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-3 text-caption font-semibold text-text-primary transition hover:border-cobalt/40 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring">
+          <Sparkles size={13} aria-hidden="true" /> 返回自主测验
+        </Link>
+      }
+      coverage={{
+        warning: true,
+        detail: "区域指标（安全 / 就业 / 华人社区）当前仅在地图上作环境参考，未进入 AI 评估与自主匹配分数；区域数据接入完整数据源后会再次校准评分口径。",
+      }}
+      contentClassName="grid gap-6 lg:grid-cols-[390px_1fr]"
+    >
 
         <section data-reveal="true" data-reveal-delay="120" className="space-y-4">
           <div className="rounded-[1.6rem] border border-white/70 bg-white/85 p-5 shadow-xl shadow-ink/5">
@@ -223,13 +214,18 @@ export default function AssessmentPage() {
           </div>
         </section>
 
-        <section className="space-y-4">
-          <div className="rounded-[1.7rem] border border-white/70 bg-white/85 p-5 shadow-xl shadow-ink/5">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div><p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-persimmon/75">评估输入</p><h2 className="mt-1 text-xl font-semibold text-ink">待评估学校</h2><p className="mt-1 text-sm text-ink/50">基于当前学校数据生成风险分层；结果不等同于录取概率。</p></div>
-              <button onClick={runAiAssessment} disabled={analyzing || selectedIds.length === 0} className="inline-flex items-center gap-2 rounded-full bg-cobalt px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-cobalt/15 transition hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"><Brain size={16} /> {analyzing ? "评估中…" : "运行 AI 评估"}</button>
-            </div>
+        <PageStep
+          step="02"
+          title="待评估学校"
+          description="基于当前学校数据生成风险分层；结果不等同于录取概率。"
+          aside={
+            <button onClick={runAiAssessment} disabled={analyzing || selectedIds.length === 0} className="inline-flex h-control items-center gap-2 rounded-control bg-cobalt px-4 text-caption font-semibold text-paper transition hover:bg-cobalt/90 disabled:cursor-not-allowed disabled:opacity-60"><Brain size={15} /> {analyzing ? "评估中…" : "运行 AI 评估"}</button>
+          }
+        >
             {aiError ? <div role="alert" className="mt-2 rounded-md border border-persimmon/30 bg-persimmon/8 px-3 py-2 text-xs text-persimmon">{aiError}</div> : null}
+            {selectedSchools.length === 0 ? (
+              <PageEmptyState title="还没有待评估学校" description="从下方搜索结果添加学校后，才能生成评估输入。" />
+            ) : (
             <div className="mt-5 grid gap-3 md:grid-cols-2">
               {selectedSchools.map((school: any) => <article key={school.id} className="rounded-2xl border border-line/45 bg-panel/70 p-3"><div className="flex items-start justify-between gap-3"><div><h3 className="text-sm font-semibold text-ink">{school.chineseName}</h3><p className="text-xs text-ink/40">{school.name}</p><p className="mt-1 text-xs text-ink/45">
                         {school.city}, {school.state} ·{" "}
@@ -242,10 +238,10 @@ export default function AssessmentPage() {
                         })()}
                       </p></div><button onClick={() => removeSchool(school.id)} className="rounded-full p-1.5 text-ink/30 transition hover:bg-red-50 hover:text-red-500"><Trash2 size={14} /></button></div></article>)}
             </div>
-          </div>
+            )}
+        </PageStep>
 
-          {result && <div className="rounded-[1.7rem] border border-white/70 bg-ink p-5 text-panel shadow-xl shadow-ink/10">
-            <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-panel/45">数据驱动 · {analysisSourceLabel(result.source)}</p><h2 className="mt-1 text-xl font-semibold">学校评估结果</h2></div><div className="rounded-full bg-panel/10 px-3 py-1.5 text-xs font-semibold text-panel/70">仅供决策参考</div></div>
+          {result && <PageResultPanel title="学校评估结果" source={analysisSourceLabel(result.source)}>
             <p className="mt-4 rounded-2xl bg-panel/10 p-4 text-sm leading-relaxed text-panel/76">{result.summary}</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-4"><Metric label="冲刺" value={result.portfolio.reachCount} /><Metric label="匹配" value={result.portfolio.targetCount} /><Metric label="保底" value={result.portfolio.safetyCount} /><Metric label="平均适配" value={result.portfolio.averageFitScore !== null ? `${result.portfolio.averageFitScore}%` : null} /></div>
             <div className="mt-5 grid gap-3 lg:grid-cols-3">
@@ -259,11 +255,8 @@ export default function AssessmentPage() {
                 {result.nextActions.map((action) => <div key={action} className="rounded-2xl bg-panel/10 p-3 text-sm text-panel/70">{action}</div>)}
               </Panel>
             </div>
-          </div>}
-        </section>
-      </main>
-    </div>
-    </PageMotion>
+          </PageResultPanel>}
+    </PageShell>
   );
 }
 
