@@ -10,7 +10,15 @@
 // bucket selector below is the same primitive drag would call.
 
 import { useState } from "react";
-import { ArrowRightLeft, Plus, Search, Trash2, X } from "lucide-react";
+import {
+  ArrowRightLeft,
+  CalendarClock,
+  Plus,
+  Search,
+  Trash2,
+  Wallet,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 
 interface ShortlistInfo {
@@ -40,9 +48,28 @@ interface Groups {
   safety: ItemRow[];
 }
 
+interface DeadlineSummary {
+  generatedAt: string;
+  timezoneNotice: string;
+  coverage: {
+    scheduled: number;
+    missing: number;
+    invalid: number;
+  };
+  items: Array<{
+    title: string;
+    dueAtUtc: string;
+    sourceUrl: string;
+    retrievedAt: string;
+  }>;
+  universitiesWithoutDeadlineFacts: string[];
+}
+
 interface ShortlistBoardProps {
   shortlist: ShortlistInfo;
   groups: Groups;
+  deadlineSummary: DeadlineSummary | null;
+  deadlineError: string | null;
 }
 
 interface AddResponse {
@@ -54,7 +81,10 @@ interface AddResponse {
 
 const BUCKETS: ItemRow["bucket"][] = ["reach", "match", "safety"];
 
-const BUCKET_COPY: Record<ItemRow["bucket"], { title: string; hint: string; accent: string }> = {
+const BUCKET_COPY: Record<
+  ItemRow["bucket"],
+  { title: string; hint: string; accent: string }
+> = {
   reach: {
     title: "冲刺",
     hint: "录取概率低于中位线,但回报大。",
@@ -80,7 +110,12 @@ const ERROR_COPY: Record<string, string> = {
   DB_UNREACHABLE: "数据库暂时不可用,请稍后重试。",
 };
 
-export function ShortlistBoard({ shortlist, groups: initialGroups }: ShortlistBoardProps): JSX.Element {
+export function ShortlistBoard({
+  shortlist,
+  groups: initialGroups,
+  deadlineSummary,
+  deadlineError,
+}: ShortlistBoardProps): JSX.Element {
   const [groups, setGroups] = useState<Groups>(initialGroups);
 
   // Add form state
@@ -116,12 +151,18 @@ export function ShortlistBoard({ shortlist, groups: initialGroups }: ShortlistBo
       const data = (await res.json().catch(() => ({}))) as AddResponse;
       if (!res.ok || !data.ok || !data.item) {
         const code = data.code ?? "DB_UNREACHABLE";
-        setAddError(ERROR_COPY[code] ?? data.message ?? "暂时无法添加,请稍后重试。");
+        setAddError(
+          ERROR_COPY[code] ?? data.message ?? "暂时无法添加,请稍后重试。",
+        );
         return;
       }
       const newItem: ItemRow = data.item;
       setGroups((prev) => {
-        const next: Groups = { reach: [...prev.reach], match: [...prev.match], safety: [...prev.safety] };
+        const next: Groups = {
+          reach: [...prev.reach],
+          match: [...prev.match],
+          safety: [...prev.safety],
+        };
         next[newItem.bucket].push(newItem);
         return next;
       });
@@ -148,11 +189,14 @@ export function ShortlistBoard({ shortlist, groups: initialGroups }: ShortlistBo
       return next;
     });
     try {
-      const res = await fetch(`/api/shortlists/${shortlist.id}/items/${itemId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bucket: toBucket }),
-      });
+      const res = await fetch(
+        `/api/shortlists/${shortlist.id}/items/${itemId}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ bucket: toBucket }),
+        },
+      );
       if (!res.ok) setGroups(previous);
     } catch {
       setGroups(previous);
@@ -167,16 +211,20 @@ export function ShortlistBoard({ shortlist, groups: initialGroups }: ShortlistBo
       safety: prev.safety.filter((i) => i.id !== itemId),
     }));
     try {
-      const res = await fetch(`/api/shortlists/${shortlist.id}/items/${itemId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `/api/shortlists/${shortlist.id}/items/${itemId}`,
+        {
+          method: "DELETE",
+        },
+      );
       if (!res.ok) setGroups(previous);
     } catch {
       setGroups(previous);
     }
   }
 
-  const totalCount = groups.reach.length + groups.match.length + groups.safety.length;
+  const totalCount =
+    groups.reach.length + groups.match.length + groups.safety.length;
 
   return (
     <div className="mt-6">
@@ -190,28 +238,156 @@ export function ShortlistBoard({ shortlist, groups: initialGroups }: ShortlistBo
           </h1>
           <p className="mt-1 text-[13px] text-text-secondary">
             共 {totalCount} 所学校 ·
-            <span className="ml-2 text-persimmon">冲刺 {groups.reach.length}</span> ·
-            <span className="ml-2 text-cobalt">匹配 {groups.match.length}</span> ·
-            <span className="ml-2 text-jade">保底 {groups.safety.length}</span>
+            <span className="ml-2 text-persimmon">
+              冲刺 {groups.reach.length}
+            </span>{" "}
+            ·
+            <span className="ml-2 text-cobalt">匹配 {groups.match.length}</span>{" "}
+            ·<span className="ml-2 text-jade">保底 {groups.safety.length}</span>
           </p>
         </div>
       </header>
 
       <section
+        aria-labelledby="information-heading"
+        className="mt-6 rounded-control border border-border-soft bg-surface-1 p-4"
+      >
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h2
+              id="information-heading"
+              className="text-sm font-semibold text-text-primary"
+            >
+              清单信息闭环
+            </h2>
+            <p className="mt-1 max-w-2xl text-[12px] leading-relaxed text-text-secondary">
+              {deadlineError ??
+                deadlineSummary?.timezoneNotice ??
+                "本面板只读取已审核事实层；缺失会显式标注。"}
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-wrap gap-2">
+            <Link
+              href={`/deadlines?shortlistId=${encodeURIComponent(shortlist.id)}`}
+              className="inline-flex h-control items-center gap-1.5 rounded-control border border-border-soft px-3 text-[12px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+            >
+              <CalendarClock size={13} aria-hidden="true" />
+              申请日历
+            </Link>
+            <Link
+              href="/costs"
+              className="inline-flex h-control items-center gap-1.5 rounded-control border border-border-soft px-3 text-[12px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+            >
+              <Wallet size={13} aria-hidden="true" />
+              成本中心
+            </Link>
+          </div>
+        </div>
+
+        {deadlineSummary ? (
+          <>
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="rounded-control bg-surface-2/60 px-3 py-2">
+                <p className="text-[10px] uppercase tracking-wide text-text-muted">
+                  可排期截止
+                </p>
+                <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
+                  {deadlineSummary.coverage.scheduled}
+                </p>
+              </div>
+              <div className="rounded-control bg-surface-2/60 px-3 py-2">
+                <p className="text-[10px] uppercase tracking-wide text-text-muted">
+                  显式缺失
+                </p>
+                <p className="mt-1 text-sm font-semibold tabular-nums text-persimmon">
+                  {deadlineSummary.coverage.missing}
+                </p>
+              </div>
+              <div className="rounded-control bg-surface-2/60 px-3 py-2">
+                <p className="text-[10px] uppercase tracking-wide text-text-muted">
+                  无效事实
+                </p>
+                <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
+                  {deadlineSummary.coverage.invalid}
+                </p>
+              </div>
+              <div className="rounded-control bg-surface-2/60 px-3 py-2">
+                <p className="text-[10px] uppercase tracking-wide text-text-muted">
+                  未覆盖学校
+                </p>
+                <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
+                  {deadlineSummary.universitiesWithoutDeadlineFacts.length}
+                </p>
+              </div>
+            </div>
+
+            {deadlineSummary.items.length > 0 ? (
+              <ul className="mt-3 divide-y divide-border-soft rounded-control border border-border-soft">
+                {deadlineSummary.items.map((item) => (
+                  <li
+                    key={`${item.title}-${item.dueAtUtc}`}
+                    className="flex flex-wrap items-center justify-between gap-2 px-3 py-2"
+                  >
+                    <div className="min-w-0">
+                      <p className="truncate text-[13px] font-medium text-text-primary">
+                        {item.title}
+                      </p>
+                      <a
+                        href={item.sourceUrl}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="text-[11px] text-text-secondary underline decoration-text-tertiary underline-offset-2 hover:text-cobalt"
+                      >
+                        已审核来源
+                      </a>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-cobalt/10 px-2 py-0.5 text-[11px] font-medium text-cobalt">
+                      UTC {item.dueAtUtc.slice(0, 10)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-3 rounded-control border border-border-soft bg-surface-2/50 px-3 py-2 text-[12px] text-text-secondary">
+                当前清单没有可排期的已审核截止日，不会显示推测日期。
+              </p>
+            )}
+          </>
+        ) : !deadlineError ? (
+          <p className="mt-4 rounded-control border border-border-soft bg-surface-2/50 px-3 py-2 text-[12px] text-text-secondary">
+            当前清单暂无截止日摘要。
+          </p>
+        ) : null}
+      </section>
+
+      <section
         aria-labelledby="add-heading"
         className="mt-6 rounded-control border border-border-soft bg-surface-1 p-4"
       >
-        <h2 id="add-heading" className="text-sm font-semibold text-text-primary">
+        <h2
+          id="add-heading"
+          className="text-sm font-semibold text-text-primary"
+        >
           添加学校到清单
         </h2>
         <p className="mt-1 text-[12px] text-text-secondary">
           粘贴学校 id(从地图或对比页 url 复制),选择档位即可加入。
         </p>
-        <form onSubmit={onAdd} className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end" noValidate>
+        <form
+          onSubmit={onAdd}
+          className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end"
+          noValidate
+        >
           <label className="flex flex-1 flex-col gap-1.5">
-            <span className="text-[12px] font-medium text-text-secondary">学校 id</span>
+            <span className="text-[12px] font-medium text-text-secondary">
+              学校 id
+            </span>
             <div className="relative">
-              <Search size={13} aria-hidden="true" className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-text-tertiary" />
+              <Search
+                size={13}
+                aria-hidden="true"
+                className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-text-tertiary"
+              />
               <input
                 type="text"
                 value={universityId}
@@ -222,7 +398,9 @@ export function ShortlistBoard({ shortlist, groups: initialGroups }: ShortlistBo
             </div>
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className="text-[12px] font-medium text-text-secondary">档位</span>
+            <span className="text-[12px] font-medium text-text-secondary">
+              档位
+            </span>
             <select
               value={bucket}
               onChange={(e) => setBucket(e.target.value as ItemRow["bucket"])}
@@ -261,18 +439,28 @@ export function ShortlistBoard({ shortlist, groups: initialGroups }: ShortlistBo
             >
               <header className="flex items-center justify-between border-b border-border-soft px-4 py-3">
                 <div>
-                  <h3 id={`bucket-${b}`} className={`text-sm font-semibold ${copy.accent}`}>
+                  <h3
+                    id={`bucket-${b}`}
+                    className={`text-sm font-semibold ${copy.accent}`}
+                  >
                     {copy.title} ({rows.length})
                   </h3>
-                  <p className="mt-0.5 text-[11px] text-text-secondary">{copy.hint}</p>
+                  <p className="mt-0.5 text-[11px] text-text-secondary">
+                    {copy.hint}
+                  </p>
                 </div>
               </header>
               <ul className="flex-1 divide-y divide-border-soft">
                 {rows.length === 0 ? (
-                  <li className="px-4 py-6 text-center text-[12px] text-text-tertiary">暂无学校</li>
+                  <li className="px-4 py-6 text-center text-[12px] text-text-tertiary">
+                    暂无学校
+                  </li>
                 ) : (
                   rows.map((it) => (
-                    <li key={it.id} className="group flex items-center justify-between gap-2 px-3 py-2.5">
+                    <li
+                      key={it.id}
+                      className="group flex items-center justify-between gap-2 px-3 py-2.5"
+                    >
                       <Link
                         href={`/university/${encodeURIComponent(it.universityId)}`}
                         className="min-w-0 flex-1"
@@ -280,7 +468,10 @@ export function ShortlistBoard({ shortlist, groups: initialGroups }: ShortlistBo
                         <p className="truncate text-[13px] font-medium text-text-primary">
                           {it.universityChineseName ?? it.universityName}
                         </p>
-                        <p className="truncate text-[11px] text-text-secondary" lang="en">
+                        <p
+                          className="truncate text-[11px] text-text-secondary"
+                          lang="en"
+                        >
                           {it.universityName}
                         </p>
                       </Link>
@@ -288,7 +479,9 @@ export function ShortlistBoard({ shortlist, groups: initialGroups }: ShortlistBo
                         <select
                           aria-label={`移动 ${it.universityChineseName ?? it.universityName} 到其他档位`}
                           value={it.bucket}
-                          onChange={(e) => onMove(it.id, e.target.value as ItemRow["bucket"])}
+                          onChange={(e) =>
+                            onMove(it.id, e.target.value as ItemRow["bucket"])
+                          }
                           className="h-7 rounded-control border border-border-soft bg-surface-1 px-1.5 text-[11px] text-text-secondary focus-visible:border-cobalt focus-visible:outline-none"
                         >
                           <option value="reach">冲刺</option>
@@ -297,7 +490,16 @@ export function ShortlistBoard({ shortlist, groups: initialGroups }: ShortlistBo
                         </select>
                         <button
                           type="button"
-                          onClick={() => onMove(it.id, b === "reach" ? "match" : b === "match" ? "safety" : "reach")}
+                          onClick={() =>
+                            onMove(
+                              it.id,
+                              b === "reach"
+                                ? "match"
+                                : b === "match"
+                                  ? "safety"
+                                  : "reach",
+                            )
+                          }
                           aria-label="档位切换"
                           className="grid h-7 w-7 place-items-center rounded-control border border-border-soft text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
                         >
@@ -323,7 +525,11 @@ export function ShortlistBoard({ shortlist, groups: initialGroups }: ShortlistBo
 
       {totalCount === 0 && (
         <div className="mt-6 rounded-control border border-border-soft bg-surface-1 p-6 text-center text-[13px] text-text-secondary">
-          <X size={16} aria-hidden="true" className="mx-auto mb-2 text-text-tertiary" />
+          <X
+            size={16}
+            aria-hidden="true"
+            className="mx-auto mb-2 text-text-tertiary"
+          />
           清单还是空的,用上方表单加入第一所学校。
         </div>
       )}

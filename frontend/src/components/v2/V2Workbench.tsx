@@ -44,6 +44,7 @@ import type {
   ResourceState,
   UniversitySummary,
 } from "@/domain/dataset";
+import type { WorkbenchFactCoverage } from "@/server/information/report-integration";
 import type { GuidePreview } from "@/lib/guide-preview";
 import { useDataSource } from "@/services/data-source-provider";
 import {
@@ -100,7 +101,9 @@ function schoolSlug(school: UniversitySummary): string {
 }
 
 function schoolHref(school: UniversitySummary, family: Family): string {
-  return family === "f" ? `/f/school/${schoolSlug(school)}` : `/s/${schoolSlug(school)}`;
+  return family === "f"
+    ? `/f/school/${schoolSlug(school)}`
+    : `/s/${schoolSlug(school)}`;
 }
 
 function programSlug(name: string): string {
@@ -113,7 +116,10 @@ function majorHref(name: string, family: Family): string {
 }
 
 /** Resolve a route param to a school, tolerating both id shapes and name slugs. */
-function matchSchool(schools: UniversitySummary[], raw: string): UniversitySummary | null {
+function matchSchool(
+  schools: UniversitySummary[],
+  raw: string,
+): UniversitySummary | null {
   const target = raw.trim().toLowerCase();
   if (!target) return null;
 
@@ -145,7 +151,9 @@ function matchSchool(schools: UniversitySummary[], raw: string): UniversitySumma
   return loose ? loose.school : null;
 }
 
-function previewOf(school: UniversitySummary | null | undefined): GuidePreview | null {
+function previewOf(
+  school: UniversitySummary | null | undefined,
+): GuidePreview | null {
   if (!school) return null;
   const preview = school.guidePreview;
   return preview && preview.hasData ? preview : null;
@@ -153,7 +161,9 @@ function previewOf(school: UniversitySummary | null | undefined): GuidePreview |
 
 function rankOf(school: UniversitySummary): number {
   const rank = school.rankingSummary?.nationalRank;
-  return typeof rank === "number" && Number.isFinite(rank) ? rank : Number.MAX_SAFE_INTEGER;
+  return typeof rank === "number" && Number.isFinite(rank)
+    ? rank
+    : Number.MAX_SAFE_INTEGER;
 }
 
 function fmtInt(value: number | null | undefined): string | null {
@@ -171,7 +181,9 @@ function cleanText(text: string | undefined, maxLength = 160): string | null {
   if (!text) return null;
   const cleaned = text.replace(/\s+/g, " ").trim();
   if (!cleaned) return null;
-  return cleaned.length > maxLength ? `${cleaned.slice(0, maxLength)}…` : cleaned;
+  return cleaned.length > maxLength
+    ? `${cleaned.slice(0, maxLength)}…`
+    : cleaned;
 }
 
 function formatDate(value: string | undefined): string | null {
@@ -205,7 +217,8 @@ function groupPrograms(schools: UniversitySummary[]): ProgramGroup[] {
     }
   }
   return [...map.values()].sort(
-    (a, b) => b.schools.length - a.schools.length || a.name.localeCompare(b.name, "en"),
+    (a, b) =>
+      b.schools.length - a.schools.length || a.name.localeCompare(b.name, "en"),
   );
 }
 
@@ -224,23 +237,45 @@ function StatTile({ label, value }: { label: string; value: ReactNode }) {
   // Only integers can be counted up; anything else (strings, elements,
   // "暂无") renders verbatim so we never animate a fabricated number.
   const counter =
-    typeof value === "number" && Number.isInteger(value) && value >= 0 ? String(value) : undefined;
+    typeof value === "number" && Number.isInteger(value) && value >= 0
+      ? String(value)
+      : undefined;
   return (
-    <div className="page-motion-card rounded-card border border-border-soft bg-surface-1 px-3.5 py-3 shadow-sm" data-reveal="true">
-      <p className="text-[10px] font-medium uppercase tracking-wide text-text-muted">{label}</p>
-      <p className="mt-1 text-xl font-semibold text-text-primary" data-counter={counter}>
+    <div
+      className="page-motion-card rounded-card border border-border-soft bg-surface-1 px-3.5 py-3 shadow-sm"
+      data-reveal="true"
+    >
+      <p className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
+        {label}
+      </p>
+      <p
+        className="mt-1 text-xl font-semibold text-text-primary"
+        data-counter={counter}
+      >
         {value}
       </p>
     </div>
   );
 }
 
-function Metric({ label, value, hint }: { label: string; value: ReactNode; hint?: string }) {
+function Metric({
+  label,
+  value,
+  hint,
+}: {
+  label: string;
+  value: ReactNode;
+  hint?: string;
+}) {
   return (
     <div className="rounded-control border border-border-soft bg-surface-muted/30 px-3 py-2.5">
-      <p className="text-[10px] font-medium tracking-wide text-text-muted">{label}</p>
+      <p className="text-[10px] font-medium tracking-wide text-text-muted">
+        {label}
+      </p>
       <p className="mt-1 text-sm font-semibold text-text-primary">{value}</p>
-      {hint ? <p className="mt-0.5 text-[10px] text-text-muted">{hint}</p> : null}
+      {hint ? (
+        <p className="mt-0.5 text-[10px] text-text-muted">{hint}</p>
+      ) : null}
     </div>
   );
 }
@@ -288,7 +323,9 @@ function SchoolChips({
   limit?: number;
 }) {
   if (schools.length === 0) return <MissingValue />;
-  const shown = [...schools].sort((a, b) => rankOf(a) - rankOf(b)).slice(0, limit);
+  const shown = [...schools]
+    .sort((a, b) => rankOf(a) - rankOf(b))
+    .slice(0, limit);
   return (
     <div className="flex flex-wrap gap-1.5">
       {shown.map((school) => (
@@ -301,7 +338,9 @@ function SchoolChips({
         </Link>
       ))}
       {schools.length > limit ? (
-        <span className="px-1 text-[10px] text-text-muted">+{schools.length - limit}</span>
+        <span className="px-1 text-[10px] text-text-muted">
+          +{schools.length - limit}
+        </span>
       ) : null}
     </div>
   );
@@ -389,7 +428,13 @@ function SchoolIndex({
     const q = query.trim().toLowerCase();
     const base = q
       ? schools.filter((school) =>
-          [school.name, school.nameZh, school.chineseName, school.city, school.state]
+          [
+            school.name,
+            school.nameZh,
+            school.chineseName,
+            school.city,
+            school.state,
+          ]
             .filter(Boolean)
             .some((value) => String(value).toLowerCase().includes(q)),
         )
@@ -538,7 +583,9 @@ function AdvisorLeadsCard() {
           <Briefcase size={16} aria-hidden="true" />
         </div>
         <div>
-          <p className="text-sm font-semibold text-text-primary">销售线索 CRM</p>
+          <p className="text-sm font-semibold text-text-primary">
+            销售线索 CRM
+          </p>
           <p className="mt-0.5 text-[12px] text-text-muted">
             管理订阅意向、跟进状态与转化记录。仅顾问/管理员可见。
           </p>
@@ -546,21 +593,142 @@ function AdvisorLeadsCard() {
       </div>
       <div className="flex items-center gap-4">
         <div className="text-right">
-          <p className="text-[10px] font-medium uppercase tracking-wide text-text-muted">线索总数</p>
-          <p className="text-lg font-semibold tabular-nums text-text-primary">{state.total}</p>
+          <p className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
+            线索总数
+          </p>
+          <p className="text-lg font-semibold tabular-nums text-text-primary">
+            {state.total}
+          </p>
         </div>
         <div className="text-right">
-          <p className="text-[10px] font-medium uppercase tracking-wide text-text-muted">待跟进</p>
-          <p className="text-lg font-semibold tabular-nums text-cobalt">{state.newCount}</p>
+          <p className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
+            待跟进
+          </p>
+          <p className="text-lg font-semibold tabular-nums text-cobalt">
+            {state.newCount}
+          </p>
         </div>
-        <ArrowUpRight size={16} aria-hidden="true" className="text-text-muted transition group-hover:text-cobalt" />
+        <ArrowUpRight
+          size={16}
+          aria-hidden="true"
+          className="text-text-muted transition group-hover:text-cobalt"
+        />
       </div>
     </Link>
   );
 }
 
+function InformationCoverageCard({
+  coverage,
+}: {
+  coverage?: WorkbenchFactCoverage;
+}) {
+  if (!coverage) return null;
 
-function HomeMode({ family }: { family: Family }) {
+  return (
+    <V2Panel className="mt-6">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="text-sm font-semibold text-text-primary">
+            已审核事实覆盖
+          </h2>
+          <p className="mt-1 max-w-2xl text-xs leading-relaxed text-text-muted">
+            {coverage.status === "ready"
+              ? "以下统计只来自当前有效、已通过审核的 facts；事实为空或带 null_reason 时都会显式显示，不用预览数据补位。"
+              : coverage.unavailableReason}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/deadlines"
+            className="inline-flex items-center gap-1.5 rounded-control border border-border-soft px-2.5 py-1.5 text-[11px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+          >
+            <ListChecks size={13} aria-hidden="true" />
+            截止日
+          </Link>
+          <Link
+            href="/costs"
+            className="inline-flex items-center gap-1.5 rounded-control border border-border-soft px-2.5 py-1.5 text-[11px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
+          >
+            <Wallet size={13} aria-hidden="true" />
+            成本
+          </Link>
+        </div>
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="rounded-control bg-surface-2/60 px-3 py-2">
+          <p className="text-[10px] uppercase tracking-wide text-text-muted">
+            已审核事实
+          </p>
+          <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
+            {coverage.approvedFacts}
+          </p>
+        </div>
+        <div className="rounded-control bg-surface-2/60 px-3 py-2">
+          <p className="text-[10px] uppercase tracking-wide text-text-muted">
+            覆盖学校
+          </p>
+          <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
+            {coverage.universities}
+          </p>
+        </div>
+        <div className="rounded-control bg-surface-2/60 px-3 py-2">
+          <p className="text-[10px] uppercase tracking-wide text-text-muted">
+            截止日 / 成本
+          </p>
+          <p className="mt-1 text-sm font-semibold tabular-nums text-text-primary">
+            {coverage.deadlineFacts} / {coverage.costFacts}
+          </p>
+        </div>
+        <div className="rounded-control bg-surface-2/60 px-3 py-2">
+          <p className="text-[10px] uppercase tracking-wide text-text-muted">
+            显式缺失
+          </p>
+          <p className="mt-1 text-sm font-semibold tabular-nums text-persimmon">
+            {coverage.missingFacts}
+          </p>
+        </div>
+      </div>
+
+      {coverage.status === "ready" && coverage.recentChanges.length > 0 ? (
+        <ul className="mt-3 divide-y divide-border-soft rounded-control border border-border-soft">
+          {coverage.recentChanges.map((change) => (
+            <li
+              key={change.factId}
+              className="flex flex-wrap items-center justify-between gap-2 px-3 py-2"
+            >
+              <div className="min-w-0">
+                <p className="truncate text-[12px] font-medium text-text-primary">
+                  {change.fieldKey}
+                </p>
+                <a
+                  href={change.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-[11px] text-text-secondary underline decoration-text-tertiary underline-offset-2 hover:text-cobalt"
+                >
+                  r{change.revision} · 来源
+                </a>
+              </div>
+              <span className="shrink-0 text-[11px] text-text-muted">
+                {change.updatedAt.slice(0, 10)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </V2Panel>
+  );
+}
+
+function HomeMode({
+  family,
+  informationCoverage,
+}: {
+  family: Family;
+  informationCoverage?: WorkbenchFactCoverage;
+}) {
   const source = useDataSource();
   const summaries = useUniversitySummaries(source);
   const news = useNews(source);
@@ -599,7 +767,10 @@ function HomeMode({ family }: { family: Family }) {
       {summaries.state.status === "loading" ? (
         <Loading message="正在读取院校数据…" />
       ) : summaries.state.status === "error" ? (
-        <Failure code={summaries.state.code} onRetry={() => summaries.reload()} />
+        <Failure
+          code={summaries.state.code}
+          onRetry={() => summaries.reload()}
+        />
       ) : schools.length === 0 ? (
         <DataEmptyState
           title="院校数据补充中"
@@ -613,7 +784,9 @@ function HomeMode({ family }: { family: Family }) {
             <StatTile label="指南已匹配" value={guideCovered} />
             <StatTile
               label="政策与资讯"
-              value={news.state.status === "ready" ? articles.length : <V2Missing />}
+              value={
+                news.state.status === "ready" ? articles.length : <V2Missing />
+              }
             />
           </div>
 
@@ -643,7 +816,9 @@ function HomeMode({ family }: { family: Family }) {
                     className="inline-flex items-center gap-1.5 rounded-full border border-border-soft px-2.5 py-1 text-[11px] text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
                   >
                     {group.name}
-                    <span className="text-text-muted">{group.schools.length}</span>
+                    <span className="text-text-muted">
+                      {group.schools.length}
+                    </span>
                   </Link>
                 ))}
               </div>
@@ -651,6 +826,8 @@ function HomeMode({ family }: { family: Family }) {
           ) : null}
 
           <AdvisorLeadsCard />
+
+          <InformationCoverageCard coverage={informationCoverage} />
 
           <SchoolIndex schools={schools} family={family} />
         </>
@@ -694,7 +871,10 @@ function MajorsMode({ family }: { family: Family }) {
       {summaries.state.status === "loading" ? (
         <Loading message="正在读取专业数据…" />
       ) : summaries.state.status === "error" ? (
-        <Failure code={summaries.state.code} onRetry={() => summaries.reload()} />
+        <Failure
+          code={summaries.state.code}
+          onRetry={() => summaries.reload()}
+        />
       ) : groups.length === 0 ? (
         <DataEmptyState
           title="专业数据补充中"
@@ -723,12 +903,18 @@ function MajorsMode({ family }: { family: Family }) {
 
           {filtered.length === 0 ? (
             <div className="mt-4">
-              <DataEmptyState title="没有匹配的专业" description="换个关键词再试。" />
+              <DataEmptyState
+                title="没有匹配的专业"
+                description="换个关键词再试。"
+              />
             </div>
           ) : (
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((group) => (
-                <V2Panel key={group.slug} className="flex flex-col justify-between">
+                <V2Panel
+                  key={group.slug}
+                  className="flex flex-col justify-between"
+                >
                   <div>
                     <div className="flex items-start justify-between gap-2">
                       <h2 className="text-sm font-semibold text-text-primary">
@@ -770,13 +956,16 @@ function MajorDetailMode({ id, family }: { id: string; family: Family }) {
     if (!wanted) return null;
     return (
       groups.find((group) => group.slug === wanted) ??
-      groups.find((group) => group.name.toLowerCase() === id.trim().toLowerCase()) ??
+      groups.find(
+        (group) => group.name.toLowerCase() === id.trim().toLowerCase(),
+      ) ??
       null
     );
   }, [groups, id]);
 
   const ranked = useMemo(
-    () => (target ? [...target.schools].sort((a, b) => rankOf(a) - rankOf(b)) : []),
+    () =>
+      target ? [...target.schools].sort((a, b) => rankOf(a) - rankOf(b)) : [],
     [target],
   );
 
@@ -804,13 +993,17 @@ function MajorDetailMode({ id, family }: { id: string; family: Family }) {
       {summaries.state.status === "loading" ? (
         <Loading message="正在读取专业数据…" />
       ) : summaries.state.status === "error" ? (
-        <Failure code={summaries.state.code} onRetry={() => summaries.reload()} />
+        <Failure
+          code={summaries.state.code}
+          onRetry={() => summaries.reload()}
+        />
       ) : !target || ranked.length === 0 ? (
         <DataEmptyState
           title="未找到该专业"
           description={
             <>
-              标识 <span className="font-mono">{id}</span> 当前不在专业标签集中。
+              标识 <span className="font-mono">{id}</span>{" "}
+              当前不在专业标签集中。
             </>
           }
           action={
@@ -826,7 +1019,10 @@ function MajorDetailMode({ id, family }: { id: string; family: Family }) {
         <>
           {/* Mobile: stacked cards so 390px viewports do not horizontally scroll.
               Desktop (>=md): the original wide table is shown. */}
-          <div className="space-y-3 md:hidden" aria-label="院校列表（移动视图）">
+          <div
+            className="space-y-3 md:hidden"
+            aria-label="院校列表（移动视图）"
+          >
             {ranked.map((school) => {
               const preview = previewOf(school);
               return (
@@ -835,25 +1031,46 @@ function MajorDetailMode({ id, family }: { id: string; family: Family }) {
                   href={schoolHref(school, family)}
                   className="block rounded-card border border-border-soft bg-surface-1 p-3 transition hover:border-cobalt/40"
                 >
-                  <div className="font-medium text-text-primary">{school.nameZh}</div>
-                  <div className="mt-0.5 text-[10px] text-text-muted">{school.city}, {school.state}</div>
-                  <ul className="mt-2 space-y-1 text-[11px] text-text-secondary" role="list">
+                  <div className="font-medium text-text-primary">
+                    {school.nameZh}
+                  </div>
+                  <div className="mt-0.5 text-[10px] text-text-muted">
+                    {school.city}, {school.state}
+                  </div>
+                  <ul
+                    className="mt-2 space-y-1 text-[11px] text-text-secondary"
+                    role="list"
+                  >
                     <li className="flex items-baseline justify-between gap-3">
                       <span className="text-text-muted">全美排名</span>
                       <span className="font-medium text-text-primary">
-                        {school.rankingSummary?.nationalRank ?? school.rankingSummary?.rankingLabel ?? <MissingValue />}
+                        {school.rankingSummary?.nationalRank ??
+                          school.rankingSummary?.rankingLabel ?? (
+                            <MissingValue />
+                          )}
                       </span>
                     </li>
                     <li className="flex items-baseline justify-between gap-3">
                       <span className="text-text-muted">录取率</span>
                       <span className="font-medium text-text-primary">
-                        {fmtPercent(preview?.acceptanceRatePercent) ? <span data-counter={String(preview?.acceptanceRatePercent ?? "")}>{fmtPercent(preview?.acceptanceRatePercent)}</span> : <MissingValue />}
+                        {fmtPercent(preview?.acceptanceRatePercent) ? (
+                          <span
+                            data-counter={String(
+                              preview?.acceptanceRatePercent ?? "",
+                            )}
+                          >
+                            {fmtPercent(preview?.acceptanceRatePercent)}
+                          </span>
+                        ) : (
+                          <MissingValue />
+                        )}
                       </span>
                     </li>
                     <li className="flex items-baseline justify-between gap-3">
                       <span className="text-text-muted">学费参考</span>
                       <span className="font-medium text-text-primary">
-                        {school.costSummary?.displayLabel ?? preview?.tuition?.total ?? <MissingValue />}
+                        {school.costSummary?.displayLabel ??
+                          preview?.tuition?.total ?? <MissingValue />}
                       </span>
                     </li>
                     <li className="flex items-baseline justify-between gap-3">
@@ -883,7 +1100,10 @@ function MajorDetailMode({ id, family }: { id: string; family: Family }) {
                   {ranked.map((school) => {
                     const preview = previewOf(school);
                     return (
-                      <tr key={school.id} className="border-t border-border-soft/60">
+                      <tr
+                        key={school.id}
+                        className="border-t border-border-soft/60"
+                      >
                         <td className="px-3 py-2">
                           <Link
                             href={schoolHref(school, family)}
@@ -896,17 +1116,27 @@ function MajorDetailMode({ id, family }: { id: string; family: Family }) {
                           </span>
                         </td>
                         <td className="px-3 py-2 text-text-secondary">
-                          {school.rankingSummary?.nationalRank ?? school.rankingSummary?.rankingLabel ?? (
+                          {school.rankingSummary?.nationalRank ??
+                            school.rankingSummary?.rankingLabel ?? (
+                              <MissingValue />
+                            )}
+                        </td>
+                        <td className="px-3 py-2 text-text-secondary">
+                          {fmtPercent(preview?.acceptanceRatePercent) ? (
+                            <span
+                              data-counter={String(
+                                preview?.acceptanceRatePercent ?? "",
+                              )}
+                            >
+                              {fmtPercent(preview?.acceptanceRatePercent)}
+                            </span>
+                          ) : (
                             <MissingValue />
                           )}
                         </td>
                         <td className="px-3 py-2 text-text-secondary">
-                          {fmtPercent(preview?.acceptanceRatePercent) ? <span data-counter={String(preview?.acceptanceRatePercent ?? "")}>{fmtPercent(preview?.acceptanceRatePercent)}</span> : <MissingValue />}
-                        </td>
-                        <td className="px-3 py-2 text-text-secondary">
-                          {school.costSummary?.displayLabel ?? preview?.tuition?.total ?? (
-                            <MissingValue />
-                          )}
+                          {school.costSummary?.displayLabel ??
+                            preview?.tuition?.total ?? <MissingValue />}
                         </td>
                         <td className="px-3 py-2 text-text-secondary">
                           {preview?.midRangeScores?.satEbrw ?? <MissingValue />}
@@ -934,7 +1164,9 @@ interface CompareRow {
 const COMPARE_ROWS: CompareRow[] = [
   {
     label: "全美综合排名",
-    render: (s) => s.rankingSummary?.nationalRank ?? s.rankingSummary?.rankingLabel ?? <MissingValue />,
+    render: (s) =>
+      s.rankingSummary?.nationalRank ??
+      s.rankingSummary?.rankingLabel ?? <MissingValue />,
   },
   {
     label: "US News 综合",
@@ -942,7 +1174,8 @@ const COMPARE_ROWS: CompareRow[] = [
   },
   {
     label: "本科录取率",
-    render: (s) => fmtPercent(previewOf(s)?.acceptanceRatePercent) ?? <MissingValue />,
+    render: (s) =>
+      fmtPercent(previewOf(s)?.acceptanceRatePercent) ?? <MissingValue />,
   },
   {
     label: "SAT 阅读 EBRW",
@@ -963,7 +1196,8 @@ const COMPARE_ROWS: CompareRow[] = [
   {
     label: "学费合计",
     render: (s) =>
-      previewOf(s)?.tuition?.total || s.costSummary?.displayLabel || <MissingValue />,
+      previewOf(s)?.tuition?.total ||
+      s.costSummary?.displayLabel || <MissingValue />,
   },
   {
     label: "学杂费",
@@ -977,9 +1211,9 @@ const COMPARE_ROWS: CompareRow[] = [
     label: "师生比",
     render: (s) =>
       previewOf(s)?.studentFacultyRatio ??
-      (typeof s.studentFacultyRatio === "number" ? String(s.studentFacultyRatio) : null) ?? (
-        <MissingValue />
-      ),
+      (typeof s.studentFacultyRatio === "number"
+        ? String(s.studentFacultyRatio)
+        : null) ?? <MissingValue />,
   },
   {
     label: "本科生人数",
@@ -1008,7 +1242,10 @@ function CompareMode({ family }: { family: Family }) {
   const [pick, setPick] = useState("");
 
   const schools = useReadyList(summaries.state);
-  const sorted = useMemo(() => [...schools].sort((a, b) => rankOf(a) - rankOf(b)), [schools]);
+  const sorted = useMemo(
+    () => [...schools].sort((a, b) => rankOf(a) - rankOf(b)),
+    [schools],
+  );
   const chosen = useMemo(
     () =>
       selectedIds
@@ -1021,7 +1258,9 @@ function CompareMode({ family }: { family: Family }) {
 
   function addSchool() {
     if (!pick) return;
-    setSelectedIds((prev) => (prev.includes(pick) || prev.length >= 4 ? prev : [...prev, pick]));
+    setSelectedIds((prev) =>
+      prev.includes(pick) || prev.length >= 4 ? prev : [...prev, pick],
+    );
     setPick("");
   }
 
@@ -1045,15 +1284,23 @@ function CompareMode({ family }: { family: Family }) {
       {summaries.state.status === "loading" ? (
         <Loading message="正在读取院校数据…" />
       ) : summaries.state.status === "error" ? (
-        <Failure code={summaries.state.code} onRetry={() => summaries.reload()} />
+        <Failure
+          code={summaries.state.code}
+          onRetry={() => summaries.reload()}
+        />
       ) : sorted.length === 0 ? (
-        <DataEmptyState title="院校数据补充中" description="当前数据源没有返回院校记录。" />
+        <DataEmptyState
+          title="院校数据补充中"
+          description="当前数据源没有返回院校记录。"
+        />
       ) : (
         <>
           <V2Panel>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
               <label className="block flex-1">
-                <span className="mb-1 block text-[11px] text-text-muted">选择院校</span>
+                <span className="mb-1 block text-[11px] text-text-muted">
+                  选择院校
+                </span>
                 <select
                   value={pick}
                   onChange={(event) => setPick(event.target.value)}
@@ -1086,7 +1333,9 @@ function CompareMode({ family }: { family: Family }) {
               ) : null}
             </div>
             {chosen.length >= 4 ? (
-              <p className="mt-2 text-[11px] text-persimmon">最多同时对比 4 所院校。</p>
+              <p className="mt-2 text-[11px] text-persimmon">
+                最多同时对比 4 所院校。
+              </p>
             ) : null}
           </V2Panel>
 
@@ -1123,7 +1372,9 @@ function CompareMode({ family }: { family: Family }) {
                             type="button"
                             aria-label={`移除 ${school.nameZh}`}
                             onClick={() =>
-                              setSelectedIds((prev) => prev.filter((id) => id !== school.id))
+                              setSelectedIds((prev) =>
+                                prev.filter((id) => id !== school.id),
+                              )
                             }
                             className="shrink-0 rounded px-1 text-[11px] text-text-muted transition hover:text-danger"
                           >
@@ -1136,12 +1387,18 @@ function CompareMode({ family }: { family: Family }) {
                 </thead>
                 <tbody>
                   {COMPARE_ROWS.map((row) => (
-                    <tr key={row.label} className="border-t border-border-soft/60">
+                    <tr
+                      key={row.label}
+                      className="border-t border-border-soft/60"
+                    >
                       <th className="px-3 py-2 text-left text-[11px] font-normal text-text-muted">
                         {row.label}
                       </th>
                       {chosen.map((school) => (
-                        <td key={school.id} className="px-3 py-2 text-text-secondary">
+                        <td
+                          key={school.id}
+                          className="px-3 py-2 text-text-secondary"
+                        >
                           {row.render(school)}
                         </td>
                       ))}
@@ -1154,7 +1411,11 @@ function CompareMode({ family }: { family: Family }) {
                     {chosen.map((school) => (
                       <td key={school.id} className="px-3 py-2">
                         <V2Provenance
-                          source={previewOf(school) ? "IECG 院校指南" : "PathOS 预览数据"}
+                          source={
+                            previewOf(school)
+                              ? "IECG 院校指南"
+                              : "PathOS 预览数据"
+                          }
                         />
                       </td>
                     ))}
@@ -1185,7 +1446,10 @@ function TimeSeriesMode({ family }: { family: Family }) {
   const [metric, setMetric] = useState<TimeSeriesMetric>("acceptanceRate");
 
   const schools = useReadyList(summaries.state);
-  const sorted = useMemo(() => [...schools].sort((a, b) => rankOf(a) - rankOf(b)), [schools]);
+  const sorted = useMemo(
+    () => [...schools].sort((a, b) => rankOf(a) - rankOf(b)),
+    [schools],
+  );
   // Pre-select the top-ranked school so the chart renders something on
   // first paint instead of staring at an empty placeholder. The user can
   // still override the selection; we just give them a starting view.
@@ -1195,7 +1459,10 @@ function TimeSeriesMode({ family }: { family: Family }) {
   const detail = useUniversityDetail(source, schoolId || null);
   const school = sorted.find((item) => item.id === schoolId) ?? null;
 
-  const series = detail.state.status === "ready" ? detail.state.data?.timeSeries ?? [] : [];
+  const series =
+    detail.state.status === "ready"
+      ? (detail.state.data?.timeSeries ?? [])
+      : [];
   const preview = previewOf(school);
 
   return (
@@ -1218,15 +1485,23 @@ function TimeSeriesMode({ family }: { family: Family }) {
       {summaries.state.status === "loading" ? (
         <Loading message="正在读取院校数据…" />
       ) : summaries.state.status === "error" ? (
-        <Failure code={summaries.state.code} onRetry={() => summaries.reload()} />
+        <Failure
+          code={summaries.state.code}
+          onRetry={() => summaries.reload()}
+        />
       ) : sorted.length === 0 ? (
-        <DataEmptyState title="院校数据补充中" description="当前数据源没有返回院校记录。" />
+        <DataEmptyState
+          title="院校数据补充中"
+          description="当前数据源没有返回院校记录。"
+        />
       ) : (
         <>
           <V2Panel>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
               <label className="block flex-1">
-                <span className="mb-1 block text-[11px] text-text-muted">院校</span>
+                <span className="mb-1 block text-[11px] text-text-muted">
+                  院校
+                </span>
                 <select
                   value={schoolId}
                   onChange={(event) => setSchoolId(event.target.value)}
@@ -1272,7 +1547,10 @@ function TimeSeriesMode({ family }: { family: Family }) {
             </div>
           ) : detail.state.status === "error" ? (
             <div className="mt-6">
-              <Failure code={detail.state.code} onRetry={() => detail.reload()} />
+              <Failure
+                code={detail.state.code}
+                onRetry={() => detail.reload()}
+              />
             </div>
           ) : (
             <div className="mt-6 grid gap-6 lg:grid-cols-[1.6fr,1fr]">
@@ -1300,19 +1578,57 @@ function TimeSeriesMode({ family }: { family: Family }) {
                   <SectionTitle>该校当前快照</SectionTitle>
                   <div className="mt-3 space-y-0.5">
                     <DefRow label="本科录取率">
-                      {fmtPercent(preview?.acceptanceRatePercent) ? <span data-counter={String(preview?.acceptanceRatePercent ?? "")}>{fmtPercent(preview?.acceptanceRatePercent)}</span> : <MissingValue />}
+                      {fmtPercent(preview?.acceptanceRatePercent) ? (
+                        <span
+                          data-counter={String(
+                            preview?.acceptanceRatePercent ?? "",
+                          )}
+                        >
+                          {fmtPercent(preview?.acceptanceRatePercent)}
+                        </span>
+                      ) : (
+                        <MissingValue />
+                      )}
                     </DefRow>
                     <DefRow label="SAT 阅读 EBRW">
-                      {preview?.midRangeScores?.satEbrw ? <span data-counter={String(preview.midRangeScores.satEbrw)}>{preview.midRangeScores.satEbrw}</span> : <MissingValue />}
+                      {preview?.midRangeScores?.satEbrw ? (
+                        <span
+                          data-counter={String(preview.midRangeScores.satEbrw)}
+                        >
+                          {preview.midRangeScores.satEbrw}
+                        </span>
+                      ) : (
+                        <MissingValue />
+                      )}
                     </DefRow>
                     <DefRow label="SAT 数学">
-                      {preview?.midRangeScores?.satMath ? <span data-counter={String(preview.midRangeScores.satMath)}>{preview.midRangeScores.satMath}</span> : <MissingValue />}
+                      {preview?.midRangeScores?.satMath ? (
+                        <span
+                          data-counter={String(preview.midRangeScores.satMath)}
+                        >
+                          {preview.midRangeScores.satMath}
+                        </span>
+                      ) : (
+                        <MissingValue />
+                      )}
                     </DefRow>
                     <DefRow label="ACT">
-                      {preview?.midRangeScores?.act ? <span data-counter={String(preview.midRangeScores.act)}>{preview.midRangeScores.act}</span> : <MissingValue />}
+                      {preview?.midRangeScores?.act ? (
+                        <span data-counter={String(preview.midRangeScores.act)}>
+                          {preview.midRangeScores.act}
+                        </span>
+                      ) : (
+                        <MissingValue />
+                      )}
                     </DefRow>
                     <DefRow label="高中 GPA 中位">
-                      {preview?.midRangeScores?.gpa ? <span data-counter={String(preview.midRangeScores.gpa)}>{preview.midRangeScores.gpa}</span> : <MissingValue />}
+                      {preview?.midRangeScores?.gpa ? (
+                        <span data-counter={String(preview.midRangeScores.gpa)}>
+                          {preview.midRangeScores.gpa}
+                        </span>
+                      ) : (
+                        <MissingValue />
+                      )}
                     </DefRow>
                     <DefRow label="学费合计">
                       {preview?.tuition?.total || <MissingValue />}
@@ -1322,7 +1638,11 @@ function TimeSeriesMode({ family }: { family: Family }) {
 
                 <V2SourceCard
                   title="时序数据出处"
-                  source={detail.state.status === "ready" && detail.state.data ? "PathOS 院校数据源" : "来源待挂接"}
+                  source={
+                    detail.state.status === "ready" && detail.state.data
+                      ? "PathOS 院校数据源"
+                      : "来源待挂接"
+                  }
                   detail="时序序列由院校数据源直接提供。若该校尚未发布序列，图表会保持空态，不使用估算值填补。"
                   href={preview?.officialWebsite}
                 />
@@ -1355,7 +1675,8 @@ function NewsCard({ article }: { article: NewsArticle }) {
       <div>
         <div className="flex flex-wrap items-center gap-2 text-[10px] text-text-muted">
           <span className="rounded-full bg-surface-muted px-2 py-0.5 font-medium text-text-secondary">
-            {NEWS_CATEGORIES.find((item) => item.key === article.category)?.label ?? article.category}
+            {NEWS_CATEGORIES.find((item) => item.key === article.category)
+              ?.label ?? article.category}
           </span>
           <span>{article.source}</span>
           {date ? <span>{date}</span> : null}
@@ -1364,7 +1685,9 @@ function NewsCard({ article }: { article: NewsArticle }) {
           {article.title}
         </h2>
         {summary ? (
-          <p className="mt-2 text-xs leading-5 text-text-secondary">{summary}</p>
+          <p className="mt-2 text-xs leading-5 text-text-secondary">
+            {summary}
+          </p>
         ) : (
           <p className="mt-2 text-xs text-text-muted">
             <V2Missing text="暂无摘要" />
@@ -1378,7 +1701,9 @@ function NewsCard({ article }: { article: NewsArticle }) {
             </p>
             {article.whyItMatters ? (
               <>
-                <p className="mt-2 text-[10px] font-medium text-text-muted">影响</p>
+                <p className="mt-2 text-[10px] font-medium text-text-muted">
+                  影响
+                </p>
                 <p className="mt-0.5 text-[11px] leading-5 text-text-secondary">
                   {article.whyItMatters}
                 </p>
@@ -1387,8 +1712,14 @@ function NewsCard({ article }: { article: NewsArticle }) {
             {article.actionSteps && article.actionSteps.length > 0 ? (
               <ul className="mt-2 space-y-1">
                 {article.actionSteps.map((step) => (
-                  <li key={step} className="flex items-start gap-1.5 text-[11px] leading-5 text-text-secondary">
-                    <ListChecks size={12} className="mt-0.5 shrink-0 text-jade" />
+                  <li
+                    key={step}
+                    className="flex items-start gap-1.5 text-[11px] leading-5 text-text-secondary"
+                  >
+                    <ListChecks
+                      size={12}
+                      className="mt-0.5 shrink-0 text-jade"
+                    />
                     {step}
                   </li>
                 ))}
@@ -1419,7 +1750,13 @@ function NewProgramsRollup() {
   const top = useMemo(
     () =>
       [...articles]
-        .sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : a.publishedAt > b.publishedAt ? -1 : 0))
+        .sort((a, b) =>
+          a.publishedAt < b.publishedAt
+            ? 1
+            : a.publishedAt > b.publishedAt
+              ? -1
+              : 0,
+        )
         .slice(0, 6),
     [articles],
   );
@@ -1442,13 +1779,22 @@ function NewProgramsRollup() {
       </div>
       <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {top.map((article) => (
-          <li key={article.id} className="flex items-start justify-between gap-3 rounded-control border border-border-soft bg-surface-1 px-3 py-2 text-xs">
+          <li
+            key={article.id}
+            className="flex items-start justify-between gap-3 rounded-control border border-border-soft bg-surface-1 px-3 py-2 text-xs"
+          >
             <div className="min-w-0 flex-1">
-              <p className="line-clamp-2 font-medium leading-5 text-text-primary">{article.title}</p>
+              <p className="line-clamp-2 font-medium leading-5 text-text-primary">
+                {article.title}
+              </p>
               <p className="mt-1 text-[10px] text-text-muted">
-                <span className="rounded-full bg-surface-muted px-1.5 py-0.5 font-medium text-text-secondary">{article.category}</span>
+                <span className="rounded-full bg-surface-muted px-1.5 py-0.5 font-medium text-text-secondary">
+                  {article.category}
+                </span>
                 <span className="ml-1.5">{article.source}</span>
-                <span className="ml-1.5">{article.publishedAt?.substring(0, 10)}</span>
+                <span className="ml-1.5">
+                  {article.publishedAt?.substring(0, 10)}
+                </span>
               </p>
             </div>
             <Link
@@ -1467,14 +1813,23 @@ function NewProgramsRollup() {
   );
 }
 
-function NewsMode({ variant, family }: { variant: "radar" | "policy" | "newPrograms"; family: Family }) {
+function NewsMode({
+  variant,
+  family,
+}: {
+  variant: "radar" | "policy" | "newPrograms";
+  family: Family;
+}) {
   const source = useDataSource();
   const news = useNews(source);
   const [category, setCategory] = useState<string>("all");
 
   const articles = useReadyList(news.state);
   const filtered = useMemo(
-    () => (category === "all" ? articles : articles.filter((item) => item.category === category)),
+    () =>
+      category === "all"
+        ? articles
+        : articles.filter((item) => item.category === category),
     [articles, category],
   );
 
@@ -1485,7 +1840,11 @@ function NewsMode({ variant, family }: { variant: "radar" | "policy" | "newProgr
       <V2PageHeader
         eyebrow={isPolicy ? "政策与招生动态" : "新专业 / 项目雷达"}
         title={isPolicy ? "政策、签证与申请变更" : "监测新增专业与项目变化"}
-        description={isPolicy ? "全部条目直接来自数据源的资讯流，保留原始来源与发布时间。PathOS 不生成或改写政策结论。" : "已收录院校的项目覆盖与近期资讯汇聚在同一视图。点击跳转到院校档案查看明细项目。"}
+        description={
+          isPolicy
+            ? "全部条目直接来自数据源的资讯流，保留原始来源与发布时间。PathOS 不生成或改写政策结论。"
+            : "已收录院校的项目覆盖与近期资讯汇聚在同一视图。点击跳转到院校档案查看明细项目。"
+        }
         action={
           <Link
             href={family === "f" ? "/f/home" : "/s/home"}
@@ -1527,12 +1886,29 @@ function NewsMode({ variant, family }: { variant: "radar" | "policy" | "newProgr
           </div>
 
           <p className="mt-3 text-xs text-text-muted">
-            共 <span data-counter={String(articles.length)} data-counter-format="locale">{articles.length}</span> 条，当前显示 <span data-counter={String(filtered.length)} data-counter-format="locale">{filtered.length}</span> 条。
+            共{" "}
+            <span
+              data-counter={String(articles.length)}
+              data-counter-format="locale"
+            >
+              {articles.length}
+            </span>{" "}
+            条，当前显示{" "}
+            <span
+              data-counter={String(filtered.length)}
+              data-counter-format="locale"
+            >
+              {filtered.length}
+            </span>{" "}
+            条。
           </p>
 
           {filtered.length === 0 ? (
             <div className="mt-4">
-              <DataEmptyState title="该分类暂无条目" description="切换到其他分类查看。" />
+              <DataEmptyState
+                title="该分类暂无条目"
+                description="切换到其他分类查看。"
+              />
             </div>
           ) : (
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -1599,7 +1975,9 @@ function CasesMode({ family }: { family: Family }) {
         <div className="mt-3 grid gap-x-6 sm:grid-cols-2">
           {CASE_FIELD_SPEC.map(([field, label]) => (
             <DefRow key={field} label={label}>
-              <span className="font-mono text-[11px] text-text-muted">{field}</span>
+              <span className="font-mono text-[11px] text-text-muted">
+                {field}
+              </span>
             </DefRow>
           ))}
         </div>
@@ -1611,7 +1989,8 @@ function CasesMode({ family }: { family: Family }) {
           <div>
             <SectionTitle>为什么这里是空的</SectionTitle>
             <p className="mt-1 text-xs leading-5 text-text-secondary">
-              PathOS 的展示原则是：宁可标注缺失，也不填充演示数据。案例库涉及真实申请者背景，
+              PathOS
+              的展示原则是：宁可标注缺失，也不填充演示数据。案例库涉及真实申请者背景，
               必须在获得授权并完成来源核验后才会出现在这里。
             </p>
           </div>
@@ -1665,25 +2044,35 @@ function SchoolMode({ slug, family }: { slug: string; family: Family }) {
   const guideRecord: CollegeGuide | null =
     guide.state.status === "ready" ? guide.state.data : null;
   const timeSeries =
-    detail.state.status === "ready" ? detail.state.data?.timeSeries ?? [] : [];
+    detail.state.status === "ready"
+      ? (detail.state.data?.timeSeries ?? [])
+      : [];
 
-  const sources = detail.state.status === "ready" ? detail.state.data?.sources ?? [] : [];
+  const sources =
+    detail.state.status === "ready" ? (detail.state.data?.sources ?? []) : [];
 
   // `coveragePercent: 0` in the preview source means "review not completed"
   // (it is paired with the `source_review_not_completed` warning), not "0%
   // reliable". Surface it as unverified rather than printing a misleading zero.
   const coverage = school?.qualitySummary?.coveragePercent;
   const reviewPending =
-    school?.qualitySummary?.warningCodes?.includes("source_review_not_completed") ?? false;
+    school?.qualitySummary?.warningCodes?.includes(
+      "source_review_not_completed",
+    ) ?? false;
   const verifiedConfidence =
-    typeof coverage === "number" && coverage > 0 && !reviewPending ? coverage : undefined;
+    typeof coverage === "number" && coverage > 0 && !reviewPending
+      ? coverage
+      : undefined;
 
   return (
     <main className={PAGE}>
       {summaries.state.status === "loading" ? (
         <Loading message="正在读取院校数据…" />
       ) : summaries.state.status === "error" ? (
-        <Failure code={summaries.state.code} onRetry={() => summaries.reload()} />
+        <Failure
+          code={summaries.state.code}
+          onRetry={() => summaries.reload()}
+        />
       ) : !school ? (
         <DataEmptyState
           title="未找到该学校"
@@ -1709,7 +2098,12 @@ function SchoolMode({ slug, family }: { slug: string; family: Family }) {
                 <p className="text-label font-semibold uppercase tracking-[0.14em] text-cobalt">
                   学校档案
                 </p>
-                <h1 className="mt-1 text-page text-text-primary" data-heading-stagger="true">{school.nameZh}</h1>
+                <h1
+                  className="mt-1 text-page text-text-primary"
+                  data-heading-stagger="true"
+                >
+                  {school.nameZh}
+                </h1>
                 <p className="mt-0.5 text-sm text-text-secondary" lang="en">
                   {school.name}
                 </p>
@@ -1761,20 +2155,65 @@ function SchoolMode({ slug, family }: { slug: string; family: Family }) {
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             <Metric
               label="本科录取率"
-              value={fmtPercent(preview?.acceptanceRatePercent) ? <span data-counter={String(preview?.acceptanceRatePercent ?? "")}>{fmtPercent(preview?.acceptanceRatePercent)}</span> : <MissingValue />}
+              value={
+                fmtPercent(preview?.acceptanceRatePercent) ? (
+                  <span
+                    data-counter={String(preview?.acceptanceRatePercent ?? "")}
+                  >
+                    {fmtPercent(preview?.acceptanceRatePercent)}
+                  </span>
+                ) : (
+                  <MissingValue />
+                )
+              }
             />
             <Metric
               label="SAT 阅读 EBRW"
-              value={preview?.midRangeScores?.satEbrw ? <span data-counter={String(preview.midRangeScores.satEbrw)}>{preview.midRangeScores.satEbrw}</span> : <MissingValue />}
+              value={
+                preview?.midRangeScores?.satEbrw ? (
+                  <span data-counter={String(preview.midRangeScores.satEbrw)}>
+                    {preview.midRangeScores.satEbrw}
+                  </span>
+                ) : (
+                  <MissingValue />
+                )
+              }
             />
             <Metric
               label="SAT 数学"
-              value={preview?.midRangeScores?.satMath ? <span data-counter={String(preview.midRangeScores.satMath)}>{preview.midRangeScores.satMath}</span> : <MissingValue />}
+              value={
+                preview?.midRangeScores?.satMath ? (
+                  <span data-counter={String(preview.midRangeScores.satMath)}>
+                    {preview.midRangeScores.satMath}
+                  </span>
+                ) : (
+                  <MissingValue />
+                )
+              }
             />
-            <Metric label="ACT" value={preview?.midRangeScores?.act ? <span data-counter={String(preview.midRangeScores.act)}>{preview.midRangeScores.act}</span> : <MissingValue />} />
+            <Metric
+              label="ACT"
+              value={
+                preview?.midRangeScores?.act ? (
+                  <span data-counter={String(preview.midRangeScores.act)}>
+                    {preview.midRangeScores.act}
+                  </span>
+                ) : (
+                  <MissingValue />
+                )
+              }
+            />
             <Metric
               label="高中 GPA 中位"
-              value={preview?.midRangeScores?.gpa ? <span data-counter={String(preview.midRangeScores.gpa)}>{preview.midRangeScores.gpa}</span> : <MissingValue />}
+              value={
+                preview?.midRangeScores?.gpa ? (
+                  <span data-counter={String(preview.midRangeScores.gpa)}>
+                    {preview.midRangeScores.gpa}
+                  </span>
+                ) : (
+                  <MissingValue />
+                )
+              }
             />
           </div>
 
@@ -1784,13 +2223,20 @@ function SchoolMode({ slug, family }: { slug: string; family: Family }) {
                 <SectionTitle>费用与规模</SectionTitle>
                 <div className="mt-3 space-y-0.5">
                   <DefRow label="学费合计">
-                    {preview?.tuition?.total || school.costSummary?.displayLabel || <MissingValue />}
+                    {preview?.tuition?.total ||
+                      school.costSummary?.displayLabel || <MissingValue />}
                   </DefRow>
-                  <DefRow label="学杂费">{preview?.tuition?.tuition || <MissingValue />}</DefRow>
-                  <DefRow label="食宿">{preview?.tuition?.housing || <MissingValue />}</DefRow>
+                  <DefRow label="学杂费">
+                    {preview?.tuition?.tuition || <MissingValue />}
+                  </DefRow>
+                  <DefRow label="食宿">
+                    {preview?.tuition?.housing || <MissingValue />}
+                  </DefRow>
                   <DefRow label="本科生人数">
                     {fmtInt(preview?.undergraduateStudents) ??
-                      fmtInt(school.enrollmentSummary?.undergraduate) ?? <MissingValue />}
+                      fmtInt(school.enrollmentSummary?.undergraduate) ?? (
+                        <MissingValue />
+                      )}
                   </DefRow>
                   <DefRow label="研究生人数">
                     {fmtInt(preview?.graduateStudents) ?? <MissingValue />}
@@ -1811,9 +2257,11 @@ function SchoolMode({ slug, family }: { slug: string; family: Family }) {
                     {preview?.freshmanRetentionRate || <MissingValue />}
                   </DefRow>
                   <DefRow label="班级规模">
-                    {preview?.classSize
-                      ? `少于20人 ${preview.classSize.under20} · 少于50人 ${preview.classSize.under50} · 多于50人 ${preview.classSize.over50}`
-                      : <MissingValue />}
+                    {preview?.classSize ? (
+                      `少于20人 ${preview.classSize.under20} · 少于50人 ${preview.classSize.under50} · 多于50人 ${preview.classSize.over50}`
+                    ) : (
+                      <MissingValue />
+                    )}
                   </DefRow>
                 </div>
               </V2Panel>
@@ -1870,7 +2318,11 @@ function SchoolMode({ slug, family }: { slug: string; family: Family }) {
                   <LineChart size={15} className="text-cobalt" />
                 </div>
                 <div className="mt-3">
-                  <V2TrendChart data={timeSeries} metric="acceptanceRate" height={200} />
+                  <V2TrendChart
+                    data={timeSeries}
+                    metric="acceptanceRate"
+                    height={200}
+                  />
                 </div>
               </V2Panel>
             </div>
@@ -1903,11 +2355,21 @@ function SchoolMode({ slug, family }: { slug: string; family: Family }) {
               <V2Panel>
                 <SectionTitle>学术特色</SectionTitle>
                 <div className="mt-3 space-y-0.5">
-                  <DefRow label="建校时间">{preview?.founded || <MissingValue />}</DefRow>
-                  <DefRow label="学校性质">{preview?.schoolType || <MissingValue />}</DefRow>
-                  <DefRow label="学制">{preview?.academicSystem || <MissingValue />}</DefRow>
-                  <DefRow label="校园规模">{preview?.campusSize || <MissingValue />}</DefRow>
-                  <DefRow label="气候">{preview?.climate || <MissingValue />}</DefRow>
+                  <DefRow label="建校时间">
+                    {preview?.founded || <MissingValue />}
+                  </DefRow>
+                  <DefRow label="学校性质">
+                    {preview?.schoolType || <MissingValue />}
+                  </DefRow>
+                  <DefRow label="学制">
+                    {preview?.academicSystem || <MissingValue />}
+                  </DefRow>
+                  <DefRow label="校园规模">
+                    {preview?.campusSize || <MissingValue />}
+                  </DefRow>
+                  <DefRow label="气候">
+                    {preview?.climate || <MissingValue />}
+                  </DefRow>
                   <DefRow label="课程体系">
                     {preview?.curriculumSummary || <MissingValue />}
                   </DefRow>
@@ -1941,7 +2403,11 @@ function SchoolMode({ slug, family }: { slug: string; family: Family }) {
 
               <V2SourceCard
                 title="数据出处"
-                source={guideRecord ? `IECG · ${guideRecord.sourceFile}` : "PathOS 预览数据"}
+                source={
+                  guideRecord
+                    ? `IECG · ${guideRecord.sourceFile}`
+                    : "PathOS 预览数据"
+                }
                 detail={
                   guideRecord
                     ? `院校指南快照年份 ${guideRecord.sourceSnapshotYear}。字段缺失时以「暂无」展示，不做估算。`
@@ -1987,7 +2453,10 @@ function TopicMode({ slug }: { slug: string }) {
   const requestedArticle = (articlePart ?? "").trim();
 
   const schools = useReadyList(summaries.state);
-  const school = useMemo(() => matchSchool(schools, schoolPart ?? ""), [schools, schoolPart]);
+  const school = useMemo(
+    () => matchSchool(schools, schoolPart ?? ""),
+    [schools, schoolPart],
+  );
   const guide = useCollegeGuide(source, school?.id ?? null);
   const guideRecord = guide.state.status === "ready" ? guide.state.data : null;
 
@@ -2006,7 +2475,13 @@ function TopicMode({ slug }: { slug: string }) {
     <main className={PAGE}>
       <V2PageHeader
         eyebrow="专题"
-        title={matched ? matched.title : school ? `${school.nameZh} · 院校指南` : "院校专题"}
+        title={
+          matched
+            ? matched.title
+            : school
+              ? `${school.nameZh} · 院校指南`
+              : "院校专题"
+        }
         description={
           school
             ? `${school.nameZh}（${school.name}）的指南内容，原文来自 IECG 院校文档。`
@@ -2036,13 +2511,17 @@ function TopicMode({ slug }: { slug: string }) {
       {summaries.state.status === "loading" ? (
         <Loading message="正在读取院校数据…" />
       ) : summaries.state.status === "error" ? (
-        <Failure code={summaries.state.code} onRetry={() => summaries.reload()} />
+        <Failure
+          code={summaries.state.code}
+          onRetry={() => summaries.reload()}
+        />
       ) : !school ? (
         <DataEmptyState
           title="未找到该学校"
           description={
             <>
-              标识 <span className="font-mono">{schoolPart}</span> 当前不在数据集中。
+              标识 <span className="font-mono">{schoolPart}</span>{" "}
+              当前不在数据集中。
             </>
           }
         />
@@ -2062,7 +2541,9 @@ function TopicMode({ slug }: { slug: string }) {
           </V2Panel>
           <V2SourceCard
             title="内容出处"
-            source={guideRecord ? `IECG · ${guideRecord.sourceFile}` : "来源待挂接"}
+            source={
+              guideRecord ? `IECG · ${guideRecord.sourceFile}` : "来源待挂接"
+            }
             detail={`快照年份 ${guideRecord?.sourceSnapshotYear ?? "暂无"}。原文未做改写。`}
             href={guideRecord?.sourceUrl}
           />
@@ -2106,7 +2587,10 @@ function GpaMode({ family }: { family: Family }) {
   const usable = useMemo(
     () =>
       courses.filter(
-        (course) => course.credits > 0 && Number.isFinite(course.score) && course.score > 0,
+        (course) =>
+          course.credits > 0 &&
+          Number.isFinite(course.score) &&
+          course.score > 0,
       ),
     [courses],
   );
@@ -2156,9 +2640,15 @@ function GpaMode({ family }: { family: Family }) {
             <p className="mt-1 flex items-baseline gap-1">
               <span
                 className="text-2xl font-semibold text-text-primary"
-                data-counter={result.value === null ? undefined : result.value.toFixed(2)}
+                data-counter={
+                  result.value === null ? undefined : result.value.toFixed(2)
+                }
               >
-                {result.value === null ? <V2Missing /> : result.value.toFixed(2)}
+                {result.value === null ? (
+                  <V2Missing />
+                ) : (
+                  result.value.toFixed(2)
+                )}
               </span>
               <span className="text-xs text-text-muted">/ 4.0</span>
             </p>
@@ -2169,7 +2659,9 @@ function GpaMode({ family }: { family: Family }) {
       <V2Panel className="mt-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <SectionTitle>课程</SectionTitle>
-          <span className="text-[11px] text-text-muted">合计 {totalCredits} 学分</span>
+          <span className="text-[11px] text-text-muted">
+            合计 {totalCredits} 学分
+          </span>
         </div>
 
         <div className="mt-3 overflow-x-auto">
@@ -2188,7 +2680,9 @@ function GpaMode({ family }: { family: Family }) {
                   <td className="px-2 py-1.5">
                     <input
                       value={course.name}
-                      onChange={(event) => updateCourse(index, { name: event.target.value })}
+                      onChange={(event) =>
+                        updateCourse(index, { name: event.target.value })
+                      }
                       placeholder="课程名"
                       className="h-control w-full rounded-control border border-border-soft bg-surface-muted/30 px-2 text-xs text-text-primary outline-none placeholder:text-text-muted focus:border-cobalt/50"
                     />
@@ -2201,7 +2695,9 @@ function GpaMode({ family }: { family: Family }) {
                       max={100}
                       value={Number.isFinite(course.score) ? course.score : ""}
                       onChange={(event) =>
-                        updateCourse(index, { score: Number(event.target.value) })
+                        updateCourse(index, {
+                          score: Number(event.target.value),
+                        })
                       }
                       className="h-control w-full rounded-control border border-border-soft bg-surface-muted/30 px-2 text-xs text-text-primary outline-none focus:border-cobalt/50"
                     />
@@ -2212,9 +2708,13 @@ function GpaMode({ family }: { family: Family }) {
                       inputMode="decimal"
                       min={0}
                       step={0.5}
-                      value={Number.isFinite(course.credits) ? course.credits : ""}
+                      value={
+                        Number.isFinite(course.credits) ? course.credits : ""
+                      }
                       onChange={(event) =>
-                        updateCourse(index, { credits: Number(event.target.value) })
+                        updateCourse(index, {
+                          credits: Number(event.target.value),
+                        })
                       }
                       className="h-control w-full rounded-control border border-border-soft bg-surface-muted/30 px-2 text-xs text-text-primary outline-none focus:border-cobalt/50"
                     />
@@ -2239,7 +2739,9 @@ function GpaMode({ family }: { family: Family }) {
 
         <button
           type="button"
-          onClick={() => setCourses((prev) => [...prev, { name: "", score: 0, credits: 3 }])}
+          onClick={() =>
+            setCourses((prev) => [...prev, { name: "", score: 0, credits: 3 }])
+          }
           className="mt-3 h-control rounded-control border border-border-soft px-3 text-xs font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
         >
           添加课程
@@ -2273,11 +2775,13 @@ function GpaMode({ family }: { family: Family }) {
               {GPA_SAMPLE_SCORES.map((score) => (
                 <tr key={score} className="border-t border-border-soft/60">
                   <td className="px-2 py-1.5 text-text-muted">{score}</td>
-                  {(Object.keys(GPA_ALGORITHMS) as GPAAlgorithm[]).map((key) => (
-                    <td key={key} className="px-2 py-1.5 text-text-secondary">
-                      {GPA_ALGORITHMS[key].fn(score).toFixed(1)}
-                    </td>
-                  ))}
+                  {(Object.keys(GPA_ALGORITHMS) as GPAAlgorithm[]).map(
+                    (key) => (
+                      <td key={key} className="px-2 py-1.5 text-text-secondary">
+                        {GPA_ALGORITHMS[key].fn(score).toFixed(1)}
+                      </td>
+                    ),
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -2329,7 +2833,9 @@ function RoiMode({ family }: { family: Family }) {
           <SectionTitle>输入</SectionTitle>
           <div className="mt-3 space-y-3">
             <label className="block">
-              <span className="mb-1 block text-[11px] text-text-muted">总成本（USD）</span>
+              <span className="mb-1 block text-[11px] text-text-muted">
+                总成本（USD）
+              </span>
               <input
                 type="number"
                 inputMode="numeric"
@@ -2340,7 +2846,9 @@ function RoiMode({ family }: { family: Family }) {
               />
             </label>
             <label className="block">
-              <span className="mb-1 block text-[11px] text-text-muted">起薪（USD / 年）</span>
+              <span className="mb-1 block text-[11px] text-text-muted">
+                起薪（USD / 年）
+              </span>
               <input
                 type="number"
                 inputMode="numeric"
@@ -2351,7 +2859,9 @@ function RoiMode({ family }: { family: Family }) {
               />
             </label>
             <label className="block">
-              <span className="mb-1 block text-[11px] text-text-muted">年薪增长率（%）</span>
+              <span className="mb-1 block text-[11px] text-text-muted">
+                年薪增长率（%）
+              </span>
               <input
                 type="number"
                 inputMode="decimal"
@@ -2381,15 +2891,23 @@ function RoiMode({ family }: { family: Family }) {
                   "40 年内未回本"
                 ) : (
                   <>
-                    <span data-counter={String(result.years)}>{result.years}</span>
-                    <span className="ml-1 text-base font-normal text-text-muted">年</span>
+                    <span data-counter={String(result.years)}>
+                      {result.years}
+                    </span>
+                    <span className="ml-1 text-base font-normal text-text-muted">
+                      年
+                    </span>
                   </>
                 )}
               </span>
             </p>
             <div className="mt-3 space-y-0.5">
               <DefRow label="总成本">
-                {totalCost > 0 ? `$${totalCost.toLocaleString("en-US")}` : <MissingValue />}
+                {totalCost > 0 ? (
+                  `$${totalCost.toLocaleString("en-US")}`
+                ) : (
+                  <MissingValue />
+                )}
               </DefRow>
               <DefRow label="累计收入">
                 {result.cumulative > 0 ? (
@@ -2399,9 +2917,11 @@ function RoiMode({ family }: { family: Family }) {
                 )}
               </DefRow>
               <DefRow label="覆盖比例">
-                {totalCost > 0
-                  ? `${Math.round((result.cumulative / totalCost) * 100)}%`
-                  : <MissingValue />}
+                {totalCost > 0 ? (
+                  `${Math.round((result.cumulative / totalCost) * 100)}%`
+                ) : (
+                  <MissingValue />
+                )}
               </DefRow>
             </div>
           </V2Panel>
@@ -2492,9 +3012,16 @@ export interface V2WorkbenchProps {
   family?: "f";
   id?: string;
   slug?: string;
+  informationCoverage?: WorkbenchFactCoverage;
 }
 
-export default function V2Workbench({ mode, family: familyProp, id = "", slug = "" }: V2WorkbenchProps) {
+export default function V2Workbench({
+  mode,
+  family: familyProp,
+  id = "",
+  slug = "",
+  informationCoverage,
+}: V2WorkbenchProps) {
   const family: Family = familyProp === "f" ? "f" : "s";
 
   // Every mode renders through one PageMotion wrapper so the shared reveal /
@@ -2503,7 +3030,9 @@ export default function V2Workbench({ mode, family: familyProp, id = "", slug = 
   const content = (() => {
     switch (mode) {
       case "home":
-        return <HomeMode family={family} />;
+        return (
+          <HomeMode family={family} informationCoverage={informationCoverage} />
+        );
       case "majors":
         return <MajorsMode family={family} />;
       case "major":

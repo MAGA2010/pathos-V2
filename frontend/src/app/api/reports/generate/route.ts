@@ -14,11 +14,20 @@
 
 import { NextResponse } from "next/server";
 import { DatabaseNotConfiguredError, getPool } from "@/server/db";
-import { clientKey, consumeRateLimit, retryAfterSeconds } from "@/lib/rate-limit";
+import {
+  clientKey,
+  consumeRateLimit,
+  retryAfterSeconds,
+} from "@/lib/rate-limit";
 import {
   REPORT_TOKEN_TTL_DAYS,
   generateReportToken,
 } from "@/lib/report-access";
+import {
+  buildReportInformationSnapshot,
+  mergeReportPayloadWithInformation,
+  type ReportInformationSnapshot,
+} from "@/server/information/report-integration";
 
 export const dynamic = "force-dynamic";
 
@@ -67,15 +76,22 @@ function newId(): string {
 const VALID_PLANS = new Set(["single_report", "advisor_annual"]);
 
 function shareUrl(req: Request, id: string, token: string): string {
-  const base = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "")
-    ?? new URL(req.url).origin;
+  const base =
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
+    new URL(req.url).origin;
   return `${base}/reports/${encodeURIComponent(id)}?token=${encodeURIComponent(token)}`;
 }
 
 export async function POST(req: Request): Promise<NextResponse> {
   let body: GenerateRequest;
-  try { body = (await req.json()) as GenerateRequest; }
-  catch { return NextResponse.json({ ok: false, code: "INVALID_JSON" }, { status: 400 }); }
+  try {
+    body = (await req.json()) as GenerateRequest;
+  } catch {
+    return NextResponse.json(
+      { ok: false, code: "INVALID_JSON" },
+      { status: 400 },
+    );
+  }
 
   const profile = asObject(body.profile);
   const schools = asArray<Record<string, unknown>>(body.schools).map((s) => ({
@@ -87,17 +103,28 @@ export async function POST(req: Request): Promise<NextResponse> {
   const plan = VALID_PLANS.has(requestedPlan) ? requestedPlan : "single_report";
   const notes = asString(body.notes, 1000);
   const leadId = asString(body.leadId, 64);
-  const idempotencyKey = asString(req.headers.get("idempotency-key") ?? undefined, 128);
+  const idempotencyKey = asString(
+    req.headers.get("idempotency-key") ?? undefined,
+    128,
+  );
 
   if (schools.length === 0) {
     return NextResponse.json(
-      { ok: false, code: "MISSING_SCHOOLS", message: "At least one school is required." },
+      {
+        ok: false,
+        code: "MISSING_SCHOOLS",
+        message: "At least one school is required.",
+      },
       { status: 400 },
     );
   }
   if (schools.length > MAX_SCHOOLS) {
     return NextResponse.json(
-      { ok: false, code: "TOO_MANY_SCHOOLS", message: `At most ${MAX_SCHOOLS} schools per report.` },
+      {
+        ok: false,
+        code: "TOO_MANY_SCHOOLS",
+        message: `At most ${MAX_SCHOOLS} schools per report.`,
+      },
       { status: 400 },
     );
   }
@@ -110,7 +137,11 @@ export async function POST(req: Request): Promise<NextResponse> {
 
   // Rate limit before touching the DB or the LLM.
   const identity = clientKey(req, "reports");
-  const perMinute = await consumeRateLimit("reports:min", identity, REPORTS_PER_MINUTE);
+  const perMinute = await consumeRateLimit(
+    "reports:min",
+    identity,
+    REPORTS_PER_MINUTE,
+  );
   if (!perMinute.allowed) {
     return NextResponse.json(
       {
@@ -122,16 +153,24 @@ export async function POST(req: Request): Promise<NextResponse> {
       },
       {
         status: perMinute.degraded ? 503 : 429,
-        headers: { "Retry-After": String(retryAfterSeconds(perMinute.resetsAt)) },
+        headers: {
+          "Retry-After": String(retryAfterSeconds(perMinute.resetsAt)),
+        },
       },
     );
   }
-  const perDay = await consumeRateLimit("reports:day", `${identity}:${new Date().toISOString().slice(0, 10)}`, REPORTS_PER_DAY);
+  const perDay = await consumeRateLimit(
+    "reports:day",
+    `${identity}:${new Date().toISOString().slice(0, 10)}`,
+    REPORTS_PER_DAY,
+  );
   if (!perDay.allowed) {
     return NextResponse.json(
       {
         ok: false,
-        code: perDay.degraded ? "RATE_LIMIT_UNAVAILABLE" : "DAILY_QUOTA_EXCEEDED",
+        code: perDay.degraded
+          ? "RATE_LIMIT_UNAVAILABLE"
+          : "DAILY_QUOTA_EXCEEDED",
         message: perDay.degraded
           ? "系统繁忙，请稍后重试。"
           : `每日免费生成上限为 ${REPORTS_PER_DAY} 份。如需更多，请联系顾问。`,
@@ -158,7 +197,10 @@ export async function POST(req: Request): Promise<NextResponse> {
       }
     } catch (e) {
       if (e instanceof DatabaseNotConfiguredError) {
-        return NextResponse.json({ ok: false, code: e.code, message: e.message }, { status: e.status });
+        return NextResponse.json(
+          { ok: false, code: e.code, message: e.message },
+          { status: e.status },
+        );
       }
       console.error("[reports/generate] idempotency lookup failed:", e);
     }
@@ -167,6 +209,28 @@ export async function POST(req: Request): Promise<NextResponse> {
   const id = newId();
   const { token, hash } = generateReportToken();
   const expiresAt = new Date(Date.now() + REPORT_TOKEN_TTL_DAYS * 86_400_000);
+  let informationSnapshot: ReportInformationSnapshot;
+
+  // The report must cite the facts that existed when it was created. Persist
+  // this immutable snapshot before the AI call so a later fact revision can
+  // never rewrite an already-shared report.
+  try {
+    informationSnapshot = await buildReportInformationSnapshot({ schools });
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    console.error("[reports/generate] information snapshot failed:", e);
+    return NextResponse.json(
+      {
+        ok: false,
+        code:
+          message.includes("facts") && message.includes("does not exist")
+            ? "INFORMATION_SCHEMA_NOT_READY"
+            : "INFORMATION_LAYER_UNAVAILABLE",
+        message: "已审核事实层暂不可用，报告不能在没有数据来源的情况下生成。",
+      },
+      { status: 503 },
+    );
+  }
 
   // Persist the report row immediately (status=pending) so we never
   // lose the request if the upstream AI call later throws. lead_id is
@@ -175,17 +239,18 @@ export async function POST(req: Request): Promise<NextResponse> {
   try {
     await getPool().query(
       `INSERT INTO reports
-         (id, lead_id, plan, profile, schools, status,
+         (id, lead_id, plan, profile, schools, status, payload,
           access_token_hash, token_expires_at, idempotency_key)
        VALUES ($1,
                (SELECT l.id FROM subscription_leads l WHERE l.id = $2),
-               $3, $4::jsonb, $5::jsonb, 'pending', $6, $7, $8)`,
+               $3, $4::jsonb, $5::jsonb, 'pending', $6::jsonb, $7, $8, $9)`,
       [
         id,
         leadId ?? null,
         plan,
         JSON.stringify(profile),
         JSON.stringify(schools),
+        JSON.stringify({ information: informationSnapshot }),
         hash,
         expiresAt.toISOString(),
         idempotencyKey ?? null,
@@ -193,11 +258,18 @@ export async function POST(req: Request): Promise<NextResponse> {
     );
   } catch (e) {
     if (e instanceof DatabaseNotConfiguredError) {
-      return NextResponse.json({ ok: false, code: e.code, message: e.message }, { status: e.status });
+      return NextResponse.json(
+        { ok: false, code: e.code, message: e.message },
+        { status: e.status },
+      );
     }
     console.error("[reports/generate] insert failed:", e);
     return NextResponse.json(
-      { ok: false, code: "DB_UNREACHABLE", message: e instanceof Error ? e.message : String(e) },
+      {
+        ok: false,
+        code: "DB_UNREACHABLE",
+        message: e instanceof Error ? e.message : String(e),
+      },
       { status: 503 },
     );
   }
@@ -221,6 +293,7 @@ export async function POST(req: Request): Promise<NextResponse> {
         mode: "school_assessment",
         profile,
         schools,
+        information: informationSnapshot,
         notes,
       }),
     });
@@ -242,7 +315,14 @@ export async function POST(req: Request): Promise<NextResponse> {
       `UPDATE reports
          SET status = $2, payload = $3::jsonb, error = $4, updated_at = NOW()
        WHERE id = $1`,
-      [id, status, JSON.stringify(aiResult ?? {}), error],
+      [
+        id,
+        status,
+        JSON.stringify(
+          mergeReportPayloadWithInformation(aiResult, informationSnapshot),
+        ),
+        error,
+      ],
     );
   } catch (e) {
     console.error("[reports/generate] update failed:", e);
