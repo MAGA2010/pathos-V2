@@ -16,7 +16,7 @@ node_modules/
 out/
 dist/
 build/
-coverage/
+/coverage/
 .turbo/
 npm-debug.log*
 yarn-debug.log*
