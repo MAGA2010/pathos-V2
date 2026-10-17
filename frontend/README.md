@@ -6,6 +6,22 @@ PathOS 的唯一正式前端。它使用 Next.js App Router，并由同一 Next.
 
 ```bash
 npm ci
+npm run build
+npm run start -- -p 3017
+```
+
+Windows 无数据库本地预览：
+
+```powershell
+npm ci
+$env:PATHOS_DATA_MODE='fixture'
+$env:DATABASE_URL='postgresql://pathos_preview:pathos_preview@127.0.0.1:1/pathos_preview'
+npm run dev -- -p 3017
+```
+
+Backend 模式：
+
+```bash
 cp .env.example .env.local
 npm run dev -- -p 3017
 ```
