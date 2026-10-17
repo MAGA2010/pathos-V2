@@ -64,13 +64,36 @@ PathOS/
 ```bash
 cd frontend
 npm ci
+npm run build
+npm run start -- -p 3017
+```
+
+### Windows 本地数据预览
+
+不配置数据库时，使用开发专用 fixture 数据预览：
+
+```powershell
+cd frontend
+npm ci
+$env:PATHOS_DATA_MODE='fixture'
+$env:DATABASE_URL='postgresql://pathos_preview:pathos_preview@127.0.0.1:1/pathos_preview'
+npm run dev -- -p 3017
+```
+
+fixture 只允许开发环境使用；已审核事实、清单等服务端能力会明确降级，不会伪造数据。
+
+### Backend Preview
+
+连接真实数据时再复制环境文件并配置数据库：
+
+```bash
 cp .env.example .env.local
 npm run dev -- -p 3017
 ```
 
 默认地址：`http://127.0.0.1:3017`。
 
-`.env.example` 默认使用 `PATHOS_DATA_MODE=backend` 和本地 `./data/preview`。不要提交 `.env.local`。
+`.env.example` 默认使用 `PATHOS_DATA_MODE=backend`。不要提交 `.env.local` 或真实凭据。
 
 ## 环境变量
 
