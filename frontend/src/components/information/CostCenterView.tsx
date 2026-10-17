@@ -12,6 +12,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import PageMotion from "@/components/shared/PageMotion";
+import { EnterprisePageHeader } from "@/components/shared/EnterprisePageHeader";
 import { SchoolPicker } from "@/components/calculator/SchoolPicker";
 import { useUniversitySummaries } from "@/hooks/use-data-source";
 import { useDataSource } from "@/services/data-source-provider";
@@ -212,6 +213,7 @@ export function CostCenterView() {
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const selectedSchool = schools.find((school) => school.id === entityId);
+  const schoolsReady = summaries.state.status === "ready" && schools.length > 0;
   const officialTypes = new Set(
     state.kind === "ready" ? state.result.officialItems.map((item) => item.type) : [],
   );
@@ -294,21 +296,23 @@ export function CostCenterView() {
 
   return (
     <PageMotion>
-      <main id="main-content" className="min-h-screen bg-surface-base">
-        <header className="border-b border-border-soft bg-surface-1/85">
-          <div className="mx-auto flex max-w-page flex-wrap items-center gap-4 px-4 py-5 sm:px-6">
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-control bg-cobalt text-paper">
-              <CircleDollarSign size={21} aria-hidden="true" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-label uppercase tracking-[0.14em] text-cobalt">COST CENTER</p>
-              <h1 className="text-page text-text-primary">成本与奖学金中心</h1>
-              <p className="mt-1 max-w-2xl text-sm leading-relaxed text-text-secondary">
-                官方费用、家庭假设、多年预测和资助信息在同一个预算视图里对齐。
-              </p>
-            </div>
-          </div>
-        </header>
+      <main className="min-h-screen bg-[#eef1f5]">
+        <EnterprisePageHeader
+          eyebrow="Cost Center"
+          title="成本与奖学金中心"
+          description="官方费用、家庭假设、多年预测和资助信息在同一个预算视图里对齐。"
+          icon={CircleDollarSign}
+          stats={[
+            { label: "当前学校", value: selectedSchool?.nameZh ?? selectedSchool?.name ?? "未选择" },
+            { label: "学年起始", value: academicYear },
+            { label: "预测年限", value: `${yearCount} 年` },
+            {
+              label: "官方成本项",
+              value: state.kind === "ready" ? `${state.result.officialItems.length} 项` : "待计算",
+            },
+          ]}
+          sourceNote="口径 · 官方 facts 优先 · 家庭假设显式分离 · 缺失项不补造"
+        />
 
         <div className="mx-auto grid max-w-page gap-5 px-4 py-5 sm:px-6 lg:grid-cols-[380px_1fr]">
           <form
@@ -329,6 +333,8 @@ export function CostCenterView() {
                 <button
                   type="button"
                   onClick={() => setPickerOpen(true)}
+                  disabled={!schoolsReady}
+                  title={schoolsReady ? "选择学校" : "学校列表加载中"}
                   className="inline-flex h-control shrink-0 items-center gap-1 rounded-control border border-border-soft bg-surface-1 px-3 text-[12px] font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt"
                 >
                   <Plus size={13} aria-hidden="true" /> 选择
@@ -546,6 +552,7 @@ export function CostCenterView() {
         candidates={schools as any}
         selectedIds={entityId ? [entityId] : []}
         max={1}
+        title="选择大学查看费用"
         onPick={(id) => {
           setEntityId(id);
           setPickerOpen(false);

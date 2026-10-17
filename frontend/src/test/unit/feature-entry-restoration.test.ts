@@ -46,26 +46,28 @@ describe("feature entry restoration routes", () => {
     });
   }
 
-  it("routes only the four restored home entries through entry pages", () => {
+  it("keeps restored entries reachable from the five-domain home", () => {
     const home = read("src/app/page.tsx");
-    for (const entry of Object.keys(ENTRY_ROUTES)) {
-      expect(home).toContain(`href: "/entry/${entry}"`);
-    }
-    expect(home).toContain('href: "/calculator"');
-    expect(home).toContain('href: "/news"');
-    expect(home).toContain('href="/entry/map"');
-    expect(home).toContain('href="/entry/match"');
+    const navigation = read("src/components/NavBar.tsx");
+    const homeSurface = home + "\n" + navigation;
+    expect(homeSurface).toContain('href: "/trends"');
+    expect(homeSurface).toContain('href: "/workbench/shortlists"');
+    expect(homeSurface).toContain('href: "/map"');
+    expect(homeSurface).toContain('href: "/calculator"');
+    expect(homeSurface).toContain('href: "/news"');
+    expect(home).toContain('href="/map"');
   });
 
   it("routes the primary navigation and footer through every restored entry experience", () => {
     const navigation = read("src/components/NavBar.tsx");
     const footer = read("src/components/Footer.tsx");
 
-    for (const entry of Object.keys(ENTRY_ROUTES)) {
-      expect(navigation).toContain(`href: "/entry/${entry}"`);
-      expect(footer).toContain(`href="/entry/${entry}"`);
+    for (const contract of Object.values(ENTRY_ROUTES)) {
+      expect(footer).toContain(`href="${contract.target}"`);
     }
 
+    expect(navigation).toContain('href: "/trends"');
+    expect(navigation).toContain('href: "/workbench/shortlists"');
     expect(navigation).toContain('href: "/calculator"');
     expect(navigation).toContain('href: "/news"');
     expect(footer).toContain('href="/calculator"');

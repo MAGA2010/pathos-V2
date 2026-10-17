@@ -4,6 +4,7 @@ import { AlertTriangle, ArrowLeft, Database } from "lucide-react";
 import type { ReactNode } from "react";
 
 import PageMotion from "@/components/shared/PageMotion";
+import { EnterprisePageHeader } from "@/components/shared/EnterprisePageHeader";
 
 type Accent = "cobalt" | "jade" | "persimmon";
 
@@ -45,38 +46,26 @@ export function PageShell({
 }: PageShellProps) {
   return (
     <PageMotion>
-      <div className="min-h-screen bg-surface-base">
-        <header className="border-b border-border-soft bg-surface-1/90 backdrop-blur">
-          <div className="mx-auto max-w-page px-4 py-4 sm:px-6">
-            <div className="flex flex-wrap items-center justify-between gap-2">
+      <div className="min-h-screen bg-[#eef1f5] text-[#11151f]">
+        <EnterprisePageHeader
+          eyebrow={eyebrow}
+          title={title}
+          description={description}
+          icon={Icon}
+          sourceNote={coverage?.detail}
+          actions={
+            <>
               <Link
                 href={backHref}
-                className="inline-flex min-h-control-lg items-center gap-1.5 rounded-control px-3 text-caption font-medium text-text-secondary transition hover:bg-surface-2 hover:text-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                className="inline-flex min-h-control-lg items-center gap-1.5 rounded-control border border-[#eef1f526] px-3 text-caption font-medium text-[#eef1f5] transition hover:border-[#dd8568] hover:text-[#dd8568]"
               >
                 <ArrowLeft size={14} aria-hidden="true" />
                 {backLabel}
               </Link>
-              {primaryAction ? (
-                <div className="flex flex-wrap items-center gap-2 [&>a]:min-h-control-lg [&>button]:min-h-control-lg">
-                  {primaryAction}
-                </div>
-              ) : null}
-            </div>
-
-            <div className="mt-3 flex items-start gap-3">
-              <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-control ${ICON_ACCENTS[accent]}`}>
-                <Icon size={19} aria-hidden="true" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-label uppercase tracking-[0.12em] text-cobalt">{eyebrow}</p>
-                <h1 data-heading-stagger="true" className="text-page text-text-primary">
-                  {title}
-                </h1>
-                {description ? <p className="mt-1 max-w-3xl text-caption text-text-secondary">{description}</p> : null}
-              </div>
-            </div>
-          </div>
-        </header>
+              {primaryAction}
+            </>
+          }
+        />
 
         <main className="mx-auto w-full max-w-page px-4 pb-10 pt-5 [&_button]:min-h-control-lg [&_button]:min-w-control-lg sm:px-6">
           {coverage ? (
@@ -148,7 +137,7 @@ export function PageResultPanel({
           </p>
           <h2 className="mt-1 text-section">{title}</h2>
         </div>
-        <span className="rounded-control bg-panel/10 px-2.5 py-1 text-[11px] font-semibold text-panel/70">仅供决策参考</span>
+        <span className="rounded-control bg-panel/10 px-2.5 py-1 text-[11px] font-semibold text-panel/70">仅供研究参考</span>
       </header>
       <div className="pt-4">{children}</div>
     </section>

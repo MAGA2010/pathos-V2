@@ -398,6 +398,7 @@ export default function CalculatorPage() {
         candidates={allUnis as unknown as readonly import("@/domain/dataset").UniversitySummary[]}
         selectedIds={selectedIds}
         max={3}
+        title="选择大学计算预算"
         onPick={(id) => addUni(id)}
         storageKey="pathos:calculator:picker:query"
       />

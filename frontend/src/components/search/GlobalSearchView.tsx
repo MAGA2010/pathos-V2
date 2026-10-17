@@ -8,6 +8,7 @@ import {
   BookOpen,
   CalendarClock,
   Database,
+  Bookmark,
   MapPin,
   Search as SearchIcon,
   University as UniversityIcon,
@@ -15,6 +16,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 import PageMotion from "@/components/shared/PageMotion";
+import { EnterprisePageHeader } from "@/components/shared/EnterprisePageHeader";
 import {
   DataEmptyState,
   DataLoadingState,
@@ -118,6 +120,7 @@ export default function GlobalSearchView() {
   const [debounced, setDebounced] = useState(initialQ);
   const [apiState, setApiState] = useState<ApiState>({ kind: "idle" });
   const [activeGroup, setActiveGroup] = useState<"all" | GroupKey>("all");
+  const [savedQueries, setSavedQueries] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const source = useDataSource();
   const previewSearch = useUniversitySearch(source, debounced, { limit: 20 });
@@ -130,6 +133,18 @@ export default function GlobalSearchView() {
     const handle = setTimeout(() => setDebounced(query.trim()), 220);
     return () => clearTimeout(handle);
   }, [query]);
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem("pathos:saved-searches");
+      const parsed = raw ? JSON.parse(raw) : [];
+      if (Array.isArray(parsed)) {
+        setSavedQueries(parsed.filter((item): item is string => typeof item === "string").slice(0, 8));
+      }
+    } catch {
+      setSavedQueries([]);
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -222,23 +237,39 @@ export default function GlobalSearchView() {
     router.replace(`/search${next ? `?q=${encodeURIComponent(next)}` : ""}`);
   };
 
+  const saveCurrentSearch = () => {
+    const keyword = query.trim();
+    if (keyword.length < 2) return;
+    setSavedQueries((current) => {
+      const next = [keyword, ...current.filter((item) => item !== keyword)].slice(0, 8);
+      window.localStorage.setItem("pathos:saved-searches", JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const runSavedSearch = (keyword: string) => {
+    setQuery(keyword);
+    router.replace(`/search?q=${encodeURIComponent(keyword)}`);
+  };
+
+  const removeSavedSearch = (keyword: string) => {
+    setSavedQueries((current) => {
+      const next = current.filter((item) => item !== keyword);
+      window.localStorage.setItem("pathos:saved-searches", JSON.stringify(next));
+      return next;
+    });
+  };
+
   return (
     <PageMotion>
       <main className="mx-auto w-full max-w-page px-4 pb-16 pt-8 sm:px-6">
-        <header
-          className="page-motion-compact-hero px-6 py-7 sm:px-8 sm:py-9"
-          data-reveal="true"
-        >
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-cobalt">
-            GLOBAL SEARCH / PATHOS
-          </p>
-          <h1 className="mt-1 text-2xl font-semibold text-text-primary" data-heading-stagger="true">
-            一个入口检索信息资产
-          </h1>
-          <p className="mt-2 max-w-xl text-sm text-text-secondary">
-            学校、专业、城市 / 州、已审核事实与发布事件放在同一组结果里；信息层不可用时保留学校与专业 Preview 检索。
-          </p>
-        </header>
+        <EnterprisePageHeader
+          eyebrow="Global Search / PathOS"
+          title="一个入口检索信息资产"
+          description="学校、专业、城市 / 州、已审核事实与发布事件放在同一组结果里；信息层不可用时保留学校与专业 Preview 检索。"
+          icon={Database}
+          sourceNote="检索范围 · 学校 / 专业 / 地区 / approved facts / 信息事件"
+        />
 
         <form role="search" onSubmit={submit} className="mt-5 flex items-center gap-2" data-reveal="true">
           <div className="relative flex-1">
@@ -263,7 +294,44 @@ export default function GlobalSearchView() {
           >
             搜索
           </button>
+          <button
+            type="button"
+            onClick={saveCurrentSearch}
+            disabled={query.trim().length < 2}
+            className="inline-flex h-control items-center gap-1 rounded-none border border-[#11151f26] bg-white px-3 text-[13px] font-medium text-[#11151f]/75 transition hover:border-[#bd5a3e] hover:text-[#9b3d28] disabled:cursor-not-allowed disabled:opacity-45"
+          >
+            <Bookmark size={13} aria-hidden="true" />
+            保存搜索
+          </button>
         </form>
+
+        {savedQueries.length > 0 ? (
+          <section className="mt-3 flex flex-wrap items-center gap-2" aria-label="保存的搜索">
+            <span className="text-[11px] font-semibold text-[#11151f]/50">最近保存</span>
+            {savedQueries.map((keyword) => (
+              <span
+                key={keyword}
+                className="inline-flex items-center overflow-hidden rounded-none border border-[#11151f1a] bg-white"
+              >
+                <button
+                  type="button"
+                  onClick={() => runSavedSearch(keyword)}
+                  className="min-h-control px-2.5 text-[11px] text-[#11151f]/70 transition hover:text-[#9b3d28]"
+                >
+                  {keyword}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => removeSavedSearch(keyword)}
+                  aria-label={`删除搜索 ${keyword}`}
+                  className="grid min-h-control w-9 place-items-center border-l border-[#11151f1a] text-[#11151f]/40 transition hover:text-[#bd5a3e]"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </section>
+        ) : null}
 
         {debounced.trim().length >= 2 ? (
           <div className="mt-4 flex flex-wrap items-center gap-2" data-reveal="true" aria-live="polite">

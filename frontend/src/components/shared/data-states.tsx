@@ -90,7 +90,7 @@ export function PreviewErrorState({
     <div
       role="alert"
       data-error-kind={presentation.kind}
-      className={`flex flex-col gap-3 rounded-lg border border-persimmon/30 bg-persimmon/5 px-4 py-3 text-sm text-ink/70 ${className}`}
+      className={`flex flex-col gap-3 rounded-none border border-[#bd5a3e45] bg-white px-4 py-3 text-sm text-[#11151f]/75 ${className}`}
     >
       <div className="flex items-start gap-2">
         <AlertTriangle size={16} className="mt-0.5 text-persimmon" aria-hidden="true" />
@@ -103,7 +103,7 @@ export function PreviewErrorState({
         <button
           type="button"
           onClick={onRetry}
-          className="self-start rounded-md border border-line/60 bg-panel px-2.5 py-1 text-xs font-medium text-ink/70 hover:border-cobalt/40 hover:text-cobalt"
+          className="self-start min-h-control rounded-none border border-[#11151f26] bg-white px-2.5 py-1 text-xs font-medium text-[#11151f]/75 hover:border-[#bd5a3e] hover:text-[#9b3d28]"
         >
           重试
         </button>
@@ -126,7 +126,7 @@ export function DataLoadingState({
     <div
       role="status"
       aria-live="polite"
-      className={`flex items-center gap-3 rounded-lg border border-line/40 bg-panel/70 px-4 py-3 text-sm text-ink/60 ${className}`}
+      className={`flex items-center gap-3 rounded-none border border-[#11151f1a] bg-white px-4 py-3 text-sm text-[#11151f]/65 ${className}`}
     >
       <RefreshCw size={14} className="animate-spin text-ink/40" aria-hidden="true" />
       <span>{message}</span>
@@ -151,7 +151,7 @@ export function DataEmptyState({
   return (
     <div
       role="status"
-      className={`flex flex-col items-center gap-2 rounded-lg border border-dashed border-line/60 bg-panel/60 px-6 py-8 text-center text-ink/60 ${className}`}
+      className={`flex flex-col items-center gap-2 rounded-none border border-dashed border-[#11151f26] bg-white px-6 py-8 text-center text-[#11151f]/65 ${className}`}
     >
       <Inbox size={22} className="text-ink/30" aria-hidden="true" />
       <p className="text-sm font-medium text-ink/70">{title}</p>
@@ -181,7 +181,7 @@ export function DataUnavailableState({
   return (
     <div
       role="alert"
-      className={`flex flex-col gap-3 rounded-lg border border-persimmon/30 bg-persimmon/5 px-4 py-3 text-sm text-ink/70 ${className}`}
+      className={`flex flex-col gap-3 rounded-none border border-[#bd5a3e45] bg-white px-4 py-3 text-sm text-[#11151f]/75 ${className}`}
     >
       <div className="flex items-start gap-2">
         <AlertTriangle size={16} className="mt-0.5 text-persimmon" aria-hidden="true" />
@@ -196,7 +196,7 @@ export function DataUnavailableState({
         <button
           type="button"
           onClick={onRetry}
-          className="self-start rounded-md border border-line/60 bg-panel px-2.5 py-1 text-xs font-medium text-ink/70 hover:border-cobalt/40 hover:text-cobalt"
+          className="self-start min-h-control rounded-none border border-[#11151f26] bg-white px-2.5 py-1 text-xs font-medium text-[#11151f]/75 hover:border-[#bd5a3e] hover:text-[#9b3d28]"
         >
           重试
         </button>
@@ -250,7 +250,7 @@ export function DataValidationError({
   return (
     <div
       role="alert"
-      className={`flex flex-col gap-2 rounded-lg border border-persimmon/30 bg-persimmon/5 px-4 py-3 text-sm text-ink/70 ${className}`}
+      className={`flex flex-col gap-2 rounded-none border border-[#bd5a3e45] bg-white px-4 py-3 text-sm text-[#11151f]/75 ${className}`}
     >
       <div className="flex items-start gap-2">
         <AlertTriangle size={16} className="mt-0.5 text-persimmon" aria-hidden="true" />
@@ -274,7 +274,7 @@ export function DataValidationError({
         <button
           type="button"
           onClick={onRetry}
-          className="self-start rounded-md border border-line/60 bg-panel px-2.5 py-1 text-xs font-medium text-ink/70 hover:border-cobalt/40 hover:text-cobalt"
+          className="self-start min-h-control rounded-none border border-[#11151f26] bg-white px-2.5 py-1 text-xs font-medium text-[#11151f]/75 hover:border-[#bd5a3e] hover:text-[#9b3d28]"
         >
           重试
         </button>

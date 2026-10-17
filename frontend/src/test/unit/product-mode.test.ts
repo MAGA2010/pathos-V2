@@ -43,7 +43,7 @@ describe("product mode", () => {
     expect(footer).toContain('href="/opportunities"');
     expect(footer).toContain("查看信息动态");
     expect(footer).toContain('href="/pricing"');
-    expect(footer).toContain("顾问协作");
+    expect(footer).toContain("团队协作");
   });
 
   it("keeps commercial pages out of the information-mode sitemap", () => {

@@ -9,32 +9,43 @@ function read(relativePath: string): string {
 }
 
 describe("global navigation information architecture", () => {
-  it("groups all eight legacy destinations into information, decision, and tools", () => {
+  it("groups product destinations into the five information domains", () => {
     const navigation = read("src/components/NavBar.tsx");
 
     expect(navigation).not.toContain("const NAV_LINKS");
+    expect(navigation).toContain('id: "schools"');
+    expect(navigation).toContain('id: "majors"');
+    expect(navigation).toContain('id: "trends"');
     expect(navigation).toContain('id: "information"');
-    expect(navigation).toContain('id: "decision"');
-    expect(navigation).toContain('id: "tools"');
+    expect(navigation).toContain('id: "research"');
 
     const routes = [...navigation.matchAll(/href: "([^"]+)"/g)].map(([, route]) => route);
     expect(routes).toEqual([
-      "/entry/map",
-      "/news",
-      "/calculator",
-      "/entry/match",
+      "/map",
+      "/search",
+      "/guides",
+      "/majors",
+      "/topics/cs-engineering",
+      "/trends",
       "/compare",
-      "/entry/assessment",
-      "/entry/portfolio",
+      "/costs",
+      "/calculator",
+      "/deadlines",
+      "/news",
+      "/research",
+      "/followed",
+      "/workbench/shortlists",
       "/s/home",
     ]);
   });
 
-  it("keeps the desktop primary level to three disclosure groups", () => {
+  it("keeps the desktop primary level to five disclosure groups", () => {
     const navigation = read("src/components/NavBar.tsx");
-    const groupIds = [...navigation.matchAll(/id: "(information|decision|tools)"/g)];
+    const groupIds = [
+      ...navigation.matchAll(/id: "(schools|majors|trends|information|research)"/g),
+    ];
 
-    expect(groupIds).toHaveLength(3);
+    expect(groupIds).toHaveLength(5);
     expect(navigation).toContain('aria-label="主导航"');
     expect(navigation).toContain("NAV_GROUPS.map");
     expect(navigation).toContain("aria-expanded={isOpen}");
@@ -60,7 +71,7 @@ describe("global navigation information architecture", () => {
     const search = read("src/components/NavSearch.tsx");
 
     expect(navigation).toContain('} from "lucide-react"');
-    expect(navigation).toMatch(/icon: (Map|Newspaper|Calculator|SlidersHorizontal|GitCompareArrows|ClipboardCheck|FileStack|LayoutDashboard)/);
+    expect(navigation).toMatch(/icon: (Map|Search|GraduationCap|GitCompareArrows|CalendarClock|FileStack)/);
     expect(navigation).toContain("<NavSearch />");
     expect(search).toContain('aria-label="搜索学校 / 城市"');
     expect(search).toContain('router.replace(`/search?q=${encodeURIComponent(q)}`)');

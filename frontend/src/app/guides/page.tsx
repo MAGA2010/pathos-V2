@@ -6,6 +6,8 @@ import { ArrowUpRight, BookOpen, CheckCircle2, CircleAlert, GraduationCap, Searc
 import { useDataSource } from "@/services/data-source-provider";
 import { useCollegeGuide, useUniversityDetail, useUniversitySummaries } from "@/hooks/use-data-source";
 import { DataEmptyState, DataLoadingState } from "@/components/shared/data-states";
+import PageMotion from "@/components/shared/PageMotion";
+import { EnterprisePageHeader } from "@/components/shared/EnterprisePageHeader";
 import type { CollegeGuide } from "@/domain/dataset";
 
 function formatRate(value: number | null | undefined) {
@@ -24,7 +26,10 @@ function formatCost(school: any) {
 export default function GuidesPage() {
   const source = useDataSource();
   const summaries = useUniversitySummaries(source);
-  const schools = summaries.state.status === "ready" ? summaries.state.data : [];
+  const schools = useMemo(
+    () => (summaries.state.status === "ready" ? summaries.state.data : []),
+    [summaries.state],
+  );
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = useUniversityDetail(source, selectedId);
@@ -36,18 +41,22 @@ export default function GuidesPage() {
   }, [query, schools]);
 
   return (
-    <main className="min-h-screen bg-surface-base">
-      <header className="border-b border-border-soft bg-surface-1/80">
-        <div className="mx-auto flex max-w-page flex-wrap items-center gap-4 px-4 py-5 sm:px-6">
-          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-control bg-cobalt text-paper"><BookOpen size={21} /></div>
-          <div className="min-w-0 flex-1">
-            <p className="text-label uppercase tracking-[0.14em] text-cobalt">COLLEGE GUIDE</p>
-            <h1 className="text-page text-text-primary">先读懂大学，再决定要不要申请</h1>
-            <p className="mt-1 max-w-2xl text-sm leading-relaxed text-text-secondary">把学校的数字、课程、环境和申请要求放在同一个家庭可以讨论的页面里。</p>
-          </div>
-          <Link href="/opportunities" className="inline-flex items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-3 py-2 text-xs font-semibold text-text-secondary hover:border-cobalt/40 hover:text-cobalt">查看机会动态 <ArrowUpRight size={14} /></Link>
-        </div>
-      </header>
+    <PageMotion>
+    <main className="min-h-screen bg-[#eef1f5]">
+      <EnterprisePageHeader
+        eyebrow="College Guide"
+        title="先读懂大学，再决定要不要申请"
+        description="把学校的数字、课程、环境和申请要求放在同一个家庭可以讨论的页面里。"
+        icon={BookOpen}
+        stats={[
+          { label: "学校列表", value: schools.length },
+          { label: "当前筛选", value: filtered.length },
+          { label: "资料快照", value: selectedId ? "已选择" : "待选择" },
+          { label: "数据模式", value: "Preview / IECG" },
+        ]}
+        sourceNote="IECG 是历史资料快照，用于理解学校；当前政策、费用和截止日仍以学校官网为准。"
+        actions={<Link href="/opportunities" className="inline-flex min-h-control items-center gap-1.5 rounded-none border border-[#eef1f526] px-3 text-xs font-semibold text-[#eef1f5] transition hover:border-[#dd8568] hover:text-[#dd8568]">查看机会动态 <ArrowUpRight size={14} /></Link>}
+      />
 
       <div className="mx-auto grid max-w-page gap-5 px-4 py-5 sm:px-6 lg:grid-cols-[320px_1fr]">
         <aside className="lg:sticky lg:top-20 lg:self-start">
@@ -71,6 +80,7 @@ export default function GuidesPage() {
         </section>
       </div>
     </main>
+    </PageMotion>
   );
 }
 

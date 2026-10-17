@@ -22,6 +22,8 @@ export interface SchoolPickerProps {
   onPick: (id: string) => void;
   /** Storage key for last search query (optional). */
   storageKey?: string;
+  /** Context-specific dialog heading. */
+  title?: string;
 }
 
 interface RowProps {
@@ -35,7 +37,7 @@ interface RowProps {
 
 function Row({ s, isSelected, isFocused, disabled, onPick, onHover }: RowProps) {
   const cn =
-    "flex w-full items-center gap-3 rounded-lg border px-3 py-2 text-left transition " +
+    "flex min-h-control-lg w-full items-center gap-3 rounded-lg border px-3 py-2 text-left transition " +
     (isFocused
       ? "border-cobalt/45 bg-cobalt/8 ring-2 ring-cobalt/25"
       : "border-line/60 bg-white hover:border-cobalt/30 hover:bg-cobalt/5") +
@@ -100,6 +102,7 @@ export function SchoolPicker({
   max,
   onPick,
   storageKey,
+  title = "选择大学加入对比",
 }: SchoolPickerProps) {
   const headingId = useId();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -224,7 +227,7 @@ export function SchoolPicker({
         {/* Header */}
         <header className="flex shrink-0 items-center gap-3 border-b border-line/50 px-4 py-3">
           <h2 id={headingId} className="flex-1 truncate text-sm font-semibold text-ink">
-            选择大学加入对比
+            {title}
           </h2>
           <span className={"shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium " + (cap ? "border border-persimmon/40 bg-persimmon/8 text-persimmon" : "border border-line/60 bg-paper text-ink/55")}>
             {selectedIds.length} / {max}
@@ -233,7 +236,7 @@ export function SchoolPicker({
             type="button"
             onClick={onClose}
             aria-label="关闭选择器"
-            className="grid h-7 w-7 place-items-center rounded text-ink/40 hover:bg-line/30 hover:text-ink"
+            className="grid h-11 w-11 place-items-center rounded text-ink/40 transition hover:bg-line/30 hover:text-ink"
           >
             <X size={14} />
           </button>
@@ -250,14 +253,14 @@ export function SchoolPicker({
             onKeyDown={handleListKey}
             placeholder="按名称、城市、州搜索…"
             aria-label="搜索大学"
-            className="min-w-0 flex-1 bg-transparent text-[13px] text-ink placeholder:text-ink/35 focus:outline-none"
+            className="min-h-control-lg min-w-0 flex-1 bg-transparent text-[13px] text-ink placeholder:text-ink/35 focus:outline-none"
           />
           {query && (
             <button
               type="button"
               onClick={() => setQuery("")}
               aria-label="清空搜索"
-              className="grid h-6 w-6 place-items-center rounded text-ink/40 hover:bg-line/30"
+            className="grid h-11 w-11 place-items-center rounded text-ink/40 transition hover:bg-line/30"
             >
               <X size={12} />
             </button>

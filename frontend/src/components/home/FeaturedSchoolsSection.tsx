@@ -74,6 +74,10 @@ function formatEnglishName(summary: UniversitySummary): string {
   return summary.name || "";
 }
 
+function formatLocation(summary: UniversitySummary): string {
+  return [summary.city, summary.state].filter(Boolean).join(", ");
+}
+
 export function FeaturedSchoolsSection() {
   const source = useDataSource();
   const { state } = useUniversitySummaries(source);
@@ -104,6 +108,7 @@ export function FeaturedSchoolsSection() {
               const cost = formatCost(summary);
               const zhName = formatName(summary);
               const enName = formatEnglishName(summary);
+              const location = formatLocation(summary);
               return (
                 <Link
                   key={summary.id}
@@ -125,7 +130,7 @@ export function FeaturedSchoolsSection() {
                       <dt className="flex items-center gap-1.5 text-caption text-text-muted">
                         <MapPin aria-hidden="true" size={13} /> 所在地
                       </dt>
-                      <dd className="mt-1 text-body text-text-secondary">暂无</dd>
+                      <dd className="mt-1 text-body text-text-secondary">{location || "未采集"}</dd>
                     </div>
                     <div>
                       <dt className="flex items-center gap-1.5 text-caption text-text-muted">

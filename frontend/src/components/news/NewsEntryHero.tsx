@@ -80,7 +80,7 @@ export function NewsEntryHero() {
           {/* Stage 7B-A.3.3: one clear level — large Chinese title
               (single line). The previous "集合" line is removed; the
               English title sits below at a different scale. */}
-          <h1
+          <p
             data-testid="news-hero-title"
             className="news-hero-title font-serif font-semibold leading-[1.05] tracking-[-0.02em]"
             style={{
@@ -89,7 +89,7 @@ export function NewsEntryHero() {
             }}
           >
             {NEWS_HERO_TITLE_ZH}
-          </h1>
+          </p>
 
           {/* English title — small uppercase */}
           <p

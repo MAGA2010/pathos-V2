@@ -4,20 +4,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Calculator,
+  CalendarClock,
   ChevronDown,
   ClipboardCheck,
   Compass,
   Database,
   FileStack,
   GitCompareArrows,
-  LayoutDashboard,
+  GraduationCap,
   Map,
   Menu,
   Newspaper,
-  Scale,
   Search,
-  SlidersHorizontal,
-  Wrench,
+  Scale,
+  Wallet,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -41,32 +41,53 @@ type NavGroup = {
 
 const NAV_GROUPS = [
   {
-    id: "information",
-    label: "信息",
+    id: "schools",
+    label: "学校",
     icon: Database,
     links: [
-      { href: "/entry/map", label: "留学地图", icon: Map },
-      { href: "/news", label: "留学资讯", icon: Newspaper },
+      { href: "/map", label: "留学地图", icon: Map },
+      { href: "/search", label: "全局检索", icon: Search },
+      { href: "/guides", label: "大学指南", icon: Newspaper },
     ],
   },
   {
-    id: "decision",
-    label: "决策",
-    icon: Scale,
+    id: "majors",
+    label: "专业",
+    icon: GraduationCap,
     links: [
-      { href: "/calculator", label: "留学计算器", icon: Calculator },
-      { href: "/entry/match", label: "自主测验", icon: SlidersHorizontal },
-      { href: "/compare", label: "对比", icon: GitCompareArrows },
+      { href: "/majors", label: "专业库", icon: GraduationCap },
+      { href: "/topics/cs-engineering", label: "工程与计算机", icon: FileStack },
     ],
   },
   {
-    id: "tools",
-    label: "工具",
-    icon: Wrench,
+    id: "trends",
+    label: "趋势",
+    icon: GitCompareArrows,
     links: [
-      { href: "/entry/assessment", label: "AI 学校评估", icon: ClipboardCheck },
-      { href: "/entry/portfolio", label: "AI 清单分析", icon: FileStack },
-      { href: "/s/home", label: "数据工作台", icon: LayoutDashboard },
+      { href: "/trends", label: "趋势台", icon: GitCompareArrows },
+      { href: "/compare", label: "跨校比较", icon: Scale },
+    ],
+  },
+  {
+    id: "information",
+    label: "信息",
+    icon: CalendarClock,
+    links: [
+      { href: "/costs", label: "费用中心", icon: Wallet },
+      { href: "/calculator", label: "预算计算器", icon: Calculator },
+      { href: "/deadlines", label: "截止日期", icon: CalendarClock },
+      { href: "/news", label: "政策与资讯", icon: Newspaper },
+    ],
+  },
+  {
+    id: "research",
+    label: "我的研究",
+    icon: FileStack,
+    links: [
+      { href: "/research", label: "我的研究台", icon: FileStack },
+      { href: "/followed", label: "关注与动态", icon: Newspaper },
+      { href: "/workbench/shortlists", label: "研究集合", icon: FileStack },
+      { href: "/s/home", label: "数据工作台", icon: ClipboardCheck },
     ],
   },
 ] as const satisfies readonly NavGroup[];
@@ -86,6 +107,7 @@ export default function NavBar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const [homeScrolled, setHomeScrolled] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
   const mobileButtonRef = useRef<HTMLButtonElement | null>(null);
   const groupButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -139,6 +161,20 @@ export default function NavBar() {
     setMobileOpen(false);
   }, [pathname]);
 
+  // The home page uses an immersive editorial hero. Its header starts
+  // transparent and becomes the StudyUS-style dark solid bar after the
+  // first viewport, matching the hero-to-content transition.
+  useEffect(() => {
+    if (pathname !== "/") {
+      setHomeScrolled(false);
+      return;
+    }
+    const onScroll = () => setHomeScrolled(window.scrollY > window.innerHeight * 0.7);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [pathname]);
+
   // The opportunity preview page renders its own Apple-style chrome;
   // suppress the global navbar so the two headers do not stack. Keep this
   // return after all hooks so the hook order is identical on every route.
@@ -146,12 +182,22 @@ export default function NavBar() {
 
   const groupHasActivePage = (group: NavGroup) =>
     group.links.some((link) => isPathActive(pathname, link.href));
+  const isHome = pathname === "/";
+  const navSurface = isHome ? (homeScrolled ? "dark" : "hero") : "page";
 
   return (
     <header
       ref={headerRef}
       role="banner"
-      className="sticky top-0 z-50 border-b border-border-soft bg-surface-1/95 backdrop-blur supports-[backdrop-filter]:bg-surface-1/80 dark:bg-surface-1/90"
+      data-nav-surface={navSurface}
+      className={
+        isHome
+          ? "fixed top-0 left-0 right-0 z-50 border-b transition-[background-color,border-color,padding] duration-[400ms] " +
+            (homeScrolled
+              ? "border-[#eef1f526] bg-[#11151ff2] backdrop-blur-md"
+              : "border-transparent bg-transparent")
+          : "sticky top-0 z-50 border-b border-border-soft bg-surface-1/95 backdrop-blur supports-[backdrop-filter]:bg-surface-1/80 dark:bg-surface-1/90"
+      }
     >
       <div className="mx-auto flex h-nav w-full max-w-page items-center gap-3 px-4 sm:gap-4 sm:px-6">
         <Link
@@ -167,7 +213,7 @@ export default function NavBar() {
           </span>
         </Link>
 
-        {/* Desktop primary level intentionally has three grouped destinations. */}
+        {/* Desktop primary level follows the five information domains. */}
         <nav aria-label="主导航" className="hidden min-w-0 flex-1 items-center gap-1 lg:flex">
           {NAV_GROUPS.map((group) => {
             const GroupIcon = group.icon;
@@ -260,10 +306,10 @@ export default function NavBar() {
 
         <div className="ml-auto flex shrink-0 items-center gap-2">
           <Link
-            href="/entry/match"
+            href="/trends"
             className="hidden h-control-lg items-center gap-1.5 rounded-control bg-ink px-3 text-[13px] font-semibold text-paper transition hover:bg-ink/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring sm:inline-flex"
           >
-            开始自主测验
+            开始研究
           </Link>
           <Suspense fallback={<div className="h-11 w-11 shrink-0" aria-hidden="true" />}>
             <NavSearch />
@@ -340,10 +386,10 @@ export default function NavBar() {
               搜索
             </Link>
             <Link
-              href="/entry/match"
+              href="/search"
               className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-control bg-ink px-3 text-[13px] font-semibold text-paper transition hover:bg-ink/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
             >
-              开始自主测验
+              开始研究
             </Link>
           </div>
         </nav>

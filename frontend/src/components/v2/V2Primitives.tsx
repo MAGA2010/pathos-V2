@@ -4,17 +4,15 @@ import Link from "next/link";
 import { ArrowUpRight, Check, ExternalLink, LineChart, Radar, ShieldCheck } from "lucide-react";
 import { useMemo } from "react";
 import type { ReactNode } from "react";
+import { EnterprisePageHeader } from "@/components/shared/EnterprisePageHeader";
 import type { TimeSeriesMetric, TimeSeriesPoint } from "@/types/timeseries";
 
 export function V2PageHeader({ eyebrow, title, description, action }: { eyebrow: string; title: string; description: string; action?: ReactNode }) {
-  return <header className="mb-6 flex flex-col gap-4 border-b border-border-soft pb-5 sm:flex-row sm:items-end sm:justify-between" data-reveal="true">
-    <div><p className="text-label font-semibold uppercase tracking-[0.14em] text-cobalt">{eyebrow}</p><h1 className="mt-1 text-page text-text-primary" data-heading-stagger="true">{title}</h1><p className="mt-2 max-w-2xl text-sm leading-6 text-text-secondary">{description}</p></div>
-    {action ? <div className="shrink-0" data-reveal="true" data-reveal-delay="160">{action}</div> : null}
-  </header>;
+  return <EnterprisePageHeader eyebrow={eyebrow} title={title} description={description} actions={action} />;
 }
 
 export function V2Panel({ children, className = "", revealDelay }: { children: ReactNode; className?: string; revealDelay?: 80 | 160 | 240 | 320 | 400 | 480 }) {
-  return <section className={`rounded-card border border-border-soft bg-surface-1 p-4 shadow-sm sm:p-5 ${className}`} data-reveal="true" data-reveal-delay={revealDelay ? String(revealDelay) : undefined}>{children}</section>;
+  return <section className={`page-motion-card rounded-card border border-border-soft bg-surface-1 p-4 shadow-sm sm:p-5 ${className}`} data-reveal="true" data-reveal-delay={revealDelay ? String(revealDelay) : undefined}>{children}</section>;
 }
 
 export function V2Provenance({ source = "来源待挂接", asOf, verifiedBy, confidence }: { source?: string; asOf?: string; verifiedBy?: string; confidence?: number }) {

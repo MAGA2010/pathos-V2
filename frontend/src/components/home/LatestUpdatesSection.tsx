@@ -24,11 +24,19 @@ function describe(article: { summary?: string; whatChanged?: string }): string {
   return article.summary || article.whatChanged || "暂无摘要";
 }
 
+// The fixture news archive contains research captures from several study
+// destinations. The home feed is specifically a US higher-education console;
+// keep unrelated destination marketing out rather than presenting it as a
+// PathOS update.
+function isUnitedStatesUpdate(article: { title?: string }): boolean {
+  return /美国|美本|美高|常春藤|Ivy|H-1B|OPT|CPT|SEVIS|F-1|US News/i.test(article.title ?? "");
+}
+
 export function LatestUpdatesSection() {
   const source = useDataSource();
   const { state } = useNews(source);
 
-  const all = state.status === "ready" ? state.data : [];
+  const all = state.status === "ready" ? state.data.filter(isUnitedStatesUpdate) : [];
   const recent = all.slice(0, 4);
 
   return (
@@ -74,7 +82,7 @@ export function LatestUpdatesSection() {
                   <p className="mt-2 flex-1 text-caption text-text-secondary">{summary}</p>
                   <Link
                     href={linkHref}
-                    className="mt-4 inline-flex min-h-control items-center gap-1 text-caption font-semibold text-cobalt transition hover:text-cobalt/80"
+                    className="mt-4 inline-flex min-h-control-lg items-center gap-1 text-caption font-semibold text-cobalt transition hover:text-cobalt/80"
                     target={external ? "_blank" : undefined}
                     rel={external ? "noreferrer noopener" : undefined}
                   >

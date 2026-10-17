@@ -31,17 +31,26 @@ describe("PathOS parallel-development coupling contract", () => {
 
   it("uses only canonical, buildable product routes from the integrated home", () => {
     const home = read("src/app/page.tsx");
+    const navigation = read("src/components/NavBar.tsx");
+    const homeSurface = home + "\n" + navigation;
     const required = [
-      "/entry/map",
+      "/map",
+      "/majors",
+      "/costs",
       "/calculator",
-      "/entry/match",
-      "/entry/assessment",
-      "/entry/portfolio",
+      "/deadlines",
       "/news",
+      "/compare",
+      "/trends",
+      "/research",
+      "/search",
+      "/followed",
+      "/workbench/shortlists",
+      "/s/home",
     ];
 
     for (const route of required) {
-      expect(home, route).toContain(`href: \"${route}\"`);
+      expect(homeSurface, route).toContain(`href: \"${route}\"`);
     }
     expect(home).not.toContain("/map/rankings");
     expect(home).not.toContain("/explore");

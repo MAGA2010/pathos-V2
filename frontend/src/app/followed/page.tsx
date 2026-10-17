@@ -8,13 +8,15 @@
 // schools I followed" surface.
 
 import Link from "next/link";
-import { ArrowRight, BellOff, BookmarkPlus, ExternalLink } from "lucide-react";
+import { ArrowRight, BellOff, BookmarkPlus, ExternalLink, GitCompareArrows } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { useDataSource } from "@/services/data-source-provider";
 import { useNews, useUniversitySummaries } from "@/hooks/use-data-source";
 import { DataEmptyState, DataLoadingState } from "@/components/shared/data-states";
 import PageMotion from "@/components/shared/PageMotion";
+import { EnterprisePageHeader } from "@/components/shared/EnterprisePageHeader";
+import { useCompareStore } from "@/state/compare-store";
 
 const STORAGE_KEY = "pathos_followed_universities";
 
@@ -44,6 +46,7 @@ export default function FollowedPage() {
   const source = useDataSource();
   const summaries = useUniversitySummaries(source);
   const news = useNews(source);
+  const compare = useCompareStore();
 
   // We hydrate from storage AFTER mount so SSR renders the empty state
   // and the client fills it in. This matches the pattern in compare-store.
@@ -94,24 +97,47 @@ export default function FollowedPage() {
     writeFollowedIds([]);
   };
 
+  const addFollowedToCompare = () => {
+    followedSchools.slice(0, compare.maxItems).forEach((school) => compare.add(school.id));
+  };
+
   return (
     <PageMotion>
-      <main className="mx-auto w-full max-w-page px-4 pb-16 pt-8 sm:px-6">
-      <header className="page-motion-compact-hero px-6 py-7 sm:px-8 sm:py-9" data-reveal="true">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-cobalt">
-          FOLLOWED / PATHOS
-        </p>
-        <h1 className="mt-1 text-2xl font-semibold text-text-primary" data-heading-stagger="true">
-          我的关注院校
-        </h1>
-        <p className="mt-2 max-w-xl text-sm text-text-secondary">
-          从
-          <Link href="/opportunities" className="mx-1 text-cobalt hover:underline">
-            机会动态
-          </Link>
-          关注的学校会自动汇总到此处，方便集中查看和跳转。
-        </p>
-      </header>
+      <main className="min-h-screen bg-[#eef1f5]">
+        <EnterprisePageHeader
+          eyebrow="Followed / PathOS"
+          title="我的关注院校"
+          description="从机会动态关注的学校会自动汇总到此处，并可转入对比、费用和选校清单。"
+          icon={BookmarkPlus}
+          stats={[
+            { label: "关注学校", value: followedSchools.length },
+            { label: "相关动态", value: [...newsById.values()].reduce((sum, count) => sum + count, 0) },
+            { label: "对比容量", value: `${Math.min(followedSchools.length, compare.maxItems)}/${compare.maxItems}` },
+            { label: "存储", value: "本地关注" },
+          ]}
+          sourceNote="关注状态当前保存在本机浏览器；登录清单和报告仍由服务端权限保护。"
+          actions={
+            <>
+              <button
+                type="button"
+                onClick={addFollowedToCompare}
+                disabled={followedSchools.length === 0}
+                className="inline-flex min-h-control items-center gap-1 rounded-none bg-[#bd5a3e] px-3 text-xs font-semibold text-white transition hover:bg-[#dd8568] disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <GitCompareArrows size={13} aria-hidden="true" />
+                转入对比
+              </button>
+              <Link
+                href="/workbench/shortlists"
+                className="inline-flex min-h-control items-center rounded-none border border-[#eef1f526] px-3 text-xs font-medium text-[#eef1f5] transition hover:border-[#dd8568] hover:text-[#dd8568]"
+              >
+                管理清单
+              </Link>
+            </>
+          }
+        />
+
+        <div className="mx-auto w-full max-w-page px-4 pb-16 sm:px-6">
 
       {!hydrated || summaries.state.status === "loading" ? (
         <section className="mt-6">
@@ -205,6 +231,7 @@ export default function FollowedPage() {
           </ul>
         </section>
       )}
+      </div>
       </main>
     </PageMotion>
   );

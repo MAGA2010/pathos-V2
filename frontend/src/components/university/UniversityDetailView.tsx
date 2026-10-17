@@ -5,7 +5,7 @@
 // (because `output: export` requires `generateStaticParams`).
 
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ArrowLeft, GraduationCap, MapPin, Scale } from "lucide-react";
 import { useDataSource } from "@/services/data-source-provider";
@@ -13,6 +13,10 @@ import { useStatusDictionary, useUniversityDetail } from "@/hooks/use-data-sourc
 import { useCompareStore } from "@/state/compare-store";
 import { UniversityProfilePanel } from "@/components/university/UniversityProfilePanel";
 import { UniversityFactSection } from "@/components/university/UniversityFactSection";
+import { EnterprisePageHeader } from "@/components/shared/EnterprisePageHeader";
+import { SchoolQuickRead } from "@/components/university/SchoolQuickRead";
+import { AddToShortlist } from "@/components/shortlists/AddToShortlist";
+import PageMotion from "@/components/shared/PageMotion";
 import {
   DataLoadingState,
   DataEmptyState,
@@ -20,9 +24,7 @@ import {
   PreviewWarningBanner,
 } from "@/components/shared/data-states";
 
-export function UniversityDetailView() {
-  const params = useParams<{ id: string }>();
-  const id = params?.id ?? "";
+export function UniversityDetailView({ id }: { id: string }) {
   const source = useDataSource();
   const detail = useUniversityDetail(source, id);
   const dict = useStatusDictionary(source);
@@ -86,11 +88,12 @@ export function UniversityDetailView() {
   const dictionary = dict.state.status === "ready" ? dict.state.data : undefined;
 
   return (
+    <PageMotion>
     <main className="mx-auto max-w-6xl px-4 pb-16 pt-6 lg:max-w-7xl">
       <nav className="mb-4 flex items-center justify-between gap-2 text-sm text-ink/60">
         <Link
           href="/map"
-          className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 hover:bg-ink/8"
+          className="inline-flex min-h-control-lg items-center gap-1.5 rounded-md px-2 hover:bg-ink/8"
         >
           <ArrowLeft size={14} aria-hidden="true" />
           <span>返回地图</span>
@@ -98,51 +101,48 @@ export function UniversityDetailView() {
         <button
           type="button"
           onClick={() => router.back()}
-          className="rounded-md px-2 py-1 text-[11px] text-ink/44 hover:bg-ink/8"
+          className="inline-flex min-h-control-lg items-center rounded-md px-2 text-[11px] text-ink/44 hover:bg-ink/8"
         >
           返回上一页
         </button>
       </nav>
 
-      <header className="rounded-xl border border-line bg-panel px-6 py-5">
-        <p className="text-[10px] uppercase tracking-wide text-ink/44">
-          <GraduationCap size={11} className="mr-1 inline" aria-hidden="true" />
-          学校详情
-          <span className="ml-1.5 text-ink/32" lang="en">
-            University Detail
-          </span>
-        </p>
-        <h1 className="mt-1 text-2xl font-semibold text-ink">{d.chineseName}</h1>
-        <p className="mt-0.5 text-sm text-ink/60" lang="en">
-          {d.name}
-        </p>
-        <p className="mt-2 flex items-center gap-1 text-[12px] text-ink/52">
-          <MapPin size={11} aria-hidden="true" />
-          {d.city}, {d.state}, {d.country}
-          {d.rankingBand && (
-            <span className="ml-3 inline-flex items-center rounded-full bg-ink/8 px-2 py-0.5 text-[10px] font-medium text-ink/64">
-              {d.rankingBand}
+      <EnterprisePageHeader
+        eyebrow="University Detail"
+        title={d.chineseName}
+        description={
+          <>
+            <span lang="en">{d.name}</span>
+            <br />
+            <span className="inline-flex items-center gap-1">
+              <MapPin size={12} aria-hidden="true" />
+              {d.city}, {d.state}, {d.country}
             </span>
-          )}
-        </p>
-        {d.previewOnly && (
-          <div className="mt-3">
-            <PreviewWarningBanner detail="当前展示字段来自约束预览集;后端生产接口上线后将自动切换为完整档案。" />
-          </div>
-        )}
-        <div className="mt-4 flex flex-wrap items-center gap-2">
+          </>
+        }
+        icon={GraduationCap}
+        stats={[
+          { label: "排名层", value: d.rankingBand ?? "未采集" },
+          { label: "城市 / 州", value: `${d.city}, ${d.state}` },
+          { label: "数据模式", value: d.previewOnly ? "Preview" : "Production" },
+          { label: "对比位置", value: `${compare.ids.length + (compare.has(d.id) ? 0 : 1)}/${compare.maxItems}` },
+        ]}
+        sourceNote={d.previewOnly ? "当前展示字段来自约束预览集；生产事实层上线后自动切换为完整档案。" : "当前档案已连接生产数据源。"}
+        actions={
+          <div className="flex flex-wrap items-center gap-2">
           <Link
-            href={`/s/${d.name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`}
-            className="inline-flex items-center rounded-md border border-cobalt/30 bg-cobalt/8 px-3 py-1.5 text-xs font-medium text-cobalt hover:border-cobalt/50 hover:bg-cobalt/12"
+            href="/s/home"
+            className="inline-flex min-h-control-lg items-center rounded-none border border-[#eef1f526] px-3 text-xs font-medium text-[#eef1f5] transition hover:border-[#dd8568] hover:text-[#dd8568]"
           >
             打开专业数据工作台
           </Link>
           <Link
-            href="/s/timeseries"
-            className="inline-flex items-center rounded-md border border-line/60 px-3 py-1.5 text-xs font-medium text-ink/60 hover:border-cobalt/30 hover:text-cobalt"
+            href="/costs"
+            className="inline-flex min-h-control-lg items-center rounded-none border border-[#eef1f526] px-3 text-xs font-medium text-[#eef1f5] transition hover:border-[#dd8568] hover:text-[#dd8568]"
           >
-            查看时序与来源
+            计算费用
           </Link>
+          <AddToShortlist universityId={d.id} universityName={d.chineseName ?? d.name} />
           {(() => {
             const inCompare = compare.has(d.id);
             const isFull = !inCompare && compare.ids.length >= compare.maxItems;
@@ -162,7 +162,7 @@ export function UniversityDetailView() {
                 onClick={handleAdd}
                 disabled={isFull}
                 title={isFull ? `对比最多 ${compare.maxItems} 所学校` : inCompare ? "已加入对比" : "加入对比"}
-                className="inline-flex items-center gap-1 rounded-md border border-cobalt/30 bg-cobalt/8 px-3 py-1.5 text-xs font-medium text-cobalt hover:border-cobalt/50 hover:bg-cobalt/12 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex min-h-control-lg items-center gap-1 rounded-none bg-[#bd5a3e] px-3 text-xs font-semibold text-white transition hover:bg-[#dd8568] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Scale size={13} aria-hidden="true" />
                 {inCompare ? "已在对比" : isFull ? `对比已满 (${compare.maxItems})` : "加入对比"}
@@ -171,17 +171,20 @@ export function UniversityDetailView() {
           })()}
           <Link
             href="/compare"
-            className="inline-flex items-center rounded-md border border-line/60 px-3 py-1.5 text-xs font-medium text-ink/60 hover:border-cobalt/30 hover:text-cobalt"
+            className="inline-flex min-h-control-lg items-center rounded-none border border-[#eef1f526] px-3 text-xs font-medium text-[#eef1f5] transition hover:border-[#dd8568] hover:text-[#dd8568]"
           >
             打开对比 ({compare.ids.length}/{compare.maxItems})
           </Link>
           {compareAdded === "added" ? <span className="text-[11px] text-jade">已加入</span> : null}
           {compareAdded === "full" ? <span className="text-[11px] text-persimmon">已达上限，先到对比页移除</span> : null}
-        </div>
-      </header>
+          </div>
+        }
+      />
 
+      <SchoolQuickRead detail={d} />
       <UniversityFactSection universityId={d.id} />
       <UniversityProfilePanel detail={d} statusDictionary={dictionary} />
     </main>
+    </PageMotion>
   );
 }

@@ -141,6 +141,58 @@ a:focus-visible,
   border-radius: 4px;
 }
 
+/* Immersive home navigation: transparent over the editorial hero, then dark
+ * after the first viewport. Product pages retain the normal PathOS chrome. */
+[data-nav-surface="hero"],
+[data-nav-surface="dark"] { color: #eef1f5; }
+[data-nav-surface="hero"] a,
+[data-nav-surface="dark"] a,
+[data-nav-surface="hero"] button,
+[data-nav-surface="dark"] button { color: rgb(238 241 245 / .84); }
+[data-nav-surface="hero"] nav > div > button,
+[data-nav-surface="dark"] nav > div > button { background: transparent; }
+[data-nav-surface="hero"] nav > div > button:hover,
+[data-nav-surface="dark"] nav > div > button:hover,
+[data-nav-surface="hero"] nav > div > button[aria-expanded="true"],
+[data-nav-surface="dark"] nav > div > button[aria-expanded="true"] {
+  background: rgb(238 241 245 / .1); color: #dd8568;
+}
+[data-nav-surface="hero"] .ml-auto a,
+[data-nav-surface="dark"] .ml-auto a,
+[data-nav-surface="hero"] .ml-auto button,
+[data-nav-surface="dark"] .ml-auto button,
+[data-nav-surface="hero"] .ml-auto input,
+[data-nav-surface="dark"] .ml-auto input {
+  border-color: rgb(238 241 245 / .24); background-color: rgb(17 21 31 / .28); color: #eef1f5;
+}
+[data-nav-surface="hero"] .ml-auto a:hover,
+[data-nav-surface="dark"] .ml-auto a:hover,
+[data-nav-surface="hero"] .ml-auto button:hover,
+[data-nav-surface="dark"] .ml-auto button:hover { border-color: #dd8568; color: #dd8568; }
+[data-nav-surface="hero"] ul.absolute,
+[data-nav-surface="dark"] ul.absolute {
+  border-color: rgb(238 241 245 / .16); background: #11151ff7;
+  box-shadow: 0 18px 50px -24px rgb(0 0 0 / .7);
+}
+[data-nav-surface="hero"] ul.absolute a,
+[data-nav-surface="dark"] ul.absolute a { color: #eef1f5; }
+[data-nav-surface="hero"] ul.absolute a:hover,
+[data-nav-surface="dark"] ul.absolute a:hover { background-color: rgb(238 241 245 / .1); color: #dd8568; }
+[data-nav-surface="hero"] > div > a > div,
+[data-nav-surface="dark"] > div > a > div {
+  border: 1px solid rgb(238 241 245 / .24); background-color: rgb(238 241 245 / .12); color: #eef1f5;
+}
+[data-nav-surface="hero"] > div > a > span,
+[data-nav-surface="dark"] > div > a > span { color: #eef1f5; }
+[data-nav-surface="hero"] > div,
+[data-nav-surface="dark"] > div { height: 80px; }
+[data-nav-surface="hero"] > div > a > span {
+  opacity: 0; transform: translateY(-8px);
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+[data-nav-surface="dark"] > div > a > span { opacity: 1; transform: none; }
+[data-nav-surface="dark"] { background-color: #11151ff0 !important; }
+
 .map-grid {
   background:
     linear-gradient(rgb(var(--token-surface-1) / 0.86), rgb(var(--token-surface-1) / 0.86)),
@@ -377,6 +429,33 @@ input[type="range"] {
   outline: 2px solid rgb(var(--token-text-primary) / 0.65);
   outline-offset: 12px;
   border-radius: 4px;
+}
+
+/* Enterprise editorial surface for every PageMotion-powered feature page.
+ * The home page keeps its dedicated immersive stylesheet; this layer keeps
+ * subpages on the same ink/paper/copper system without rewriting each tool. */
+.page-motion-root {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  background: #eef1f5;
+  color: #11151f;
+}
+.page-motion-root .rounded-card {
+  border-radius: 0;
+}
+.page-motion-root .bg-surface-1,
+.page-motion-root .bg-surface-2 {
+  background-color: #fff;
+}
+.page-motion-root .text-cobalt {
+  color: #9b3d28;
+}
+.page-motion-root .bg-cobalt {
+  background-color: #bd5a3e;
+}
+.page-motion-root .page-motion-back-top {
+  border-radius: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

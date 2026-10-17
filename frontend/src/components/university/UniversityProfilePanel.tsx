@@ -240,7 +240,7 @@ function Section({
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex flex-1 items-center gap-2 text-left"
+          className="flex min-h-control-lg flex-1 items-center gap-2 text-left"
           aria-expanded={open}
           aria-controls={`section-body-${title}`}
         >
@@ -258,7 +258,7 @@ function Section({
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? `收起${title}` : `展开${title}`}
-            className="grid h-6 w-6 place-items-center rounded text-ink/40 hover:bg-line/30"
+            className="grid h-11 w-11 place-items-center rounded text-ink/40 transition hover:bg-line/30"
           >
             {open ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           </button>

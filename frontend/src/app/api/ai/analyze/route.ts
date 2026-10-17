@@ -271,7 +271,7 @@ function buildDeepSeekPrompt(
   return JSON.stringify({
     role: "PathOS 留学选校 AI 分析师",
     instruction: [
-      "面向中国家庭，用简洁、克制、可执行的中文输出。",
+      "面向学生研究者，用简洁、克制、可执行的中文输出。",
       "只能基于输入的学生画像、学校数据和 localBaseline 推理；不要编造未提供的数据、录取案例或政策细节。",
       "任何字段缺失或值为 null 一律视为数据补充中，不要推断为 0。",
       "annualCostRmb 只代表当前收录的学费，不含住宿、保险和生活费。",

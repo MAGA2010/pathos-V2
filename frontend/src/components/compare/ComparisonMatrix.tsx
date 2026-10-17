@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import PageMotion from "@/components/shared/PageMotion";
+import { EnterprisePageHeader } from "@/components/shared/EnterprisePageHeader";
 import { SchoolPicker } from "@/components/calculator/SchoolPicker";
 import { useDataSource } from "@/services/data-source-provider";
 import { useUniversitySummaries } from "@/hooks/use-data-source";
@@ -246,23 +247,30 @@ export default function ComparisonMatrix() {
   return (
     <PageMotion>
       <main className="mx-auto w-full max-w-page px-4 pb-16 pt-8 sm:px-6">
-        <header className="border-b border-border-soft pb-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <p className="text-label font-semibold uppercase tracking-[0.14em] text-cobalt">
-                Comparison 2.0
-              </p>
-              <h1 className="mt-1 text-page text-text-primary">学校对比工作台</h1>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-text-secondary">
-                最多并排比较 4 所学校。Approved facts 优先；事实层不可用时旧 Preview 字段会显式降级，绝不伪装成已审核数据。
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
+        <EnterprisePageHeader
+          eyebrow="Comparison 2.0"
+          title="学校对比工作台"
+          description="最多并排比较 4 所学校。Approved facts 优先；事实层不可用时旧 Preview 字段会显式降级，绝不伪装成已审核数据。"
+          icon={Scale}
+          stats={[
+            { label: "已选学校", value: `${selected.length}/${MAX_COMPARE}` },
+            {
+              label: "approved facts",
+              value: factsState.kind === "ready"
+                ? Object.values(factsState.factsByUniversity).flat().length
+                : "待加载",
+            },
+            { label: "当前视角", value: COMPARISON_PERSPECTIVE_META[perspective].title },
+            { label: "学年过滤", value: academicYear || "全部学年" },
+          ]}
+          sourceNote="每个单元格保留数值、学年、申请人范围、来源与审核状态；CSV 导出包含口径警告。"
+          actions={
+            <>
               <button
                 type="button"
                 onClick={() => setPickerOpen(true)}
                 disabled={selected.length >= MAX_COMPARE}
-                className="inline-flex h-control items-center gap-1.5 rounded-control bg-cobalt px-3 text-xs font-semibold text-paper transition hover:bg-cobalt/90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex h-control items-center gap-1.5 rounded-none bg-[#bd5a3e] px-3 text-xs font-semibold text-white transition hover:bg-[#dd8568] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Plus size={13} aria-hidden="true" />
                 添加学校
@@ -271,14 +279,14 @@ export default function ComparisonMatrix() {
                 type="button"
                 onClick={exportCsv}
                 disabled={selected.length === 0}
-                className="inline-flex h-control items-center gap-1.5 rounded-control border border-border-soft bg-surface-1 px-3 text-xs font-medium text-text-secondary transition hover:border-cobalt/40 hover:text-cobalt disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex h-control items-center gap-1.5 rounded-none border border-[#eef1f526] px-3 text-xs font-medium text-[#eef1f5] transition hover:border-[#dd8568] hover:text-[#dd8568] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Download size={13} aria-hidden="true" />
                 导出 CSV
               </button>
-            </div>
-          </div>
-        </header>
+            </>
+          }
+        />
 
         <section className="mt-5 border border-border-soft bg-surface-1 p-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
@@ -341,7 +349,7 @@ export default function ComparisonMatrix() {
             <Scale size={26} className="text-text-muted" aria-hidden="true" />
             <h2 className="mt-3 text-sm font-semibold text-text-primary">选择至少两所学校</h2>
             <p className="mt-1 max-w-md text-xs leading-5 text-text-secondary">
-              可以从地图、学校页或这里加入学校；URL 会保存当前对比组合，方便发给顾问或家长。
+              可以从地图、学校页或这里加入学校；URL 会保存当前对比组合，方便复盘和引用。
             </p>
             <button
               type="button"

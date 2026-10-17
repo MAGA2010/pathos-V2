@@ -6,17 +6,19 @@ const ROOT = resolve(__dirname, "../../..");
 const read = (path: string) => readFileSync(resolve(ROOT, path), "utf8");
 
 describe("home operational information desk", () => {
-  it("prioritizes executable tasks over a feature exhibition", () => {
+  it("prioritizes the five-domain research chain over a feature exhibition", () => {
     const home = read("src/app/page.tsx");
-    expect(home).toContain("PRIMARY_TASKS.map");
-    expect(home).toContain("浏览院校地图");
-    expect(home).toContain("检查申请截止");
-    expect(home).toContain("计算年度费用");
-    expect(home).toContain("对比候选学校");
-    expect(home).toContain("调整自主匹配");
-    expect(home).toContain("进入数据工作台");
-    expect(home).toContain("AI 学校评估");
-    expect(home).toContain("AI 清单分析");
+    expect(home).toContain("PILLARS.map");
+    expect(home).toContain("学校速览");
+    expect(home).toContain("信息核查");
+    expect(home).toContain("横向比较");
+    expect(home).toContain("趋势分析");
+    expect(home).toContain("我的研究");
+    expect(home).toContain("JOURNEY.map");
+    expect(home).toContain("TRUSTED_SOURCES.join");
+    expect(home).toContain("Content Pillars");
+    expect(home).toContain("Research Workflow");
+    expect(home).not.toContain("决策工作台");
     expect(home).not.toContain("FlipModuleCard");
     expect(home).not.toContain("ChapterNav");
     expect(home).not.toContain("HeroTilt");
@@ -33,9 +35,18 @@ describe("home operational information desk", () => {
   it("keeps motion meaningful and reduced-motion safe", () => {
     const home = read("src/app/page.tsx");
     const fx = read("src/app/home-fx.css");
+    const editorialFx = read("src/app/home-editorial.module.css");
     expect(home).toContain("HomeScrollFx");
     expect(home).toContain("data-back-to-top");
+    expect(home).toContain('data-hero-earth="true"');
+    expect(home).toContain("heroTitleLine");
+    expect(home).toContain('data-heading-stagger="true"');
     expect(fx).toContain("min-height: 44px");
+    expect(editorialFx).toContain("@keyframes hero-media-pan");
+    expect(editorialFx).toContain("@keyframes hero-line-rise");
+    expect(editorialFx).toContain("@keyframes line-draw");
+    expect(editorialFx).toContain("@keyframes scroll-cue-pulse");
+    expect(editorialFx).toContain("prefers-reduced-motion: reduce");
     expect(fx).toMatch(/@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   });
 });

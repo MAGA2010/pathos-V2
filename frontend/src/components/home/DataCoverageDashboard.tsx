@@ -82,10 +82,10 @@ export function DataCoverageDashboard() {
   const meta = [
     {
       icon: Layers3,
-      eyebrow: "总校数",
+      eyebrow: "详细档案",
       value: String(total || 0),
       suffix: "所",
-      caption: "已加入 PathOS 的院校",
+      caption: "包含学校详情事实链的档案",
     },
     {
       icon: BarChart3,

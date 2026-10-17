@@ -191,7 +191,7 @@ export default function ComparePanel({
       {selected.length === 0 ? (
         <div className="flex items-center justify-center gap-2 px-4 pb-3 text-xs text-ink/32 shrink-0">
           <Plus size={14} />
-          <span>添加学校开始比较（最多 3 所）</span>
+          <span>添加学校开始比较（最多 4 所）</span>
         </div>
       ) : (
         <div className="overflow-y-auto px-4 pb-3 space-y-3 flex-1">

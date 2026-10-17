@@ -19,8 +19,8 @@ export default function Footer() {
               <span className="text-base font-bold text-panel">PathOS</span>
             </div>
             <p className="mt-2 text-sm leading-relaxed text-panel/60">
-              面向中国家庭的留学选校数据平台。<br />
-              数据驱动，让选校更理性。
+              面向学生的大学信息研究平台。<br />
+              快速读懂学校，看清数据与趋势。
             </p>
             {informationMode ? (
               <Link
@@ -45,15 +45,18 @@ export default function Footer() {
           <div>
             <h3 className="mb-3 text-sm font-semibold text-panel/85">平台功能</h3>
             <div className="grid grid-cols-2 gap-2 text-sm">
-              <Link href="/entry/map" className="transition-colors hover:text-panel">留学地图</Link>
+              <Link href="/map" className="transition-colors hover:text-panel">留学地图</Link>
+              <Link href="/trends" className="transition-colors hover:text-panel">趋势台</Link>
+              <Link href="/compare" className="transition-colors hover:text-panel">跨校比较</Link>
               <Link href="/calculator" className="transition-colors hover:text-panel">留学计算器</Link>
-              <Link href="/entry/match" className="transition-colors hover:text-panel">自主测验</Link>
-              <Link href="/entry/assessment" className="transition-colors hover:text-panel">AI 学校评估</Link>
-              <Link href="/entry/portfolio" className="transition-colors hover:text-panel">AI 清单分析</Link>
+              <Link href="/match" className="transition-colors hover:text-panel">自主测验</Link>
+              <Link href="/assessment" className="transition-colors hover:text-panel">AI 学校评估</Link>
+              <Link href="/portfolio" className="transition-colors hover:text-panel">AI 清单分析</Link>
               <Link href="/majors" className="transition-colors hover:text-panel">专业档案</Link>
               <Link href="/deadlines" className="transition-colors hover:text-panel">申请日历</Link>
               <Link href="/costs" className="transition-colors hover:text-panel">成本中心</Link>
               <Link href="/news" className="transition-colors hover:text-panel">留学资讯</Link>
+              <Link href="/research" className="transition-colors hover:text-panel">我的研究台</Link>
               <Link href="/s/home" className="transition-colors hover:text-panel">数据工作台</Link>
               <Link href="/followed" className="transition-colors hover:text-panel">我的关注</Link>
             </div>
@@ -73,9 +76,9 @@ export default function Footer() {
                 <Link
                   href="/pricing"
                   className="text-panel/60 transition-colors hover:text-panel"
-                  title="保留的顾问协作入口"
+                  title="保留的团队协作入口"
                 >
-                  顾问协作
+                  团队协作
                 </Link>
               ) : (
                 <>
@@ -88,7 +91,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="mb-3 text-sm font-semibold text-panel/85">联系顾问</h3>
+            <h3 className="mb-3 text-sm font-semibold text-panel/85">联系与反馈</h3>
             <div className="flex flex-col gap-2 text-sm">
               {contact.wechatId && (
                 <span className="inline-flex items-center gap-1.5 text-panel/60">
@@ -128,7 +131,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 border-t border-panel/10 pt-6 text-center text-xs text-panel/40">
-          PathOS — 面向中国家庭的留学选校决策平台 · 2026
+          PathOS — 面向学生的大学信息研究平台 · 2026
         </div>
       </div>
     </footer>

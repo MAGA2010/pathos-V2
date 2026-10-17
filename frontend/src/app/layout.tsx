@@ -13,14 +13,14 @@ import CookieConsent from "@/components/CookieConsent";
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://personal-os-zu9q.onrender.com").trim();
 
 export const metadata: Metadata = {
-  title: { default: "PathOS — 面向中国家庭的留学选校决策平台", template: "%s | PathOS" },
-  description: "PathOS 提供留学地图、自主测验、AI 学校评估和 AI 清单分析，帮助中国家庭做更理性的美国本科/研究生选校决策。",
-  keywords: ["留学地图", "美国大学", "中国家庭留学", "PathOS", "选校"],
+  title: { default: "PathOS — 面向学生的大学信息研究平台", template: "%s | PathOS" },
+  description: "PathOS 提供学校速览、专业信息、费用核查、跨校比较与多年趋势分析，帮助学生快速读懂美国大学。",
+  keywords: ["美国大学", "大学信息", "趋势分析", "学校比较", "PathOS"],
   authors: [{ name: "PathOS" }],
   robots: { index: true, follow: true },
   openGraph: {
-    title: "PathOS — 留学选校决策平台",
-    description: "面向中国家庭的美国留学咨询平台。交互式地图、自主测验、AI 学校评估和 AI 清单分析。",
+    title: "PathOS — 面向学生的大学信息研究平台",
+    description: "快速读懂美国大学，看清字段来源与多年趋势。",
     type: "website",
     locale: "zh_CN",
     siteName: "PathOS",
@@ -46,7 +46,7 @@ const orgJsonLd = {
   "@type": "Organization",
   name: "PathOS",
   url: SITE_URL,
-  description: "面向中国家庭的美国本科/研究生留学选校数据平台。",
+  description: "面向学生的美国大学信息研究与趋势分析平台。",
   sameAs: [
     "https://github.com/MAGA2010/personal-OS",
   ],

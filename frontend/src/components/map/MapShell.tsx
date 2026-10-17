@@ -639,15 +639,15 @@ export function MapShell({
       {/* ── Map Panel ─────────────────────────────────────────────── */}
       <div className="relative flex flex-1 flex-col min-w-0">
         {/* Compact header bar */}
-        <header className="flex shrink-0 items-center gap-3 border-b border-line bg-panel px-5 py-3">
-          <div className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-ink text-panel">
+        <header className="flex shrink-0 items-center gap-3 border-b border-[#eef1f526] bg-[#11151f] px-5 py-2 text-[#eef1f5]">
+          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-none bg-[#bd5a3e] text-white">
             <Compass aria-hidden="true" size={18} />
           </div>
           <div className="min-w-0 flex-1">
-            <h1 className="text-base font-semibold text-ink truncate">
+            <h1 className="text-base font-semibold text-current truncate">
               留学地图
             </h1>
-            <p className="text-xs text-ink/52 truncate">
+            <p className="text-xs text-[#c8cfda] truncate">
               China-lens choropleth — 四项州级指标覆盖 51 个辖区
             </p>
           </div>
@@ -670,13 +670,13 @@ export function MapShell({
           {/* Calculator link */}
           <a href="/match"
             aria-label="智能选校"
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-md text-ink/52 transition-colors hover:bg-line/40 hover:text-ink"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-none text-[#c8cfda] transition-colors hover:bg-[#eef1f512] hover:text-[#dd8568]"
           >
             <Sparkles size={18} />
           </a>
           <a href="/calculator"
             aria-label="预算计算器"
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-md text-ink/52 transition-colors hover:bg-line/40 hover:text-ink"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-none text-[#c8cfda] transition-colors hover:bg-[#eef1f512] hover:text-[#dd8568]"
           >
             <Calculator size={18} />
           </a>
@@ -685,7 +685,7 @@ export function MapShell({
             type="button"
             onClick={handlePanelToggle}
             aria-label={viewState.panelOpen ? "关闭侧边栏" : "打开侧边栏"}
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-md text-ink/52 transition-colors hover:bg-line/40 hover:text-ink"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-none text-[#c8cfda] transition-colors hover:bg-[#eef1f512] hover:text-[#dd8568]"
           >
             {viewState.panelOpen ? (
               <PanelLeftClose size={18} />

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { CalendarClock } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
 import PageMotion from "@/components/shared/PageMotion";
+import { EnterprisePageHeader } from "@/components/shared/EnterprisePageHeader";
 import { ApplicationDeadlineView } from "@/components/information/ApplicationDeadlineView";
 import { DatabaseNotConfiguredError } from "@/server/db";
 import { getCurrentUser } from "@/lib/session";
@@ -13,7 +16,7 @@ import {
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "申请日历 | PathOS",
+  title: "申请日历",
   description:
     "基于已审核事实的申请截止日日历：按紧急、未来、已过期分区，并保留来源、学年与 UTC 口径说明。",
 };
@@ -62,20 +65,32 @@ export default async function DeadlinesPage({ searchParams }: PageProps) {
 
   return (
     <PageMotion>
-      <main className="mx-auto w-full max-w-page px-4 py-8 sm:px-6">
-        <header className="border-b border-border-soft pb-6" data-reveal="true">
-          <p className="text-label font-semibold uppercase tracking-[0.14em] text-cobalt">
-            APPLICATION CALENDAR
-          </p>
-          <h1 className="mt-1 text-page text-text-primary" data-heading-stagger="true">
-            申请日历
-          </h1>
-          <p className="mt-3 max-w-3xl text-sm leading-6 text-text-secondary">
-            把已审核的截止日事实整理成可执行时间表。紧急项优先，历史周期不会被推进成新日期，来源与采集时间保持可见。
-          </p>
-        </header>
+      <main>
+        <EnterprisePageHeader
+          eyebrow="Application Calendar"
+          title="申请日历"
+          description="把已审核的截止日事实整理成可执行时间表。紧急项优先，历史周期不会被推进成新日期，来源与采集时间保持可见。"
+          icon={CalendarClock}
+          stats={[
+            { label: "deadline facts", value: calendar?.coverage.deadlineFacts ?? 0 },
+            { label: "可排期", value: calendar?.coverage.scheduled ?? 0 },
+            { label: "明确缺失", value: calendar?.coverage.missing ?? 0 },
+            { label: "无效日期", value: calendar?.coverage.invalid ?? 0 },
+          ]}
+          sourceNote={calendar?.timezoneNotice ?? "时间口径 · UTC；本地时间只在学校原文明示时展示。"}
+          actions={
+            <>
+              <Link href="/s/home" className="inline-flex min-h-control items-center rounded-none border border-[#eef1f526] px-3 text-xs font-medium text-[#eef1f5] transition hover:border-[#dd8568] hover:text-[#dd8568]">
+                回到工作台
+              </Link>
+              <Link href="/compare" className="inline-flex min-h-control items-center rounded-none border border-[#eef1f526] px-3 text-xs font-medium text-[#eef1f5] transition hover:border-[#dd8568] hover:text-[#dd8568]">
+                检查学校组合
+              </Link>
+            </>
+          }
+        />
 
-        <div className="mt-8">
+        <div className="mx-auto w-full max-w-page px-4 py-8 sm:px-6">
           <ApplicationDeadlineView calendar={calendar} error={error} />
         </div>
       </main>

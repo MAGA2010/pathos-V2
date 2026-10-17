@@ -7,6 +7,8 @@ import { Newspaper, ExternalLink, ChevronDown, ChevronUp, Clock, Tag } from "luc
 import { DataLoadingState, DataUnavailableState, DataEmptyState } from "@/components/shared/data-states";
 import { NewsEntryHero } from "@/components/news/NewsEntryHero";
 import PageMotion from "@/components/shared/PageMotion";
+import { EnterprisePageHeader } from "@/components/shared/EnterprisePageHeader";
+import Link from "next/link";
 
 // page-motion.css only ships discrete delay steps, so list stagger has to snap
 // to them instead of computing an arbitrary per-item offset.
@@ -34,6 +36,12 @@ function fmtDate(iso: string) {
   } catch { return iso; }
 }
 
+function isUnitedStatesArticle(article: { title?: string; summary?: string; whatChanged?: string }): boolean {
+  return /美国|美本|美高|常春藤|Ivy|H-1B|OPT|CPT|SEVIS|F-1|US News/i.test(
+    `${article.title ?? ""} ${article.summary ?? article.whatChanged ?? ""}`,
+  );
+}
+
 export default function NewsPage() {
   var [expandedId, setExpandedId] = useState<string | null>(null);
   var [activeCategory, setActiveCategory] = useState("");
@@ -41,7 +49,9 @@ export default function NewsPage() {
   var dataSource = useDataSource();
   var newsState = useNews(dataSource);
   var loading = newsState.state.status === "loading";
-  var articles = newsState.state.status === "ready" ? newsState.state.data : [];
+  var articles = newsState.state.status === "ready"
+    ? newsState.state.data.filter(isUnitedStatesArticle)
+    : [];
 
   var catSet: string[] = [];
   articles.forEach(function(a: any) {
@@ -54,16 +64,25 @@ export default function NewsPage() {
     <PageMotion className="min-h-screen bg-surface-base">
       <NewsEntryHero />
       <div id="news-list" className="mx-auto max-w-page">
-      <header className="border-b border-border-soft bg-surface-1/70 backdrop-blur">
-        <div className="mx-auto flex max-w-page items-center gap-3 px-4 py-3 sm:px-6">
-          <div className="grid h-8 w-8 shrink-0 place-items-center rounded-control bg-cobalt text-paper"><Newspaper size={16} aria-hidden="true" /></div>
-          <div className="min-w-0 flex-1">
-            <p className="text-label uppercase tracking-[0.12em] text-cobalt">留学资讯</p>
-            <h1 className="text-page text-text-primary" data-heading-stagger="true">最新动态</h1>
-          </div>
-          <p className="text-caption text-text-secondary">来自 QS 与启德教育的整理</p>
-        </div>
-      </header>
+      <EnterprisePageHeader
+        eyebrow="US Information Feed"
+        title="美国信息动态"
+        description="只保留与美国本科申请、签证政策、排名数据和校园变化相关的收录内容；其他国家或目的地营销内容不进入这个信息流。"
+        icon={Newspaper}
+        stats={[
+          { label: "当前结果", value: filtered.length },
+          { label: "分类", value: categories.length },
+          { label: "数据源", value: "Preview 收录" },
+          { label: "焦点", value: "美国" },
+        ]}
+        sourceNote="来源 · 学校/机构公开页面与 QS 公开数据；每条保留原文链接，不把转载内容当 approved fact。"
+        actions={
+          <>
+            <Link href="/search" className="inline-flex min-h-control items-center rounded-none border border-[#eef1f526] px-3 text-xs font-medium text-[#eef1f5] transition hover:border-[#dd8568] hover:text-[#dd8568]">全局检索</Link>
+            <Link href="/opportunities" className="inline-flex min-h-control items-center rounded-none border border-[#eef1f526] px-3 text-xs font-medium text-[#eef1f5] transition hover:border-[#dd8568] hover:text-[#dd8568]">机会动态</Link>
+          </>
+        }
+      />
       <main className="mx-auto max-w-4xl px-4 py-5 sm:px-6">
         <div className="mb-6 flex flex-wrap gap-2" data-reveal="true">
           <button onClick={function() { setActiveCategory(""); }}

@@ -1,5 +1,5 @@
 // useCompareStore — single source of truth for the cross-page
-// "compare up to 3 universities" selection.
+// "compare up to 4 universities" selection.
 //
 // Why a shared store:
 //   Both `/map` (MapShell) and `/calculator` keep an independent
@@ -31,7 +31,7 @@
 import { useEffect, useState, useCallback } from "react";
 
 const STORAGE_KEY = "pathos_compare";
-const MAX_ITEMS = 3;
+const MAX_ITEMS = 4;
 
 type Listener = (ids: string[]) => void;
 type Store = { ids: string[] };
@@ -73,12 +73,14 @@ function setMemory(next: string[]) {
 }
 
 export interface CompareApi {
-  /** The current compare list (max 3, oldest first). */
+  /** The current compare list (max 4, insertion order). */
   ids: string[];
   /** True after the first localStorage read has happened. */
   hydrated: boolean;
-  /** Add an id. Returns false if at cap (3) or already present. */
+  /** Add an id. Returns false if at cap (4) or already present. */
   add: (id: string) => boolean;
+  /** Replace the whole selection, deduplicating and capping at 4. */
+  replaceIds: (ids: string[]) => void;
   /** Remove an id. */
   remove: (id: string) => void;
   /** Toggle an id. */
@@ -138,6 +140,15 @@ export function useCompareStore(): CompareApi {
     return true;
   }, []);
 
+  const replaceIds = useCallback((next: string[]) => {
+    const seen = new Set<string>();
+    for (const id of next) {
+      if (typeof id !== "string" || !id || seen.has(id)) continue;
+      seen.add(id);
+    }
+    setMemory([...seen].slice(0, MAX_ITEMS));
+  }, []);
+
   const remove = useCallback((id: string) => {
     if (!memory.ids.includes(id)) return;
     setMemory(memory.ids.filter((x) => x !== id));
@@ -161,6 +172,7 @@ export function useCompareStore(): CompareApi {
     ids,
     hydrated: ready,
     add,
+    replaceIds,
     remove,
     toggle,
     clear,

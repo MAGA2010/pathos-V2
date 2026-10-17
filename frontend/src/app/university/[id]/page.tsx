@@ -7,8 +7,11 @@
 import { UniversityDetailView } from "@/components/university/UniversityDetailView";
 
 export const dynamic = "force-dynamic";
-export const dynamicParams = true;
 
-export default function UniversityDetailPage() {
-  return <UniversityDetailView />;
+export default function UniversityDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  return <UniversityDetailView id={params.id} />;
 }
